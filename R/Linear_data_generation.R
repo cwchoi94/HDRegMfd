@@ -264,14 +264,14 @@ error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
     
     error.cov = matrix(error.rho,dim,dim) + diag(1-error.rho,dim)
     error.cov = error.cov * error.std^2 / dim
-    error = mvrnorm(n,rep(0,dim),error.cov)
+    error = MASS::mvrnorm(n,rep(0,dim),error.cov)
     error = error %*% basis
   } else{
     m = length(mu)
     const = 5/(m-1)
     error.cov = outer(1:m,1:m,function(x,y){error.rho^(const*abs(x-y))})
     error.cov = error.cov * error.std^2
-    error = mvrnorm(n,rep(0,m),error.cov)
+    error = MASS::mvrnorm(n,rep(0,m),error.cov)
     
     if (space=='BayesHilbert'){
       rho2 = error.rho^(const)
