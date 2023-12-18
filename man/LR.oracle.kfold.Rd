@@ -15,9 +15,9 @@ LR.oracle.kfold(
 )
 }
 \arguments{
-\item{Xall}{a \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.}
+\item{Xall}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
 
-\item{Yall}{an \eqn{n}-by-\eqn{m} response matrix.}
+\item{Yall}{an \eqn{n\times m} response matrix.}
 
 \item{Yspace}{an underlying space of Yorg and Ynew.}
 
@@ -25,7 +25,7 @@ LR.oracle.kfold(
 
 \item{Xdim.max.list}{a vector of max dimension of \eqn{X_j}.}
 
-\item{proper.indices}{a \eqn{s} vector of indices of relevant \eqn{X_j}.}
+\item{proper.indices}{a vector of indices of relevant \eqn{X_j}.}
 
 \item{seed}{a random seed, int>0, default: non-random (NULL).}
 }

@@ -3,8 +3,8 @@
 
 
 #' Inner product on tangent space at p for functional data
-#' 
-#' @describIn inner.manifold Method
+
+#' @describeIn inner.manifold Method
 #' @export
 inner.functional = function(u,v,p=NULL){
   u = vec.to.mat(u)
@@ -25,8 +25,8 @@ inner.each.functional = function(u,v,p=NULL){
 
 
 #' norm on tangent space at p for functional data
-#' 
-#' @describIn norm.manifold Method
+
+#' @describeIn norm.manifold Method
 #' @export
 norm.functional = function(u,p=NULL){
   z = sqrt(inner.functional(u,u,p))
@@ -35,8 +35,8 @@ norm.functional = function(u,p=NULL){
 
 
 #' Geodesic distance for functional data
-#' 
-#' @describIn dist.manifold Method
+
+#' @describeIn dist.manifold Method
 #' @export
 dist.functional = function(p,q){
   p = vec.to.mat(p)
@@ -52,8 +52,8 @@ dist.functional = function(p,q){
 
 
 #' Riemannian exponential map for functional data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieExp.functional = function(p,u){
   p = vec.to.mat(p)
@@ -68,8 +68,8 @@ RieExp.functional = function(p,u){
 
 
 #' Riemannian logarithmic map for functional data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieLog.functional = function(p,q){
   p = vec.to.mat(p)
@@ -94,8 +94,8 @@ basis.functional_ = function(l,ngrid=100,t=NULL){
 }
 
 #' Basis on the tangent space at the point for functional data
-#' 
-#' @describIn Basis.manifold Method
+
+#' @describeIn Basis.manifold Method
 #' @export
 basis.functional = function(p,dim=50){
   ngrid = length(p)
@@ -106,8 +106,8 @@ basis.functional = function(p,dim=50){
 
 
 #' Frechet mean for functional data
-#' 
-#' @describIn FrechetMean.manifold Method
+
+#' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.functional = function(X){
   X = vec.to.mat(X)
@@ -117,7 +117,7 @@ FrechetMean.functional = function(X){
 
 
 #' Principal component analysis for functional data
-#' 
+
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.functional = function(X){
@@ -149,7 +149,7 @@ PCA.functional = function(X){
 
 
 #' Prediction score matrix for functional data
-#' 
+
 #' @describeIn predict.PCA.manifold Method
 #' @export
 predict.PCA.functional = function(object,Xnew){

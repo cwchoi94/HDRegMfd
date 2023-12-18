@@ -52,8 +52,8 @@ split.data.org = function(Xall,Yall,test.indices){
 #' Kfold CV for an \code{\link{LR}} function.
 #' It is based on CBS algorithm and uses a function LR_kfold in LR_kfold.cpp.
 #' 
-#' @param Xall a \eqn{p} list of score matrix. Each score matrix is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Yall an \eqn{n}-by-\eqn{m} response matrix.
+#' @param Xall a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yall an \eqn{n\times m} response matrix.
 #' @param Yspace an underlying space of \eqn{Y}.
 #' @param kfold a number of kfold CV, int>0.
 #' @param lambda.list a vector of lambda.
@@ -69,12 +69,12 @@ split.data.org = function(Xall,Yall,test.indices){
 #' @param max.iter a maximum iteration, default 500.
 #' @param threshold an algorihtm convergence threshold, default 1e-10.
 #'
-#' @return a \code{\link{LR}} object.
+#' @return an \code{\link{LR}} object.
 #'    \describe{
 #'       \item{parameter.list}{a list of optimal parameters for each CV step.}
 #'       \item{loss.list}{a list of loss for each CV step.}
 #'       \item{runtime}{running time}
-#'       \item{...}{}
+#'       \item{...}{see \code{\link{LR}}.}
 #' }
 #' @export
 LR.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,phi=1,penalty,gamma=0,seed=NULL,

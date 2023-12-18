@@ -105,7 +105,7 @@ covariates.generate.each = function(Xi,dim,space='Euclid'){
 
 #' @title Generate a list of Riemannian metric space-valued covariates.
 #' 
-#' @describtion
+#' @description
 #' Generate the covariate list.
 #' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{dim_j}.
 #' If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set 100.

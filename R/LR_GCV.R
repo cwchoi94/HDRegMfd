@@ -7,10 +7,10 @@
 #' GCV for a LR object
 #' It is based on CBS algorithm and uses a function LR_GCV in LR_GCV.cpp.
 #' 
-#' @param Xorg a \eqn{p} list of score matrix. Each score matrix is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n}-by-\eqn{m} response matrix.
-#' @param Xnew a \eqn{p} list of new covariate observations.
-#' @param Ynew an \eqn{n'}-by-\eqn{m} new response observations.
+#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} response matrix.
+#' @param Xnew a list of new covariate observations.
+#' @param Ynew an \eqn{n'\times} new response observations.
 #' @param Yspace an underlying space of \eqn{Y}.
 #' @param lambda.list a vector of lambda.
 #' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
@@ -24,12 +24,12 @@
 #' @param max.iter a maximum iteration, default 500.
 #' @param threshold an algorihtm convergence threshold, default 1e-10.
 #'
-#' @return a \code{\link{LR}} object.
+#' @return an \code{\link{LR}} object.
 #'    \describe{
 #'       \item{parameter.list}{a list of optimal parameters for each CV step.}
 #'       \item{loss.list}{a list of loss for each CV step.}
 #'       \item{runtime}{running time}
-#'       \item{...}{}
+#'       \item{...}{see \code{\link{LR}}.}
 #' }
 #' @export
 LR.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,phi=1,penalty='LASSO',gamma=0,

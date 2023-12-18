@@ -58,9 +58,8 @@ inner.tensor = function(x,y){
   return(sum(diag(E %*% t(M))))
 }
 
-#' @title Norm of tensor product spaces
+#' Norm of tensor product spaces
 #' 
-#' @description
 #' @param x an element in \eqn{H_1\otimes H_2}, created by \code{\link{make.TPspace}}.
 #' 
 #' @return a norm of x

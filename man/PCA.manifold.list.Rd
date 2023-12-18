@@ -9,13 +9,18 @@ PCA.manifold.list(Xdata)
 \arguments{
 \item{Xdata}{a list of manifold-valued data.
 \describe{
-      \item{j}{A \eqn{p} list of generated data. Each jth element is an \eqn{n}-by-\eqn{dim_j} matrix.}
-      \item{Xspaces}{A \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-      \item{p}{A number of \eqn{X_j}.}
+      \item{j}{a \eqn{p} list of generated data. Each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+      \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+      \item{p}{a number of \eqn{X_j}.}
 }}
 }
 \value{
-a \eqn{p} list of PCA.manifold object, see \code{\link{PCA.manifold}}.
+a PCA.manifold.list object.
+\describe{
+      \item{j}{a \code{\link{PCA.manifold}} object for \eqn{X_j}.}
+      \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+      \item{p}{a number of \eqn{X_j}.}
+}
 }
 \description{
 PCA fitting for a list of manifold-valued data.

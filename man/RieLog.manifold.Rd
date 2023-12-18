@@ -7,12 +7,12 @@
 RieLog.manifold(p, q, space = "Euclid")
 }
 \arguments{
-\item{p, q}{\eqn{m} vectors or \eqn{n}-by-\eqn{m} matrices. Each row is a point on the manifold.}
+\item{p, q}{\eqn{m} vectors or \eqn{n\times m} matrices. Each row is a point on the manifold.}
 
 \item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{n}-by-\eqn{m} matrix. Each row is a logarithmic map from \eqn{p_i} to \eqn{q_i}.
+an \eqn{n\times m} matrix. Each row is a logarithmic map from \eqn{p_i} to \eqn{q_i}.
 }
 \description{
 Riemannian logarithmic map

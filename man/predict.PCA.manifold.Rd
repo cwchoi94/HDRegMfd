@@ -27,12 +27,12 @@
 \method{predict}{PCA.sphere}(object, Xnew)
 }
 \arguments{
-\item{object}{a PCA.manifold object created by \code{\link{PCA.manifold}}}
+\item{object}{a \code{\link{PCA.manifold}} object.}
 
-\item{Xnew}{a matrix with dimension (n,m). Each row is a point on the space.}
+\item{Xnew}{an \eqn{n\times m} matrix). Each row is a point on the space.}
 }
 \value{
-a score matrix with dimension (n,m')
+an \eqn{n\times m'} score matrix.
 }
 \description{
 Prediction score matrix of manifold-valued data.

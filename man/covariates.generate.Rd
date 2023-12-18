@@ -26,5 +26,7 @@ a list of generated data
 }
 }
 \description{
-Generate a list of Riemannian metric space-valued covariates.
+Generate the covariate list.
+If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{dim_j}.
+If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set 100.
 }

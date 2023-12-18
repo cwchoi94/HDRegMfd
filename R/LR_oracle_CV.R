@@ -2,17 +2,7 @@
 
 
 
-#' Compute loss for each Xdim.max
-#' 
-#' @param X a \eqn{p} list of score matrix. Each score matrix is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param LogY an \eqn{n}-by-\eqn{m} response matrix.
-#' @param Xnew a new \eqn{p} list of score matrix. Each score matrix is an \eqn{n'}-by-\eqn{d_j} matrix.
-#' @param LogYnew a new \eqn{n}-by-\eqn{m} response matrix.
-#' @param Ymu an underlying point of the tangent space of LogY and LogYnew.
-#' @param Xdim.max a max dimension of \eqn{X_j}, real>0.
-#' @param proper.indices a \eqn{s} vector of indices of relevant \eqn{X_j}.
-#' 
-#' @return a prediction loss.
+# Compute loss for each Xdim.max
 get.loss.LR.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Xdim.max,proper.indices){
   X = reduce.dimension(X,Xdim.max)
   Xnew = reduce.dimension(Xnew,Xdim.max)
@@ -30,13 +20,13 @@ get.loss.LR.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Xdim.max,proper.indices){
 
 #' GCV for an LR.oracle function
 #' 
-#' @param Xorg a \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n}-by-\eqn{m} response matrix.
-#' @param Xnew a new \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n'}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Ynew a new \eqn{n'}-by-\eqn{m} response matrix.
+#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} response matrix.
+#' @param Xnew a new list of manifold-valued covariates.
+#' @param Ynew a new \eqn{n'\times m} response matrix.
 #' @param Yspace an underlying space of Yorg and Ynew.
 #' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param proper.indices a \eqn{s} vector of indices of relevant \eqn{X_j}.
+#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
 #'
 #' @return an \eqn{\code{LR}} object
 #'    \describe{
@@ -121,12 +111,12 @@ LR.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.i
 
 #' Kfold cross validation for an LR.oracle function
 #' 
-#' @param Xall a \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Yall an \eqn{n}-by-\eqn{m} response matrix.
+#' @param Xall a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yall an \eqn{n\times m} response matrix.
 #' @param Yspace an underlying space of Yorg and Ynew.
 #' @param kfold a number of kfold CV, int>0.
 #' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param proper.indices a \eqn{s} vector of indices of relevant \eqn{X_j}.
+#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
 #' @param seed a random seed, int>0, default: non-random (NULL).
 #'
 #' @return an \eqn{\code{LR}} object

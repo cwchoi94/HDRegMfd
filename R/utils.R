@@ -1,3 +1,13 @@
+library(manifold)
+library(fdapace)
+library(MASS)
+library(expm)
+library(pracma)
+library(base)
+library(hms)
+library(Rcpp)
+library(RcppArmadillo)
+
 
 
 

@@ -7,9 +7,9 @@
 \method{predict}{PCA.manifold.list}(object, Xdatanew)
 }
 \arguments{
-\item{object}{a object obtained from \code{\link{PCA.manifold.list}}.}
+\item{object}{a \code{\link{PCA.manifold.list}} object.}
 
-\item{Xdatanew}{a \eqn{p} list of new manifold-valued data.}
+\item{Xdatanew}{a new \eqn{p} list of manifold-valued data.}
 }
 \value{
 a \eqn{p} list of score matrices, see \code{\link{predict.PCA.manifold}}.

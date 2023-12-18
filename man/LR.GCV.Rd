@@ -24,9 +24,9 @@ LR.GCV(
 )
 }
 \arguments{
-\item{Xorg}{a \eqn{p} list of score matrix. Each score matrix is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
 
-\item{Yorg}{an \eqn{n}-by-\eqn{m} response matrix.}
+\item{Yorg}{an \eqn{n\times m} response matrix.}
 
 \item{Yspace}{an underlying space of \eqn{Y}.}
 
@@ -52,17 +52,17 @@ LR.GCV(
 
 \item{threshold}{an algorihtm convergence threshold, default 1e-10.}
 
-\item{Xnew}{a \eqn{p} list of new covariate observations.}
+\item{Xnew}{a list of new covariate observations.}
 
-\item{Ynew}{an \eqn{n'}-by-\eqn{m} new response observations.}
+\item{Ynew}{an \eqn{n'\times} new response observations.}
 }
 \value{
-a \code{\link{LR}} object.
+an \code{\link{LR}} object.
    \describe{
       \item{parameter.list}{a list of optimal parameters for each CV step.}
       \item{loss.list}{a list of loss for each CV step.}
       \item{runtime}{running time}
-      \item{...}{}
+      \item{...}{see \code{\link{LR}}.}
 }
 }
 \description{

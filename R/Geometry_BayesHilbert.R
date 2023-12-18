@@ -20,8 +20,8 @@ inv.clr.BayesHilbert = function(x,normalizer=1){
 
 
 #' Inner product on tangent space at p for Bayes-Hilbert data
-#' 
-#' @describIn inner.manifold Method
+
+#' @describeIn inner.manifold Method
 #' @export
 inner.BayesHilbert = function(u,v,p=NULL){
   u = vec.to.mat(u)
@@ -42,8 +42,8 @@ inner.each.BayesHilbert = function(u,v,p=NULL){
 
 
 #' norm on tangent space at p for Bayes-Hilbert data
-#' 
-#' @describIn norm.manifold Method
+
+#' @describeIn norm.manifold Method
 #' @export
 norm.BayesHilbert = function(u,p=NULL){
   z = sqrt(inner.BayesHilbert(u,u,p))
@@ -52,8 +52,8 @@ norm.BayesHilbert = function(u,p=NULL){
 
 
 #' Geodesic distance for Bayes-Hilbert data
-#' 
-#' @describIn dist.manifold Method
+
+#' @describeIn dist.manifold Method
 #' @export
 dist.BayesHilbert = function(p,q){
   p = vec.to.mat(p)
@@ -68,8 +68,8 @@ dist.BayesHilbert = function(p,q){
 
 
 #' Riemannian exponential map for Bayes-Hilbert data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieExp.BayesHilbert = function(p,u){
   p = vec.to.mat(p)
@@ -85,8 +85,8 @@ RieExp.BayesHilbert = function(p,u){
 
 
 #' Riemannian logarithmic map for Bayes-Hilbert data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieLog.BayesHilbert = function(p,q){
   p = vec.to.mat(p)
@@ -104,8 +104,8 @@ RieLog.BayesHilbert = function(p,q){
 
 
 #' Basis on the tangent space at the point for Bayes-Hilbert data
-#' 
-#' @describIn Basis.manifold Method
+
+#' @describeIn Basis.manifold Method
 #' @export
 basis.BayesHilbert = function(p,dim=50){
   ngrid = length(p)
@@ -116,8 +116,8 @@ basis.BayesHilbert = function(p,dim=50){
 
 
 #' Frechet mean for Bayes-Hilbert data
-#' 
-#' @describIn FrechetMean.manifold Method
+
+#' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.BayesHilbert = function(X){
   X = vec.to.mat(X)
@@ -130,7 +130,7 @@ FrechetMean.BayesHilbert = function(X){
 
 
 #' Principal component analysis for Bayes-Hilbert data
-#' 
+
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.BayesHilbert = function(X){
@@ -158,7 +158,7 @@ PCA.BayesHilbert = function(X){
 
 
 #' Prediction score matrix for Bayes-Hilbert data
-#' 
+
 #' @describeIn predict.PCA.manifold Method
 #' @export
 predict.PCA.BayesHilbert = function(object,Xnew){

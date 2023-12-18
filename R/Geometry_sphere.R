@@ -2,8 +2,8 @@
 
 
 #' Inner product on tangent space at p for sphere data
-#' 
-#' @describIn inner.manifold Method
+
+#' @describeIn inner.manifold Method
 #' @export
 inner.sphere = function(u,v,p=NULL){
   u = vec.to.mat(u)
@@ -23,8 +23,8 @@ inner.each.sphere = function(u,v,p=NULL){
 
 
 #' norm on tangent space at p for sphere data
-#' 
-#' @describIn norm.manifold Method
+
+#' @describeIn norm.manifold Method
 #' @export
 norm.sphere = function(u,p=NULL){
   z = sqrt(inner.sphere(u,u,p))
@@ -33,8 +33,8 @@ norm.sphere = function(u,p=NULL){
 
 
 #' Geodesic distance for sphere data
-#' 
-#' @describIn dist.manifold Method
+
+#' @describeIn dist.manifold Method
 #' @export
 dist.sphere = function(p,q){
   p = vec.to.mat(p)
@@ -52,8 +52,8 @@ dist.sphere = function(p,q){
 
 
 #' Riemannian exponential map for sphere data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieExp.sphere = function(p,u){
   p = vec.to.mat(p)
@@ -79,8 +79,8 @@ Exp1 <- function(mu,v,tol=1e-10) {
 
 
 #' Riemannian logarithmic map for sphere data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieLog.sphere = function(p,q){
   p = vec.to.mat(p)
@@ -110,8 +110,8 @@ Log2 <- function(X, Mu, tol=1e-10) {
 
 
 #' Basis on the tangent space at the point for sphere data
-#' 
-#' @describIn basis.manifold Method
+
+#' @describeIn basis.manifold Method
 #' @export
 basis.sphere = function(p,dim=NULL){
   z = manifold::basisTan(manifold::createM('Sphere'),p)
@@ -121,8 +121,8 @@ basis.sphere = function(p,dim=NULL){
 
 
 #' Frechet mean for sphere data
-#' 
-#' @describIn FrechetMean.manifold Method
+
+#' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.sphere = function(X){
   X = vec.to.mat(X)
@@ -134,7 +134,7 @@ FrechetMean.sphere = function(X){
 
 
 #' Principal component analysis for sphere data
-#' 
+
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.sphere = function(X){
@@ -157,7 +157,7 @@ PCA.sphere = function(X){
 
 
 #' Prediction score matrix for sphere data
-#' 
+
 #' @describeIn predict.PCA.manifold Method
 #' @export
 predict.PCA.sphere = function(object,Xnew){

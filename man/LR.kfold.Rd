@@ -24,9 +24,9 @@ LR.kfold(
 )
 }
 \arguments{
-\item{Xall}{a \eqn{p} list of score matrix. Each score matrix is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.}
+\item{Xall}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
 
-\item{Yall}{an \eqn{n}-by-\eqn{m} response matrix.}
+\item{Yall}{an \eqn{n\times m} response matrix.}
 
 \item{Yspace}{an underlying space of \eqn{Y}.}
 
@@ -57,12 +57,12 @@ LR.kfold(
 \item{threshold}{an algorihtm convergence threshold, default 1e-10.}
 }
 \value{
-a \code{\link{LR}} object.
+an \code{\link{LR}} object.
    \describe{
       \item{parameter.list}{a list of optimal parameters for each CV step.}
       \item{loss.list}{a list of loss for each CV step.}
       \item{runtime}{running time}
-      \item{...}{}
+      \item{...}{see \code{\link{LR}}.}
 }
 }
 \description{

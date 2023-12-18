@@ -39,8 +39,8 @@ inv.clr.simplex = function(x,normalizer=1){
 
 
 #' Inner product on tangent space at p for simplex data
-#' 
-#' @describIn inner.manifold Method
+
+#' @describeIn inner.manifold Method
 #' @export
 inner.simplex = function(u,v,p=NULL){
   u = vec.to.mat(u)
@@ -64,8 +64,8 @@ inner.each.simplex = function(u,v){
 
 
 #' norm on tangent space at p for simplex data
-#' 
-#' @describIn norm.manifold Method
+
+#' @describeIn norm.manifold Method
 #' @export
 norm.simplex = function(u,p=NULL){
   z = sqrt(inner.simplex(u,u,p))
@@ -74,8 +74,8 @@ norm.simplex = function(u,p=NULL){
 
 
 #' Geodesic distance for simplex data
-#' 
-#' @describIn dist.manifold Method
+
+#' @describeIn dist.manifold Method
 #' @export
 dist.simplex = function(p,q){
   p = vec.to.mat(p)
@@ -93,8 +93,8 @@ dist.simplex = function(p,q){
 
 
 #' Riemannian exponential map for simplex data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieExp.simplex = function(p,u){
   p = vec.to.mat(p)
@@ -110,8 +110,8 @@ RieExp.simplex = function(p,u){
 
 
 #' Riemannian logarithmic map for simplex data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieLog.simplex = function(p,q){
   p = vec.to.mat(p)
@@ -128,8 +128,8 @@ RieLog.simplex = function(p,q){
 
 
 #' Basis on the tangent space at the point for simplex data
-#' 
-#' @describIn basis.manifold Method
+
+#' @describeIn basis.manifold Method
 #' @export
 basis.simplex = function(p,dim=NULL){
   X = inv.clr.simplex(diag(length(p)))
@@ -139,8 +139,8 @@ basis.simplex = function(p,dim=NULL){
 
 
 #' Frechet mean for simplex data
-#' 
-#' @describIn FrechetMean.manifold Method
+
+#' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.simplex = function(X){
   X = vec.to.mat(X)
@@ -168,7 +168,7 @@ real.to.clr = function(y){
 
 
 #' Principal component analysis for simplex data
-#' 
+
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.simplex = function(X){
@@ -192,7 +192,7 @@ PCA.simplex = function(X){
 
 
 #' Prediction score matrix for simplex data
-#' 
+
 #' @describeIn predict.PCA.manifold Method
 #' @export
 predict.PCA.simplex = function(object,Xnew){

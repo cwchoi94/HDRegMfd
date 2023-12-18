@@ -8,12 +8,17 @@
 #' 
 #' @param Xdata a list of manifold-valued data.
 #' \describe{
-#'       \item{j}{A \eqn{p} list of generated data. Each jth element is an \eqn{n}-by-\eqn{dim_j} matrix.}
-#'       \item{Xspaces}{A \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-#'       \item{p}{A number of \eqn{X_j}.}
+#'       \item{j}{a \eqn{p} list of generated data. Each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+#'       \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+#'       \item{p}{a number of \eqn{X_j}.}
 #' }
 #' 
-#' @return a \eqn{p} list of PCA.manifold object, see \code{\link{PCA.manifold}}.
+#' @return a PCA.manifold.list object.
+#' \describe{
+#'       \item{j}{a \code{\link{PCA.manifold}} object for \eqn{X_j}.}
+#'       \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+#'       \item{p}{a number of \eqn{X_j}.}
+#' }
 #' @export
 PCA.manifold.list = function(Xdata){
   pca.list = PCA_list(Xdata)
@@ -37,8 +42,8 @@ PCA.manifold.list = function(Xdata){
 #' @description 
 #' Prediction of principal component scores for a list of manifold-valued data.
 #' 
-#' @param object a object obtained from \code{\link{PCA.manifold.list}}.
-#' @param Xdatanew a \eqn{p} list of new manifold-valued data.
+#' @param object a \code{\link{PCA.manifold.list}} object.
+#' @param Xdatanew a new \eqn{p} list of manifold-valued data.
 #' 
 #' @return a \eqn{p} list of score matrices, see \code{\link{predict.PCA.manifold}}.
 #' @export

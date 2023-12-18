@@ -3,8 +3,8 @@
 
 
 #' Inner product on tangent space at p for Euclid data
-#' 
-#' @describIn inner.manifold Method
+
+#' @describeIn inner.manifold Method
 #' @export
 inner.Euclid = function(u,v,p=NULL){
   u = vec.to.mat(u)
@@ -24,8 +24,8 @@ inner.each.Euclid = function(u,v,p=NULL){
 
 
 #' norm on tangent space at p for Euclid data
-#' 
-#' @describIn norm.manifold Method
+
+#' @describeIn norm.manifold Method
 #' @export
 norm.Euclid = function(u,p=NULL){
   z = sqrt(inner.Euclid(u,u,p))
@@ -34,8 +34,8 @@ norm.Euclid = function(u,p=NULL){
 
 
 #' Geodesic distance for Euclid data
-#' 
-#' @describIn dist.manifold Method
+
+#' @describeIn dist.manifold Method
 #' @export
 dist.Euclid = function(p,q){
   p = vec.to.mat(p)
@@ -50,8 +50,8 @@ dist.Euclid = function(p,q){
 
 
 #' Riemannian exponential map for Euclid data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieExp.Euclid = function(p,u){
   p = vec.to.mat(p)
@@ -66,8 +66,8 @@ RieExp.Euclid = function(p,u){
 
 
 #' Riemannian logarithmic map for Euclid data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieLog.Euclid = function(p,q){
   p = vec.to.mat(p)
@@ -82,8 +82,8 @@ RieLog.Euclid = function(p,q){
 
 
 #' Basis on the tangent space at the point for Euclid data
-#' 
-#' @describIn basis.manifold Method
+
+#' @describeIn basis.manifold Method
 #' @export
 basis.Euclid = function(p,dim=NULL){
   z = diag(length(p))
@@ -92,8 +92,8 @@ basis.Euclid = function(p,dim=NULL){
 
 
 #' Frechet mean for Euclid data
-#' 
-#' @describIn FrechetMean.manifold Method
+
+#' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.Euclid = function(X){
   X = vec.to.mat(X)
@@ -104,7 +104,7 @@ FrechetMean.Euclid = function(X){
 
 
 #' Principal component analysis for Euclid data
-#' 
+
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.Euclid = function(X){
@@ -126,7 +126,7 @@ PCA.Euclid = function(X){
 
 
 #' Prediction score matrix for Euclid data
-#' 
+
 #' @describeIn predict.PCA.manifold Method
 #' @export
 predict.PCA.Euclid = function(object,Xnew){

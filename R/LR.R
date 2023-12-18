@@ -15,7 +15,7 @@ Check.penalty = function(penalty){
 #' @description 
 #' Change the dimension of \eqn{X_j} at most \eqn{min(d_j,Xdim.max)}.
 #' 
-#' @param X a \eqn{p} list of matrices. Each \eqn{X_j} is a \eqn{n}-by-\eqn{d_j} matrix.
+#' @param X a \eqn{p} list of matrices. Each \eqn{X_j} is a \eqn{n\times d_j} matrix.
 #' @param Xdim.max a max dimension of \eqn{X_j}, int>0.
 #' @param margin the direction which the dimension reduction applied over.
 #' 
@@ -43,8 +43,8 @@ reduce.dimension = function(X,Xdim.max=200,margin=1){
 #' @description 
 #' Compute tensor product operators by ADMM-MM algorithm.
 #' 
-#' @param Xorg a \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n}-by-\eqn{m} response matrix.
+#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} response matrix.
 #' @param Yspace an underlying space of \eqn{Y}.
 #' @param lambda a penalty constant, real>0.
 #' @param Xdim.max a max dimension of \eqn{X_j}, real>0.
@@ -60,10 +60,10 @@ reduce.dimension = function(X,Xdim.max=200,margin=1){
 #'    \describe{
 #'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
 #'       \item{Ymu}{an \eqn{m} vector of the Frechet mean of \eqn{Y}.}
-#'       \item{beta}{a \eqn{P}-by-\eqn{m} matrix of estimated beta, where \eqn{P=\sum_{j=1}^p K_j}.}
+#'       \item{beta}{a \eqn{P\times m} matrix of estimated beta, where \eqn{P=\sum_{j=1}^p K_j}.}
 #'       \item{beta.each}{a \eqn{p} list of each \eqn{beta_j}.}
 #'       \item{beta.norm}{a \eqn{p} vector of norm of each \eqn{beta_j}.}
-#'       \item{beta.vectors}{a \eqn{p} list of corresponding bases of \eqn{X_j}. Each basis is a \eqn{K_j}-by-\eqn{T_j} matrix.}
+#'       \item{beta.vectors}{a \eqn{p} list of corresponding bases of \eqn{X_j}. Each basis is a \eqn{K_j\times T_j} matrix.}
 #'       \item{beta.tensor}{a \eqn{p} list of tensor operators, see \code{\link{make.tensor}}.}
 #'       \item{proper.indices}{a indices of nonzero \code{beta_j}.}
 #'       \item{runtime}{a running time.}
@@ -134,12 +134,12 @@ LR = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,phi=1,penalty='LASS
 #' @title Prediction function for a LR object
 #' 
 #' @description 
-#' Predict \eqn{\hat{Y}} for given \eqn{X_{new}}.
+#' Predict \eqn{\hat{Y}_{new}} for given \eqn{X_{new}}.
 #' 
 #' @param object a \code{\link{LR}} class object.
 #' @param Xnew a \eqn{p} list of new observations.
 #'
-#' @return an \eqn{n'}-by-\eqn{m} matrix of \eqn{\hat{Y}}.
+#' @return an \eqn{n'\times m} matrix of \eqn{\hat{Y}_{new}}.
 #' @export
 predict.LR = function(object,Xnew){
   Xnew = predict.PCA.manifold.list(object$pca,Xnew)

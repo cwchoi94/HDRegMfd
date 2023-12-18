@@ -15,19 +15,19 @@ LR.oracle.GCV(
 )
 }
 \arguments{
-\item{Xorg}{a \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
 
-\item{Yorg}{an \eqn{n}-by-\eqn{m} response matrix.}
+\item{Yorg}{an \eqn{n\times m} response matrix.}
 
 \item{Yspace}{an underlying space of Yorg and Ynew.}
 
 \item{Xdim.max.list}{a vector of max dimension of \eqn{X_j}.}
 
-\item{proper.indices}{a \eqn{s} vector of indices of relevant \eqn{X_j}.}
+\item{proper.indices}{a vector of indices of relevant \eqn{X_j}.}
 
-\item{Xnew}{a new \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n'}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.}
+\item{Xnew}{a new list of manifold-valued covariates.}
 
-\item{Ynew}{a new \eqn{n'}-by-\eqn{m} response matrix.}
+\item{Ynew}{a new \eqn{n'\times m} response matrix.}
 }
 \value{
 an \eqn{\code{LR}} object

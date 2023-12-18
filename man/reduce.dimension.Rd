@@ -7,7 +7,7 @@
 reduce.dimension(X, Xdim.max = 200, margin = 1)
 }
 \arguments{
-\item{X}{a \eqn{p} list of matrices. Each \eqn{X_j} is a \eqn{n}-by-\eqn{d_j} matrix.}
+\item{X}{a \eqn{p} list of matrices. Each \eqn{X_j} is a \eqn{n\times d_j} matrix.}
 
 \item{Xdim.max}{a max dimension of \eqn{X_j}, int>0.}
 

@@ -2,8 +2,8 @@
 
 
 #' Inner product on tangent space at p for Wasserstein data
-#' 
-#' @describIn inner.manifold Method
+
+#' @describeIn inner.manifold Method
 #' @export
 inner.Wasserstein = function(u,v,p=NULL){
   u = vec.to.mat(u)
@@ -24,8 +24,8 @@ inner.each.Wasserstein = function(u,v,p=NULL){
 
 
 #' norm on tangent space at p for Wasserstein data
-#' 
-#' @describIn norm.manifold Method
+
+#' @describeIn norm.manifold Method
 #' @export
 norm.Wasserstein = function(u,p=NULL){
   z = sqrt(inner.Wasserstein(u,u,p))
@@ -34,8 +34,8 @@ norm.Wasserstein = function(u,p=NULL){
 
 
 #' Geodesic distance for Wasserstein data
-#' 
-#' @describIn dist.manifold Method
+
+#' @describeIn dist.manifold Method
 #' @export
 dist.Wasserstein = function(p,q){
   p = vec.to.mat(p)
@@ -51,8 +51,8 @@ dist.Wasserstein = function(p,q){
 
 
 #' Riemannian exponential map for Wasserstein data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieExp.Wasserstein = function(p,u){
   p = vec.to.mat(p)
@@ -67,8 +67,8 @@ RieExp.Wasserstein = function(p,u){
 
 
 #' Riemannian logarithmic map for Wasserstein data
-#' 
-#' @describIn RieExp.manifold Method
+
+#' @describeIn RieExp.manifold Method
 #' @export
 RieLog.Wasserstein = function(p,q){
   p = vec.to.mat(p)
@@ -89,8 +89,8 @@ basis.Wasserstein_ = function(l,ngrid=100,t=NULL){
 }
 
 #' Basis on the tangent space at the point for Wasserstein data
-#' 
-#' @describIn Basis.manifold Method
+
+#' @describeIn Basis.manifold Method
 #' @export
 basis.Wasserstein = function(p,dim=50){
   ngrid = length(p)
@@ -101,8 +101,8 @@ basis.Wasserstein = function(p,dim=50){
 
 
 #' Frechet mean for Wasserstein data
-#' 
-#' @describIn FrechetMean.manifold Method
+
+#' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.Wasserstein = function(X){
   X = vec.to.mat(X)
@@ -112,7 +112,7 @@ FrechetMean.Wasserstein = function(X){
 
 
 #' Principal component analysis for Wasserstein data
-#' 
+
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.Wasserstein = function(X){
@@ -144,7 +144,7 @@ PCA.Wasserstein = function(X){
 
 
 #' Prediction score matrix for Wasserstein data
-#' 
+
 #' @describeIn predict.PCA.manifold Method
 #' @export
 predict.PCA.Wasserstein = function(object,Xnew){

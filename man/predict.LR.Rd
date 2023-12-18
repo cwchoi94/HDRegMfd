@@ -12,8 +12,8 @@
 \item{Xnew}{a \eqn{p} list of new observations.}
 }
 \value{
-an \eqn{n'}-by-\eqn{m} matrix of \eqn{\hat{Y}}.
+an \eqn{n'\times m} matrix of \eqn{\hat{Y}_{new}}.
 }
 \description{
-Predict \eqn{\hat{Y}} for given \eqn{X_{new}}.
+Predict \eqn{\hat{Y}_{new}} for given \eqn{X_{new}}.
 }

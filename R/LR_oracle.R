@@ -46,24 +46,24 @@ compute_beta = function(X,Y,proper.indices){
 #' @description 
 #' This function is based on a high-dimensional linear regression models with the knowledge of the nonzero indices.
 #' 
-#' @param Xorg a \eqn{p} list of manifold-valued covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{d_j} matrix, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n}-by-\eqn{m} response matrix.
+#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} response matrix.
 #' @param Yspace an underlying space of \eqn{Y}.
 #' @param Xdim.max a max dimension of \eqn{X_j}, real>0.
-#' @param proper.indices a \eqn{s} vector of indices of relevant \eqn{X_j}.
+#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
 #'
-#' @return a \code{\link{LR}} object.
+#' @return an \code{\link{LR}} object.
 #'    \describe{
-#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{pca}{an \code{\link{PCA.manifold.list}} object.}
 #'       \item{Ymu}{an \eqn{m} vector of the Frechet mean of \eqn{Y}.}
-#'       \item{beta}{a \eqn{P}-by-\eqn{m} matrix of estimated beta, where \eqn{P=\sum_{j=1}^p K_j}.}
+#'       \item{beta}{a \eqn{P\times m} matrix of estimated beta, where \eqn{P=\sum_{j=1}^p K_j}.}
 #'       \item{beta.each}{a \eqn{p} list of each \eqn{beta_j}.}
 #'       \item{beta.norm}{a \eqn{p} vector of norm of each \eqn{beta_j}.}
 #'       \item{beta.vectors}{a \eqn{p} list of corresponding bases of \eqn{X_j}. Each basis is a \eqn{K_j}-by-\eqn{T_j} matrix.}
 #'       \item{beta.tensor}{a \eqn{p} list of tensor operators, see \code{\link{make.tensor}}.}
-#'       \item{proper.indices}{a indices of nonzero \code{beta_j}.}
+#'       \item{proper.indices}{an indices of nonzero \code{beta_j}.}
 #'       \item{runtime}{a running time.}
-#'       \item{...}{other parameters.}
+#'       \item{...}{other input parameters.}
 #' }
 #' @export
 LR.oracle = function(Xorg,Yorg,Yspace,Xdim.max=100,proper.indices=NULL){
