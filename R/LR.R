@@ -124,7 +124,7 @@ LR = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,phi=1,penalty='LASS
   object[['beta.tensor']] = beta.tensor
   object[['proper.indices']] = proper.indices
   object[['runtime']] = runtime
-  class(object) = 'HLR'
+  class(object) = 'LR'
   
   return(object)
 }
