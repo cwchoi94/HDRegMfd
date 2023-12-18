@@ -13,6 +13,7 @@ Imports:
     fdapace (>= 0.5.9),
     hms (>= 1.1.3),
     manifold (>= 0.1.1),
+    MASS (>= 7.3.58.4),
     Rcpp (>= 1.0.11),
     RcppArmadillo (>= 0.12.6.6.1),
     roxygen2 (>= 7.2.3)

@@ -80,7 +80,7 @@ Ymu.generate = function(m,space){
 #' @return A \eqn{n}-by-\eqn{p} covariate matrix.
 covariates.generate.real = function(n,p,Zrho,Zsigma){
   Zcov = outer(1:p,1:p,function(i,j){Zrho^(abs(i-j))})*Zsigma
-  Z = mvrnorm(n,rep(0,p),Zcov)
+  Z = MASS::mvrnorm(n,rep(0,p),Zcov)
   return(Z)
 }
 
