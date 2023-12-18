@@ -188,9 +188,11 @@ LR.oracle.kfold = function(Xall,Yall,Yspace,kfold,Xdim.max.list,proper.indices,s
   # fit opt model
   object = LR.oracle(Xall,Yall,Yspace,opt.Xdim.max,proper.indices)
   
+  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
-  object[['runtime']] = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  object[['runtime']] = runtime
   
   return(object)
 }
