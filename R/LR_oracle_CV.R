@@ -190,7 +190,7 @@ LR.oracle.kfold = function(Xall,Yall,Yspace,kfold,Xdim.max.list,proper.indices,s
   
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
-  object[['runtime']] = hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  object[['runtime']] = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
   return(object)
 }
