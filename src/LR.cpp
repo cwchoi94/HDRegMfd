@@ -213,7 +213,6 @@ List LR_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double la
 }
 
 
-// [[Rcpp::export]]
 double get_loss_LR(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, double phi, String penalty, double gamma){
          
     // model training
