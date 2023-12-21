@@ -100,7 +100,7 @@ basis.functional_ = function(l,ngrid=100,t=NULL){
 basis.functional = function(p,dim=50){
   ngrid = length(p)
   z = sapply(1:dim,function(j){basis.functional_(j,ngrid)})
-  z = t(z)/apply(z,2,norm.functional) # normalize
+  z = t(z)/norm.functional(t(z)) # normalize
   return(z)
 }
 

@@ -11,12 +11,12 @@
 
 #' Check whether manifolds or not
 #' 
-#' @param space a name of space, one of 'Euclid', 'simplex', 'sphere', 'functional', 'BayesHilbert', or 'Wasserstein'.
+#' @param space a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'functional', 'BayesHilbert', or 'Wasserstein'.
 #' 
 #' @export
 Check.manifold = function(space){
-  if (!(space %in% c('Euclid','simplex','sphere','functional','BayesHilbert','Wasserstein'))){
-    stop("The space should be one of 'Euclid', 'simplex', 'sphere', 'functional', 'BayesHilbert', or 'Wasserstein'.")
+  if (!(space %in% c('Euclid','simplex','sphere','SPD.LogEuclid','functional','BayesHilbert','Wasserstein'))){
+    stop("The space should be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'functional', 'BayesHilbert', or 'Wasserstein'.")
   }
 }
 

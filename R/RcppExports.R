@@ -5,10 +5,6 @@ LR_each <- function(Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, phi, penalty, g
     .Call(`_NonEuclidReg_LR_each`, Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, phi, penalty, gamma, eta, max_iter, threshold)
 }
 
-get_loss_LR <- function(X, LogY, Xnew_, LogYnew, Ymu, inner, lambda, Xdim_max, R, phi, penalty, gamma) {
-    .Call(`_NonEuclidReg_get_loss_LR`, X, LogY, Xnew_, LogYnew, Ymu, inner, lambda, Xdim_max, R, phi, penalty, gamma)
-}
-
 LR_GCV <- function(X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, phi = 1, penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
     .Call(`_NonEuclidReg_LR_GCV`, X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, phi, penalty, gamma, max_cv_iter, threshold)
 }

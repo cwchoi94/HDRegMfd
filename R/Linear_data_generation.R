@@ -16,20 +16,23 @@ Xmu.generate = function(m,space){
   Check.manifold(space)
   if (space=='Euclid'){
     mu = rep(0,m)
+  } else if (space=='simplex'){
+    mu = inv.clr.simplex(rep(0,m))[1,]
+  } else if (space=='SPD.LogEuclid'){
+    m = sqrt(m)
+    mu = as.vector(diag(m))
+  } else if (space=='sphere'){
+    mu = c(rep(0,m-1),1)
   } else if (space=='functional'){
     m = 100
     mu = rep(0,m)
-  } else if (space=='simplex'){
-    mu = inv.clr.simplex(rep(0,m))[1,]
-  } else if (space=='sphere'){
-    mu = c(rep(0,m-1),1)
   } else if (space=='BayesHilbert'){
     m = 100
     mu = inv.clr.BayesHilbert(rep(0,m))[1,]
   } else if (space=='Wasserstein'){
     m = 100
     t = seq(0,1,length.out=m+2)[2:(m+1)]
-    mu = qnorm(t)
+    mu = 10*t
   }
   return(mu)
 }
@@ -45,20 +48,23 @@ Ymu.generate = function(m,space){
   Check.manifold(space)
   if (space=='Euclid'){
     mu = rep(0,m)
-  } else if (space=='functional'){
-    m = 100
-    mu = rep(0,m)
   } else if (space=='simplex'){
     mu = inv.clr.simplex(rep(0,m))[1,]
   } else if (space=='sphere'){
     mu = c(rep(0,m-1),1)
+  } else if (space=='SPD.LogEuclid'){
+    m = sqrt(m)
+    mu = as.vector(diag(m))
+  } else if (space=='functional'){
+    m = 100
+    mu = rep(0,m)
   } else if (space=='BayesHilbert'){
     m = 100
     mu = inv.clr.BayesHilbert(rep(0,m))[1,]
   } else if (space=='Wasserstein'){
     m = 100
     t = seq(0,1,length.out=m+2)[2:(m+1)]
-    mu = qnorm(t)
+    mu = 10*t
   }
   return(mu)
 }
@@ -77,7 +83,7 @@ Ymu.generate = function(m,space){
 #' @param Zrho a correlation parameter which ranges from -1 to 1.
 #' @param Zsigma a variance parameter, default 1.
 #' 
-#' @return A \eqn{n}-by-\eqn{p} covariate matrix.
+#' @return an \eqn{n\times p} covariate matrix.
 covariates.generate.real = function(n,p,Zrho,Zsigma){
   Zcov = outer(1:p,1:p,function(i,j){Zrho^(abs(i-j))})*Zsigma
   Z = MASS::mvrnorm(n,rep(0,p),Zcov)
@@ -87,19 +93,38 @@ covariates.generate.real = function(n,p,Zrho,Zsigma){
 
 #' Generate each manifold-valued covariates
 #' 
-#' @param Xi an \eqn{n}-by\eqn{m'} score matrix.
+#' @param Xi an \eqn{n\times m'} score matrix.
 #' @param dim a dimension of \eqn{X}.
 #' @param space the underlying spaces, see \code{\link{Check.manifold}}
 #' 
-#' @return an \eqn{n}-by-\eqn{m} matrix with dimension. Each row is an element of the manifold.
+#' @return an \eqn{n\times m} matrix with dimension. Each row is an element of the manifold.
 #' @export
 covariates.generate.each = function(Xi,dim,space='Euclid'){
   Check.manifold(space)
   mu = Xmu.generate(dim,space)
   basis = basis.manifold(mu,ncol(Xi),space)
+  
+  if (space!='Wasserstein'){
+    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)}))
+  } else{
+    # restrict the range of Xi to ensure that LogXj is the quantile function.
+    Xi = 2*pnorm(Xi) - 1 
+    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)/sqrt(2)}))
+  }
+  
   LogX = Xi %*% basis
   X = RieExp.manifold(mu,LogX,space)
   return(X)
+}
+
+# weight bound for w_jk
+w.ftn = function(k){
+  if (k<=4){
+    w = k^(-1)
+  } else if (k>4){
+    w = k^(-1)
+  }
+  return(w)
 }
 
 
@@ -107,7 +132,7 @@ covariates.generate.each = function(Xi,dim,space='Euclid'){
 #' 
 #' @description
 #' Generate the covariate list.
-#' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{dim_j}.
+#' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{d_j}.
 #' If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set 100.
 #' 
 #' @param n a number of data
@@ -118,27 +143,24 @@ covariates.generate.each = function(Xi,dim,space='Euclid'){
 #' 
 #' @return a list of generated data
 #'    \describe{
-#'       \item{j}{A \eqn{p} list of generated data. Each jth element is an \eqn{n}-by-\eqn{dim_j} matrix.}
-#'       \item{Xspaces}{A \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-#'       \item{p}{A number of \eqn{X_j}.}
+#'       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times d_j} matrix.}
+#'       \item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+#'       \item{p}{a number of \eqn{X_j}.}
 #' }
 covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
   # compute intrinsic dimension
   p = length(dims)
-  dims_ = sapply(1:p,function(i){if(Xspaces[i] %in% c('simplex','sphere')){dims[i]-1}else{dims[i]}})
+  dims_ = sapply(1:p,function(i){
+    if(Xspaces[i] %in% c('simplex','sphere')){
+      dims[i]-1
+    }else if (Xspaces[i]=='SPD.LogEuclid'){
+      (dims[i]+sqrt(dims[i]))/2
+    }else{
+      dims[i]
+    }})
   
   # generate scores
   Z = covariates.generate.real(n,sum(dims_),Xrho,Xsigma)
-  
-  # weight bound for w_jk
-  w.ftn = function(l){
-    if (l<=4){
-      w = l^(-1)
-    } else if (l>4){
-      w = l^(-1)
-    }
-    return(w)
-  }
   
   # generate X_j
   Xdata = list()
@@ -148,7 +170,6 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
     b = dims.cumul[j+1]
     
     Xi = as.matrix(Z[,a:b])
-    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(l){w.ftn(l)}))
     Xdata[[j]] = covariates.generate.each(Xi,dims[j],Xspaces[j])
   }
   Xdata[['spaces']] = Xspaces
@@ -163,10 +184,10 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
 ### Operator generate
 
 
-#' @title Generate operators from \eqn{H_1} to \eqn{H_2}
+#' @title Generate linear operators from \eqn{H_1} to \eqn{H_2}
 #' 
 #' @description
-#' Generate an operator \eqn{B_j} from \eqn{H_1} to \eqn{H_2}. 
+#' Generate a linear operator \eqn{B_j} from \eqn{H_1} to \eqn{H_2}. 
 #' It can be identified as an element in the tensor product space \eqn{H_1\otimes H_2}. 
 #' 
 #' @param Xspace an underlying space of \eqn{H_1}.
@@ -220,7 +241,7 @@ tensor.beta.generate.each = function(Xspace,Yspace,Xdim,Ydim,beta.norm=1){
 #' 
 #' @return a list of operators,
 #'    \describe{
-#'       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n}-by-\eqn{Xdim_j} matrix.}
+#'       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times Xdim_j} matrix.}
 #'       \item{Xspaces}{a \eqn{p} vector of spaces of \eqn{X_j}.}
 #'       \item{p}{a number of \eqn{X_j}.}
 #' } 
@@ -254,11 +275,11 @@ tensor.beta.generate = function(Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,be
 #' @param error.rho a correlation parameter.
 #' @param error.std a standard deviation parameter.
 #' 
-#' @return an \eqn{n}-by-\eqn{m} matrix of generated random error.
+#' @return an \eqn{n\times m} matrix of generated random error.
 error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
   mu = Ymu.generate(dim,space)
   
-  if (space %in% c('Euclid','simplex','sphere')){
+  if (space %in% c('Euclid','simplex','sphere','SPD.LogEuclid')){
     basis = basis.manifold(mu,dim,space)
     dim = nrow(basis)
     
@@ -306,8 +327,8 @@ error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
 #' 
 #' @return a list of generated data
 #'    \describe{
-#'       \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{K_j} matrix.}
-#'       \item{Y}{an \eqn{n}-by-\eqn{m} matrix of response.}
+#'       \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
+#'       \item{Y}{an \eqn{n\times m} matrix of response.}
 #'       \item{beta}{a \eqn{p} list of generated operators.}
 #'       \item{error}{a generated random error.}
 #'       \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}

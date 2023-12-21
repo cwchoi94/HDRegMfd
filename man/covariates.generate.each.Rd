@@ -7,14 +7,14 @@
 covariates.generate.each(Xi, dim, space = "Euclid")
 }
 \arguments{
-\item{Xi}{an \eqn{n}-by\eqn{m'} score matrix.}
+\item{Xi}{an \eqn{n\times m'} score matrix.}
 
 \item{dim}{a dimension of \eqn{X}.}
 
 \item{space}{the underlying spaces, see \code{\link{Check.manifold}}}
 }
 \value{
-an \eqn{n}-by-\eqn{m} matrix with dimension. Each row is an element of the manifold.
+an \eqn{n\times m} matrix with dimension. Each row is an element of the manifold.
 }
 \description{
 Generate each manifold-valued covariates

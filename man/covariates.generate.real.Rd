@@ -16,7 +16,7 @@ covariates.generate.real(n, p, Zrho, Zsigma)
 \item{Zsigma}{a variance parameter, default 1.}
 }
 \value{
-A \eqn{n}-by-\eqn{p} covariate matrix.
+an \eqn{n\times p} covariate matrix.
 }
 \description{
 Generate real covariates

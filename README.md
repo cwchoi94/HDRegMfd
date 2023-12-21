@@ -5,8 +5,8 @@
 
 The goal of NonEuclid is to develop high-dimensional linear regression
 tools for manifold-valued data. This package has been implemented for
-Euclidean, simplex, sphere, functional, BayesHilbert, and Wasserstein
-space-valued data.
+Euclidean, simplex, sphere, SPD matrices with log-Euclidean metric,
+functional, BayesHilbert, and Wasserstein space-valued data.
 
 ## Installation
 

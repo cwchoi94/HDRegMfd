@@ -20,13 +20,13 @@ covariates.generate(n, Xspaces, dims, Xrho = 0.5, Xsigma = 1)
 \value{
 a list of generated data
    \describe{
-      \item{j}{A \eqn{p} list of generated data. Each jth element is an \eqn{n}-by-\eqn{dim_j} matrix.}
-      \item{Xspaces}{A \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-      \item{p}{A number of \eqn{X_j}.}
+      \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times d_j} matrix.}
+      \item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+      \item{p}{a number of \eqn{X_j}.}
 }
 }
 \description{
 Generate the covariate list.
-If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{dim_j}.
+If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{d_j}.
 If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set 100.
 }

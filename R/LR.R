@@ -110,7 +110,7 @@ LR = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,phi=1,penalty='LASS
   beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})
   beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
   beta.vectors = reduce.dimension(beta.vectors,Xdim.max,margin=2)
-  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,Ymu,pca[[j]]$mu)})
+  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
   proper.indices = which(beta.norm!=0)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))

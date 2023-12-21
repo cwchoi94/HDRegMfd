@@ -1,15 +1,3 @@
-library(manifold)
-library(fdapace)
-library(MASS)
-library(expm)
-library(pracma)
-library(base)
-library(hms)
-library(Rcpp)
-library(RcppArmadillo)
-
-
-
 
 
 # if x is a p-vector, change x to (1,p) matrix
@@ -34,7 +22,7 @@ vec.duplicate = function(x,n=1){
 
 #' vector norm of matrices on the tangent space at \eqn{p}
 #' 
-#' @param X a \eqn{p}-by-\eqn{m} matrix of manifold-valued data.
+#' @param X a \eqn{p\times m} matrix of manifold-valued data.
 #' @param p a base point on the tangent space.
 #' @param space an underlying space of \eqn{X}.
 #' @param type a type of vector norm. One of 'L2', 'L1', or 'Linf'.

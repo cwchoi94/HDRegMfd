@@ -18,7 +18,7 @@ error.generate(n, space, dim, error.rho = 0.5, error.std = 1)
 \item{error.std}{a standard deviation parameter.}
 }
 \value{
-an \eqn{n}-by-\eqn{m} matrix of generated random error.
+an \eqn{n\times m} matrix of generated random error.
 }
 \description{
 Gerenate random errors on the tangent space at mu.

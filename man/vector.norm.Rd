@@ -7,7 +7,7 @@
 vector.norm(X, p, space = "Euclid", type = "L2")
 }
 \arguments{
-\item{X}{a \eqn{p}-by-\eqn{m} matrix of manifold-valued data.}
+\item{X}{a \eqn{p\times m} matrix of manifold-valued data.}
 
 \item{p}{a base point on the tangent space.}
 

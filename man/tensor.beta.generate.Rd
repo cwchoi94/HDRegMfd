@@ -30,7 +30,7 @@ tensor.beta.generate(
 \value{
 a list of operators,
    \describe{
-      \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n}-by-\eqn{Xdim_j} matrix.}
+      \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times Xdim_j} matrix.}
       \item{Xspaces}{a \eqn{p} vector of spaces of \eqn{X_j}.}
       \item{p}{a number of \eqn{X_j}.}
 }

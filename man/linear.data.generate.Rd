@@ -47,8 +47,8 @@ linear.data.generate(
 \value{
 a list of generated data
    \describe{
-      \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n}-by-\eqn{K_j} matrix.}
-      \item{Y}{an \eqn{n}-by-\eqn{m} matrix of response.}
+      \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
+      \item{Y}{an \eqn{n\times m} matrix of response.}
       \item{beta}{a \eqn{p} list of generated operators.}
       \item{error}{a generated random error.}
       \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}
