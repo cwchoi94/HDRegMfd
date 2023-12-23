@@ -11,9 +11,9 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// LR_each
-List LR_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, double phi, String penalty, double gamma, double eta, int max_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LR_each(SEXP XorgSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP phiSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
+// LM_each
+List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, double phi, String penalty, double gamma, double eta, int max_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_LM_each(SEXP XorgSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP phiSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -30,13 +30,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(LR_each(Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, phi, penalty, gamma, eta, max_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(LM_each(Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, phi, penalty, gamma, eta, max_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// LR_GCV
-List LR_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, double phi, String penalty, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LR_GCV(SEXP XSEXP, SEXP LogYSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP phiSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+// LM_GCV
+List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, double phi, String penalty, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_LM_GCV(SEXP XSEXP, SEXP LogYSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP phiSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -54,13 +54,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(LR_GCV(X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, phi, penalty, gamma, max_cv_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(LM_GCV(X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, phi, penalty, gamma, max_cv_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// LR_Kfold
-List LR_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, Function inner, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, double phi, String penalty, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LR_Kfold(SEXP X_listSEXP, SEXP LogY_listSEXP, SEXP Xnew_listSEXP, SEXP LogYnew_listSEXP, SEXP Ymu_listSEXP, SEXP innerSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP phiSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+// LM_Kfold
+List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, Function inner, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, double phi, String penalty, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_LM_Kfold(SEXP X_listSEXP, SEXP LogY_listSEXP, SEXP Xnew_listSEXP, SEXP LogYnew_listSEXP, SEXP Ymu_listSEXP, SEXP innerSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP phiSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -79,7 +79,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(LR_Kfold(X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner, kfold, lambda_list, Xdim_max_list, R_list, phi, penalty, gamma, max_cv_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(LM_Kfold(X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner, kfold, lambda_list, Xdim_max_list, R_list, phi, penalty, gamma, max_cv_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -204,9 +204,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_NonEuclidReg_LR_each", (DL_FUNC) &_NonEuclidReg_LR_each, 13},
-    {"_NonEuclidReg_LR_GCV", (DL_FUNC) &_NonEuclidReg_LR_GCV, 14},
-    {"_NonEuclidReg_LR_Kfold", (DL_FUNC) &_NonEuclidReg_LR_Kfold, 15},
+    {"_NonEuclidReg_LM_each", (DL_FUNC) &_NonEuclidReg_LM_each, 13},
+    {"_NonEuclidReg_LM_GCV", (DL_FUNC) &_NonEuclidReg_LM_GCV, 14},
+    {"_NonEuclidReg_LM_Kfold", (DL_FUNC) &_NonEuclidReg_LM_Kfold, 15},
     {"_NonEuclidReg_PCA_list", (DL_FUNC) &_NonEuclidReg_PCA_list, 1},
     {"_NonEuclidReg_predict_PCA_list", (DL_FUNC) &_NonEuclidReg_predict_PCA_list, 2},
     {"_NonEuclidReg_LASSO_sol", (DL_FUNC) &_NonEuclidReg_LASSO_sol, 6},

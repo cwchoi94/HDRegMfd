@@ -1,3 +1,14 @@
+library(manifold)
+library(fdapace)
+library(MASS)
+library(expm)
+library(pracma)
+library(base)
+library(hms)
+library(Rcpp)
+library(RcppArmadillo)
+
+
 
 
 # if x is a p-vector, change x to (1,p) matrix
