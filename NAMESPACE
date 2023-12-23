@@ -1,7 +1,7 @@
 useDynLib(NonEuclidReg, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
 exportPattern("^[[:alpha:]]+")
-S3method(predict,LR)
+S3method(predict,LM)
 S3method(predict,PCA.BayesHilbert)
 S3method(predict,PCA.Euclid)
 S3method(predict,PCA.Wasserstein)
