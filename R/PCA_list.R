@@ -50,7 +50,7 @@ PCA.manifold.list = function(Xdata){
 predict.PCA.manifold.list = function(object,Xdatanew){
   scores = predict_PCA_list(object,Xdatanew)
   p = object$p
-  scores2 = lapply(1:p,function(j){vec.to.mat(scores[[j]])})
+  scores = lapply(1:p,function(j){vec.to.mat(scores[[j]])})
   return(scores)
 }
 # predict.PCA.manifold.list2 = function(object,Xdatanew){
