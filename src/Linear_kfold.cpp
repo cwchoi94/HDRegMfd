@@ -44,8 +44,6 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
     mat loss3_mat(kfold,r3);
     while (iter<max_cv_iter){
         List loss_iter(3);
-
-        Rcout << iter << endl;
     
         // lambda update
         // compute loss
