@@ -108,7 +108,7 @@ arma::mat Linear_betaj_update(arma::mat wj, double sigmaj, double normwj, String
 
 
 // [[Rcpp::export]]
-List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, double phi, String penalty, double gamma, double eta, int max_iter, double threshold){
+List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma, double eta, int max_iter, double threshold){
 
     int p = Xorg.size();
     int n = LogY.n_rows;
@@ -213,10 +213,10 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double la
 }
 
 
-double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, double phi, String penalty, double gamma){
+double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma){
          
     // model training
-    List model = LM_each(X,LogY,Ymu,inner,lambda,Xdim_max,R,phi,penalty,gamma);
+    List model = LM_each(X,LogY,Ymu,inner,lambda,Xdim_max,R,penalty,phi,gamma);
     mat beta = model["beta"];
   
     // Xnew data 

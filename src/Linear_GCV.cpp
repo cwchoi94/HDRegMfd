@@ -16,7 +16,7 @@ using namespace arma;
 
 // [[Rcpp::export]]
 List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, 
-            double phi=1, String penalty="LASSO", double gamma=0, int max_cv_iter=20, double threshold=1e-10){
+            String penalty="LASSO", double phi=1, double gamma=0, int max_cv_iter=20, double threshold=1e-10){
         
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -45,7 +45,7 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
         // compute loss
         for (int i=0; i<r1; i++){
             double lambda = lambda_list(i);
-            loss1(i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,lambda,opt_Xdim_max,opt_R,phi,penalty,gamma);
+            loss1(i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,lambda,opt_Xdim_max,opt_R,penalty,phi,gamma);
         }
 
         // find opt_idx with allowing threshold error (for fast computation)
@@ -67,7 +67,7 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
         // compute loss
         for (int i=0; i<r2; i++){
             double Xdim_max = Xdim_max_list(i);
-            loss2(i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,opt_lambda,Xdim_max,opt_R,phi,penalty,gamma);
+            loss2(i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,opt_lambda,Xdim_max,opt_R,penalty,phi,gamma);
         }
 
         // find opt_idx with allowing threshold error (for fast computation)
@@ -89,7 +89,7 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
         // compute loss
         for (int i=0; i<r3; i++){
             double R = R_list(i);
-            loss3(i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,opt_lambda,opt_Xdim_max,R,phi,penalty,gamma);
+            loss3(i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,opt_lambda,opt_Xdim_max,R,penalty,phi,gamma);
         }
 
         // find opt_idx with allowing threshold error (for fast computation)

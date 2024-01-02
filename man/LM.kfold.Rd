@@ -12,8 +12,8 @@ LM.kfold(
   lambda.list,
   Xdim.max.list,
   R.list,
-  phi = 1,
   penalty,
+  phi = 1,
   gamma = 0,
   seed = NULL,
   max.cv.iter = 20,
@@ -38,9 +38,9 @@ LM.kfold(
 
 \item{R.list}{a vector of constrained bound.}
 
-\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
-
 \item{penalty}{a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.}
+
+\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
 
 \item{gamma}{a parameter for SCAD (3.7) or MCP (3), parentheses: default value.}
 
