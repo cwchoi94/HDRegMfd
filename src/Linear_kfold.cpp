@@ -63,7 +63,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
         loss1 = arma::conv_to<vec>::from(mean(loss1_mat,0));
         opt_idx = get_min_idx(loss1, threshold, 0);
         opt_lambda = lambda_list(opt_idx);
-        loss_iter[1] = loss1;
+        loss_iter[0] = loss1;
     
         // parameter update
         parameters = {opt_lambda, opt_Xdim_max, opt_R};
