@@ -15,8 +15,8 @@
 #' @param lambda.list a vector of lambda.
 #' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
 #' @param R.list a vector of constrained bound.
-#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
 #' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
+#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
 #' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
 #' @param max.cv.iter a number of maximum CV iterations, default 20.
 #' @param cv.threshold a parameter to modify the computation error in CV, default 1e-10.
@@ -32,7 +32,7 @@
 #'       \item{...}{see \code{\link{LM}}.}
 #' }
 #' @export
-LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,phi=1,penalty='LASSO',gamma=0,
+LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,penalty='LASSO',phi=1,gamma=0,
                   max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -64,7 +64,7 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   
   # Use LM_GCV function to obtain the optimal parameters
   result = LM_GCV(X,LogY,Xnew,LogYnew,Ymu,inner,lambda.list,Xdim.max.list,R.list,
-                  phi,penalty,gamma,max.cv.iter,cv.threshold)
+                  penalty,phi,gamma,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
