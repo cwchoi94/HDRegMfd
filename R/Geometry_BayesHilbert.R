@@ -59,6 +59,12 @@ dist.BayesHilbert = function(p,q){
   p = vec.to.mat(p)
   q = vec.to.mat(q)
   
+<<<<<<< HEAD
+=======
+  p = vec.duplicate(p,nrow(q))
+  q = vec.duplicate(q,nrow(p))
+  
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   p = clr(p)
   q = clr(q)
   
@@ -135,10 +141,15 @@ FrechetMean.BayesHilbert = function(X){
 #' @export
 PCA.BayesHilbert = function(X){
   X = vec.to.mat(X)
+<<<<<<< HEAD
+=======
+  X = clr(X)
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   n = nrow(X)
   m = ncol(X)
   torg = seq(0,1,length.out=m)
   
+<<<<<<< HEAD
   mu = FrechetMean.BayesHilbert(X)
   
   X.centered = RieLog.BayesHilbert(mu,X)
@@ -157,6 +168,21 @@ PCA.BayesHilbert = function(X){
   mu = inv.clr.BayesHilbert(vec.to.mat(mu))[1,]
   
   result = list(values=values,vectors=vectors,mu=mu,Cov=Cov,dim=nrow(vectors))
+=======
+  L = fdapace::MakeFPCAInputs(IDs=rep(1:n,each=m),tVec=rep(torg,n),t(X))
+  fpca = fdapace::FPCA(L$Ly,L$Lt)
+  
+  W = apply(fpca$phi,2,function(x){norm.BayesHilbert(x)})
+  
+  fpca$lambda = fpca$lambda * W^2
+  fpca$phi = fpca$phi %*% diag(W^(-1))
+  
+  values = fpca$lambda
+  vectors = t(fpca$phi)
+  mu = inv.clr.BayesHilbert(vec.to.mat(fpca$mu))[1,]
+  
+  result = list(fpca=fpca,values=values,vectors=vectors,mu=mu,dim=nrow(vectors))
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   return(result)
 }
 
@@ -172,3 +198,17 @@ predict.PCA.BayesHilbert = function(object,Xnew){
 }
 
 
+<<<<<<< HEAD
+=======
+# predict.PCA.BayesHilbert = function(object,Xnew){
+#   Xnew = clr(Xnew)
+#   n2 = nrow(Xnew)
+#   m = ncol(Xnew)
+#   tnew = seq(0,1,length.out=m)
+# 
+#   Lnew = fdapace::MakeFPCAInputs(IDs=rep(1:n2,each=m),tVec=rep(tnew,n2),t(Xnew))
+#   scores = predict(object$fpca,Lnew$Ly,Lnew$Lt)$scores
+#   return (scores)
+# }
+
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9

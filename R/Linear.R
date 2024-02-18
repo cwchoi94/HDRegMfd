@@ -49,8 +49,13 @@ reduce.dimension = function(X,Xdim.max=200,margin=1){
 #' @param lambda a penalty constant, real>0.
 #' @param Xdim.max a max dimension of \eqn{X_j}, real>0.
 #' @param R a constrained bound, real>0.
+<<<<<<< HEAD
 #' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
 #' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
+=======
+#' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
+#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
 #' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
 #' @param eta a parameter in computing ADMM-MM algorithm for the proximal norm square, default 1e-3.
 #' @param max.iter a maximum iteration, default 500.
@@ -70,7 +75,11 @@ reduce.dimension = function(X,Xdim.max=200,margin=1){
 #'       \item{...}{other parameters.}
 #' }
 #' @export
+<<<<<<< HEAD
 LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,phi=1,penalty='LASSO',gamma=0,
+=======
+LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',phi=1,gamma=0,
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
               eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -103,7 +112,11 @@ LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,phi=1,penalty='LASS
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # apply LM_each function in cpp
+<<<<<<< HEAD
   object = LM_each(X,LogY,Ymu,inner,lambda,Xdim.max,R,phi,penalty,gamma,eta,max.iter,threshold)
+=======
+  object = LM_each(X,LogY,Ymu,inner,lambda,Xdim.max,R,penalty,phi,gamma,eta,max.iter,threshold)
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   
   # compute other parameters
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})

@@ -26,4 +26,9 @@ You can install this package from GitHub.
 
 ## Usage
 
+<<<<<<< HEAD
 We can find out the functions in this package by using a help function.
+=======
+We can find out the functions in this package by using a help function.
+
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9

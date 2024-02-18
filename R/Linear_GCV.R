@@ -15,8 +15,13 @@
 #' @param lambda.list a vector of lambda.
 #' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
 #' @param R.list a vector of constrained bound.
+<<<<<<< HEAD
 #' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
 #' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
+=======
+#' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
+#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
 #' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
 #' @param max.cv.iter a number of maximum CV iterations, default 20.
 #' @param cv.threshold a parameter to modify the computation error in CV, default 1e-10.
@@ -32,7 +37,11 @@
 #'       \item{...}{see \code{\link{LM}}.}
 #' }
 #' @export
+<<<<<<< HEAD
 LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,phi=1,penalty='LASSO',gamma=0,
+=======
+LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,penalty='LASSO',phi=1,gamma=0,
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
                   max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -75,7 +84,11 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
+<<<<<<< HEAD
   object = LM_each(X,LogY,Ymu,inner,opt.lambda,opt.Xdim.max,opt.R,phi,penalty,gamma,eta,max.iter,threshold)
+=======
+  object = LM_each(X,LogY,Ymu,inner,opt.lambda,opt.Xdim.max,opt.R,penalty,phi,gamma,eta,max.iter,threshold)
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   
   # compute other parameters
   Xdims = object$Xdims

@@ -10,7 +10,11 @@ LM.oracle.kfold(
   Yspace,
   kfold,
   Xdim.max.list,
+<<<<<<< HEAD
   proper.indices = NULL,
+=======
+  proper.indices,
+>>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   seed = NULL
 )
 }
