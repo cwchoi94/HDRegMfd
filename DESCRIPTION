@@ -1,0 +1,24 @@
+Package: NonEuclidReg
+Type: Package
+Title: High-dimensional linear regression for manifold-valued response and covariates
+Version: 1.0
+Date: 2023-12-18
+Author: Changwon Choi
+Maintainer: Changwon Choi <cwchoi94@gmail.com>
+Description: A package containing functions about high-dimensional linear regression for manifold-valued response and covariates.
+             This package has been developed for Euclidean, simplex, sphere, SPD matrices with log-Euclidean metric, functional, Bayes-Hilbert, and Wasserstein spaces.
+             For more information, see ...
+Imports: 
+    base (>= 4.3.1),
+    expm (>= 0.999.7),
+    fdapace (>= 0.5.9),
+    hms (>= 1.1.3),
+    manifold (>= 0.1.1),
+    MASS (>= 7.3.60),
+    parallel (>= 4.3.1),
+    Rcpp (>= 1.0.11),
+    RcppArmadillo (>= 0.12.6.6.1),
+    roxygen2 (>= 7.2.3)
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 7.2.3
+License: MIT + file LICENSE
