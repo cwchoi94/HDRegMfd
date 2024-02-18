@@ -36,11 +36,7 @@ get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Xdim.max,proper.indices){
 #'       \item{...}{see \code{\link{LM.oracle}}.}
 #' }
 #' @export
-<<<<<<< HEAD
 LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.indices=NULL){
-=======
-LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.indices){
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   
   start.time = Sys.time()
   
@@ -131,11 +127,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.i
 #'       \item{...}{see \code{\link{LM.oracle}}.}
 #' }
 #' @export
-<<<<<<< HEAD
 LM.oracle.kfold = function(Xall,Yall,Yspace,kfold,Xdim.max.list,proper.indices=NULL,seed=NULL){
-=======
-LM.oracle.kfold = function(Xall,Yall,Yspace,kfold,Xdim.max.list,proper.indices,seed=NULL){
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   
   start.time = Sys.time()
   

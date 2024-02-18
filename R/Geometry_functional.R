@@ -126,7 +126,6 @@ PCA.functional = function(X){
   m = ncol(X)
   torg = seq(0,1,length.out=m)
   
-<<<<<<< HEAD
   mu = FrechetMean.functional(X)
   
   X.centered = RieLog.functional(mu,X)
@@ -134,33 +133,16 @@ PCA.functional = function(X){
   eig.decomp = eigen(Cov)
   
   W = norm.functional(eig.decomp$vectors)
-=======
-  L = fdapace::MakeFPCAInputs(IDs=rep(1:n,each=m),tVec=rep(torg,n),t(X))
-  fpca = fdapace::FPCA(L$Ly,L$Lt)
-  
-  W = apply(fpca$phi,2,norm.functional)
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   if (length(W)==1){
     Wmat = W^(-1)
   } else{
     Wmat = diag(W^(-1))
   }
   
-<<<<<<< HEAD
   values = eig.decomp$values * W^2
   vectors = eig.decomp$vectors %*% Wmat
   
   result = list(values=values,vectors=vectors,mu=mu,Cov=Cov,dim=nrow(vectors))
-=======
-  fpca$lambda = fpca$lambda * W^2
-  fpca$phi = fpca$phi %*% Wmat
-  
-  values = fpca$lambda
-  vectors = t(fpca$phi)
-  mu = fpca$mu
-  
-  result = list(fpca=fpca,values=values,vectors=vectors,mu=mu,dim=nrow(vectors))
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   return(result)
 }
 
@@ -175,16 +157,3 @@ predict.PCA.functional = function(object,Xnew){
   return (scores)
 }
 
-<<<<<<< HEAD
-=======
-# predict.PCA.functional = function(object,Xnew){
-#   n2 = nrow(Xnew)
-#   m = ncol(Xnew)
-#   tnew = seq(0,1,length.out=m)
-#   
-#   Lnew = fdapace::MakeFPCAInputs(IDs=rep(1:n2,each=m),tVec=rep(tnew,n2),t(Xnew))
-#   scores = predict(object$fpca,Lnew$Ly,Lnew$Lt)$scores
-#   return (scores)
-# }
-
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9

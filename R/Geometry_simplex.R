@@ -54,11 +54,7 @@ inner.simplex = function(u,v,p=NULL){
   return(z)
 }
 
-<<<<<<< HEAD
 inner.each.simplex = function(u,v){
-=======
-inner.each.simplex = function(u,v,p=NULL){
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   m = length(u)
   a = outer(u,u,'-')
   b = outer(v,v,'-')

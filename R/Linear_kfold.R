@@ -59,13 +59,8 @@ split.data.org = function(Xall,Yall,test.indices){
 #' @param lambda.list a vector of lambda.
 #' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
 #' @param R.list a vector of constrained bound.
-<<<<<<< HEAD
 #' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
 #' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
-=======
-#' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
-#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
 #' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
 #' @param seed a random seed, int>0, default: non-random (NULL).
 #' @param max.cv.iter a number of maximum CV iterations, default 20.
@@ -82,11 +77,7 @@ split.data.org = function(Xall,Yall,test.indices){
 #'       \item{...}{see \code{\link{LM}}.}
 #' }
 #' @export
-<<<<<<< HEAD
 LM.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,phi=1,penalty,gamma=0,seed=NULL,
-=======
-LM.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,penalty,phi=1,gamma=0,seed=NULL,
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
                     max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -131,11 +122,7 @@ LM.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,pena
   
   # Use LM_kfold function defined in cpp
   result = LM_Kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,inner,kfold,
-<<<<<<< HEAD
                     lambda.list,Xdim.max.list,R.list,phi,penalty,gamma,max.cv.iter,cv.threshold)
-=======
-                    lambda.list,Xdim.max.list,R.list,penalty,phi,gamma,max.cv.iter,cv.threshold)
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -146,11 +133,7 @@ LM.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,pena
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-<<<<<<< HEAD
   object = LM(Xall,Yall,Yspace,opt.lambda,opt.Xdim.max,opt.R,phi,penalty,gamma,eta,max.iter,threshold)
-=======
-  object = LM(Xall,Yall,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,phi,gamma,eta,max.iter,threshold)
->>>>>>> 16e5ec28b2b82a0e80cfecce213851321244bcd9
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
