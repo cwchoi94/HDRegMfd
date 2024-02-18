@@ -13,8 +13,8 @@ LM.GCV(
   lambda.list,
   Xdim.max.list,
   R.list,
-  phi = 1,
   penalty = "LASSO",
+  phi = 1,
   gamma = 0,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
@@ -36,9 +36,9 @@ LM.GCV(
 
 \item{R.list}{a vector of constrained bound.}
 
-\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
-
 \item{penalty}{a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.}
+
+\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
 
 \item{gamma}{a parameter for SCAD (3.7) or MCP (3), parentheses: default value.}
 

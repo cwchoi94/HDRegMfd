@@ -11,8 +11,8 @@ LM(
   lambda = 0.1,
   Xdim.max = 100,
   R = 100,
-  phi = 1,
   penalty = "LASSO",
+  phi = 1,
   gamma = 0,
   eta = 0.001,
   max.iter = 500,
@@ -32,9 +32,9 @@ LM(
 
 \item{R}{a constrained bound, real>0.}
 
-\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
-
 \item{penalty}{a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.}
+
+\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
 
 \item{gamma}{a parameter for SCAD (3.7) or MCP (3), parentheses: default value.}
 
