@@ -75,7 +75,7 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = LM_each(X,LogY,Ymu,inner,opt.lambda,opt.Xdim.max,opt.R,phi,penalty,gamma,eta,max.iter,threshold)
+  object = LM_each(X,LogY,Ymu,inner,opt.lambda,opt.Xdim.max,opt.R,penalty,phi,gamma,eta,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims
