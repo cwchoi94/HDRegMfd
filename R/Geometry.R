@@ -153,7 +153,7 @@ FrechetMean.manifold = function(X,space='Euclid'){
 #'       \item{...}{Passed into specific method}
 #' }
 #' @export
-PCA.manifold = function(X,space='Euclid',alpha=0.9){
+PCA.manifold = function(X,space='Euclid',alpha=0.95){
   Check.manifold(space)
   PCA = eval(parse(text=paste0('PCA.',space)))
   z = PCA(X,alpha)

@@ -162,7 +162,7 @@ FrechetMean.SPD.LogEuclid = function(X){
 
 #' @describeIn PCA.manifold Method
 #' @export
-PCA.SPD.LogEuclid = function(X,alpha=0.9){
+PCA.SPD.LogEuclid = function(X,alpha=0.95){
   X = vec.to.mat(X)
   n = nrow(X)
   m = ncol(X)

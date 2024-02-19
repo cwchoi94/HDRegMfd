@@ -115,7 +115,7 @@ FrechetMean.Wasserstein = function(X){
 
 #' @describeIn PCA.manifold Method
 #' @export
-PCA.Wasserstein = function(X,alpha=0.9){
+PCA.Wasserstein = function(X,alpha=0.95){
   X = vec.to.mat(X)
   n = nrow(X)
   m = ncol(X)
@@ -140,7 +140,7 @@ PCA.Wasserstein = function(X,alpha=0.9){
   if (alpha<0){alpha=0} else if (alpha>1){alpha=1}
   
   values.cumsum = cumsum(values)
-  idx = min(which(values.cumsum/values.cumsum[length(values.cumsum)]>=alpha))
+  idx = min(2,which(values.cumsum/values.cumsum[length(values.cumsum)]>=alpha))
   
   values = values[1:idx]
   vectors = vectors[1:idx,]
