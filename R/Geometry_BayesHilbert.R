@@ -159,7 +159,7 @@ PCA.BayesHilbert = function(X,alpha=0.9){
   if (alpha<0){alpha=0} else if (alpha>1){alpha=1}
   
   values.cumsum = cumsum(values)
-  idx = min(which(values.cumsum/values.cumsum[length(values.cumsum)]>alpha))
+  idx = min(which(values.cumsum/values.cumsum[length(values.cumsum)]>=alpha))
   
   values = values[1:idx]
   vectors = vectors[1:idx,]

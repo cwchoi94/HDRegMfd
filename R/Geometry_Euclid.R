@@ -107,7 +107,7 @@ FrechetMean.Euclid = function(X){
 
 #' @describeIn PCA.manifold Method
 #' @export
-PCA.Euclid = function(X,alpha=NULL){
+PCA.Euclid = function(X,alpha=0.9){
   X = vec.to.mat(X)
   n = nrow(X)
   m = ncol(X)

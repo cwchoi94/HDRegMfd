@@ -17,17 +17,17 @@ PCA.manifold(X, space = "Euclid", alpha = 0.9)
 
 PCA.BayesHilbert(X, alpha = 0.9)
 
-PCA.Euclid(X, alpha = NULL)
+PCA.Euclid(X, alpha = 0.9)
 
-PCA.SPD.LogEuclid(X, alpha = NULL)
+PCA.SPD.LogEuclid(X, alpha = 0.9)
 
 PCA.Wasserstein(X, alpha = 0.9)
 
 PCA.functional(X, alpha = 0.9)
 
-PCA.simplex(X, alpha = NULL)
+PCA.simplex(X, alpha = 0.9)
 
-PCA.sphere(X, alpha = NULL)
+PCA.sphere(X, alpha = 0.9)
 }
 \arguments{
 \item{alpha}{a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.}

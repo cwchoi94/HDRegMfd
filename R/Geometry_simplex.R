@@ -171,7 +171,7 @@ real.to.clr = function(y){
 
 #' @describeIn PCA.manifold Method
 #' @export
-PCA.simplex = function(X,alpha=NULL){
+PCA.simplex = function(X,alpha=0.9){
   X = vec.to.mat(X)
   n = nrow(X)
   m = ncol(X)
