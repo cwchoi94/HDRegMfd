@@ -133,7 +133,7 @@ FrechetMean.BayesHilbert = function(X){
 
 #' @describeIn PCA.manifold Method
 #' @export
-PCA.BayesHilbert = function(X){
+PCA.BayesHilbert = function(X,alpha=0.9){
   X = vec.to.mat(X)
   n = nrow(X)
   m = ncol(X)
@@ -153,8 +153,16 @@ PCA.BayesHilbert = function(X){
   }
   
   values = eig.decomp$values * W^2
-  vectors = eig.decomp$vectors %*% Wmat
+  vectors = t(eig.decomp$vectors) %*% Wmat
   mu = inv.clr.BayesHilbert(vec.to.mat(mu))[1,]
+  
+  if (alpha<0){alpha=0} else if (alpha>1){alpha=1}
+  
+  values.cumsum = cumsum(values)
+  idx = min(which(values.cumsum/values.cumsum[length(values.cumsum)]>alpha))
+  
+  values = values[1:idx]
+  vectors = vectors[1:idx,]
   
   result = list(values=values,vectors=vectors,mu=mu,Cov=Cov,dim=nrow(vectors))
   return(result)

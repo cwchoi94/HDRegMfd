@@ -137,7 +137,7 @@ FrechetMean.sphere = function(X){
 
 #' @describeIn PCA.manifold Method
 #' @export
-PCA.sphere = function(X){
+PCA.sphere = function(X,alpha=NULL){
   X = vec.to.mat(X)
   n = nrow(X)
   m = ncol(X)

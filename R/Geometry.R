@@ -141,6 +141,7 @@ FrechetMean.manifold = function(X,space='Euclid'){
 #' Principal component analysis for manifold-valued data.
 #' 
 #' @inheritParams FrechetMean
+#' @param alpha a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.
 #' 
 #' @return a 'PCA.manifold' object
 #' \describe{
@@ -152,10 +153,10 @@ FrechetMean.manifold = function(X,space='Euclid'){
 #'       \item{...}{Passed into specific method}
 #' }
 #' @export
-PCA.manifold = function(X,space='Euclid'){
+PCA.manifold = function(X,space='Euclid',alpha=0.9){
   Check.manifold(space)
   PCA = eval(parse(text=paste0('PCA.',space)))
-  z = PCA(X)
+  z = PCA(X,alpha)
   z[['space']] = space
   class(z) = 'PCA.manifold'
   return(z)

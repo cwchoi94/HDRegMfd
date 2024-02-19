@@ -13,21 +13,24 @@
 \alias{PCA.sphere}
 \title{Principal component analysis for manifold-valued data.}
 \usage{
-PCA.manifold(X, space = "Euclid")
+PCA.manifold(X, space = "Euclid", alpha = 0.9)
 
-PCA.BayesHilbert(X)
+PCA.BayesHilbert(X, alpha = 0.9)
 
-PCA.Euclid(X)
+PCA.Euclid(X, alpha = NULL)
 
-PCA.SPD.LogEuclid(X)
+PCA.SPD.LogEuclid(X, alpha = NULL)
 
-PCA.Wasserstein(X)
+PCA.Wasserstein(X, alpha = 0.9)
 
-PCA.functional(X)
+PCA.functional(X, alpha = 0.9)
 
-PCA.simplex(X)
+PCA.simplex(X, alpha = NULL)
 
-PCA.sphere(X)
+PCA.sphere(X, alpha = NULL)
+}
+\arguments{
+\item{alpha}{a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.}
 }
 \value{
 a 'PCA.manifold' object
