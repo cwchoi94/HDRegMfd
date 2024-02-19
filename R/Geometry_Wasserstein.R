@@ -121,24 +121,23 @@ PCA.Wasserstein = function(X){
   m = ncol(X)
   torg = seq(0,1,length.out=m)
   
-  L = fdapace::MakeFPCAInputs(IDs=rep(1:n,each=m),tVec=rep(torg,n),t(X))
-  fpca = fdapace::FPCA(L$Ly,L$Lt)
+  mu = FrechetMean.functional(X)
   
-  W = apply(fpca$phi,2,norm.Wasserstein)
+  X.centered = RieLog.functional(mu,X)
+  Cov = (t(X.centered) %*% X.centered) / n
+  eig.decomp = eigen(Cov)
+  
+  W = norm.Wasserstein(eig.decomp$vectors)
   if (length(W)==1){
     Wmat = W^(-1)
   } else{
     Wmat = diag(W^(-1))
   }
   
-  fpca$lambda = fpca$lambda * W^2
-  fpca$phi = fpca$phi %*% Wmat
+  values = eig.decomp$values * W^2
+  vectors = eig.decomp$vectors %*% Wmat
   
-  values = fpca$lambda
-  vectors = t(fpca$phi)
-  mu = fpca$mu
-  
-  result = list(fpca=fpca,values=values,vectors=vectors,mu=mu,dim=nrow(vectors))
+  result = list(values=values,vectors=vectors,mu=mu,Cov=Cov,dim=nrow(vectors))
   return(result)
 }
 
