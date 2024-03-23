@@ -21,7 +21,7 @@ Xmu.generate = function(m,space){
   } else if (space=='SPD.LogEuclid'){
     m = sqrt(m)
     mu = as.vector(diag(m))
-  } else if (space=='SPD.Affine'){
+  } else if (space=='SPD.AffInv'){
     m = sqrt(m)
     mu = as.vector(0.5*diag(m)+0.5)
   } else if (space=='sphere'){
@@ -58,7 +58,7 @@ Ymu.generate = function(m,space){
   } else if (space=='SPD.LogEuclid'){
     m = sqrt(m)
     mu = as.vector(diag(m))
-  } else if (space=='SPD.Affine'){
+  } else if (space=='SPD.AffInv'){
     m = sqrt(m)
     mu = as.vector(0.5*diag(m)+0.5)
   } else if (space=='functional'){
