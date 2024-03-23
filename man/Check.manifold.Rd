@@ -7,7 +7,7 @@
 Check.manifold(space)
 }
 \arguments{
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \description{
 Basic:

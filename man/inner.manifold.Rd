@@ -38,7 +38,7 @@ inner.sphere(u, v, p = NULL)
 
 \item{p}{an \eqn{m} vector of the base point on tangent space}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
 an \eqn{n} vector of inner products of each row of u and v

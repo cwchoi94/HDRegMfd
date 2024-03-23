@@ -36,7 +36,7 @@ FrechetMean.sphere(X)
 \arguments{
 \item{X}{a \eqn{n\times m} matrix. Each row is a point on the Riemannian metric spaces.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
 an \eqn{m} vector

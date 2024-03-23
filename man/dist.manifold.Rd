@@ -36,7 +36,7 @@ dist.sphere(p, q)
 \arguments{
 \item{p, q}{\eqn{m} vectors or \eqn{n\times m} matrices. Each row is a point on the Riemannian metric spaces.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
 an \eqn{n} vector of geodesic distance. Each entry is a distance between \eqn{p_i} and \eqn{q_i}.
