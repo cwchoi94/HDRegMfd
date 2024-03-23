@@ -53,10 +53,7 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
         else {
             loss1(0) = loss_min;
         }
-
-        Rcout << 1 << endl;
         
-
         // find opt_idx with allowing threshold error (for fast computation)
         opt_idx = get_min_idx(loss1, threshold, 0);
         opt_lambda = lambda_list(opt_idx);
@@ -73,6 +70,7 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
             break;
         }
 
+
         // Xdim_max update
         // compute loss
         if (r2 > 1) {
@@ -84,8 +82,6 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
         else {
             loss2(0) = loss_min;
         }
-        
-        Rcout << 2 << endl;
 
         // find opt_idx with allowing threshold error (for fast computation)
         opt_idx = get_min_idx(loss2, threshold, 1);
@@ -103,6 +99,7 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
             break;
         }
 
+
         // R update
         // compute loss
         if (r3 > 1) {
@@ -115,9 +112,6 @@ List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu,
             loss3(0) = loss_min;
         }
         
-
-        Rcout << 3 << endl;
-
         // find opt_idx with allowing threshold error (for fast computation)
         opt_idx = get_min_idx(loss3, threshold, 0);
         opt_R = R_list(opt_idx);

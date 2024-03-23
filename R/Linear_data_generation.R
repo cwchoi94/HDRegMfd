@@ -21,6 +21,9 @@ Xmu.generate = function(m,space){
   } else if (space=='SPD.LogEuclid'){
     m = sqrt(m)
     mu = as.vector(diag(m))
+  } else if (space=='SPD.Affine'){
+    m = sqrt(m)
+    mu = as.vector(0.5*diag(m)+0.5)
   } else if (space=='sphere'){
     mu = c(rep(0,m-1),1)
   } else if (space=='functional'){
@@ -55,6 +58,9 @@ Ymu.generate = function(m,space){
   } else if (space=='SPD.LogEuclid'){
     m = sqrt(m)
     mu = as.vector(diag(m))
+  } else if (space=='SPD.Affine'){
+    m = sqrt(m)
+    mu = as.vector(0.5*diag(m)+0.5)
   } else if (space=='functional'){
     m = 100
     mu = rep(0,m)
@@ -279,7 +285,7 @@ tensor.beta.generate = function(Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,be
 error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
   mu = Ymu.generate(dim,space)
   
-  if (space %in% c('Euclid','simplex','sphere','SPD.LogEuclid')){
+  if (space %in% c('Euclid','simplex','sphere','SPD.LogEuclid','SPD.AffInv')){
     basis = basis.manifold(mu,dim,space)
     dim = nrow(basis)
     
