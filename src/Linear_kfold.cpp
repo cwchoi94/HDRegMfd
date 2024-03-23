@@ -42,27 +42,37 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
     mat loss1_mat(kfold,r1);
     mat loss2_mat(kfold,r2);
     mat loss3_mat(kfold,r3);
+    vec loss_min(kfold);
     while (iter<max_cv_iter){
         List loss_iter(3);
     
         // lambda update
         // compute loss
-        for (int idx=0; idx<kfold; idx++){
-            List X = X_list[idx];
-            mat LogY = LogY_list[idx];
-            List Xnew = Xnew_list[idx];
-            mat LogYnew = LogYnew_list[idx];
-            vec Ymu = Ymu_list[idx];
-            for (int i=0; i<r1; i++){
-                double lambda = lambda_list(i);
-                loss1_mat(idx,i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,lambda,opt_Xdim_max,opt_R,penalty,phi,gamma);
+        if (r1 > 1 || iter == 0) {
+            for (int idx = 0; idx < kfold; idx++) {
+                List X = X_list[idx];
+                mat LogY = LogY_list[idx];
+                List Xnew = Xnew_list[idx];
+                mat LogYnew = LogYnew_list[idx];
+                vec Ymu = Ymu_list[idx];
+                for (int i = 0; i < r1; i++) {
+                    double lambda = lambda_list(i);
+                    loss1_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, inner, lambda, opt_Xdim_max, opt_R, penalty, phi, gamma);
+                }
             }
         }
+        else {
+            for (int idx = 0; idx < kfold; idx++) {
+                loss1_mat(idx, 0) = loss_min(idx);
+            }            
+        }
+        
     
         // find opt_idx with allowing threshold error (for fast computation)
         loss1 = arma::conv_to<vec>::from(mean(loss1_mat,0));
         opt_idx = get_min_idx(loss1, threshold, 0);
         opt_lambda = lambda_list(opt_idx);
+        loss_min = loss1_mat.col(opt_idx);
         loss_iter[0] = loss1;
     
         // parameter update
@@ -77,22 +87,31 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
     
         // Xdim_max update
         // compute loss
-        for (int idx=0; idx<kfold; idx++){
-            List X = X_list[idx];
-            mat LogY = LogY_list[idx];
-            List Xnew = Xnew_list[idx];
-            mat LogYnew = LogYnew_list[idx];
-            vec Ymu = Ymu_list[idx];
-            for (int i = 0; i < r2; i++) {
-                double Xdim_max = Xdim_max_list(i);
-                loss2_mat(idx, i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,opt_lambda,Xdim_max,opt_R,penalty,phi,gamma);
+        if (r2 > 1) {
+            for (int idx = 0; idx < kfold; idx++) {
+                List X = X_list[idx];
+                mat LogY = LogY_list[idx];
+                List Xnew = Xnew_list[idx];
+                mat LogYnew = LogYnew_list[idx];
+                vec Ymu = Ymu_list[idx];
+                for (int i = 0; i < r2; i++) {
+                    double Xdim_max = Xdim_max_list(i);
+                    loss2_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, inner, opt_lambda, Xdim_max, opt_R, penalty, phi, gamma);
+                }
             }
         }
+        else {
+            for (int idx = 0; idx < kfold; idx++) {
+                loss2_mat(idx, 0) = loss_min(idx);
+            }
+        }
+        
     
         // find opt_idx with allowing threshold error (for fast computation)
         loss2 = arma::conv_to<vec>::from(mean(loss2_mat,0));
         opt_idx = get_min_idx(loss2, threshold, 1);
         opt_Xdim_max = Xdim_max_list(opt_idx);
+        loss_min = loss2_mat.col(opt_idx);
         loss_iter[1] = loss2;
     
         // parameter update
@@ -107,22 +126,31 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
     
         // R update
         // compute loss
-        for (int idx=0; idx<kfold; idx++){
-            List X = X_list[idx];
-            mat LogY = LogY_list[idx];
-            List Xnew = Xnew_list[idx];
-            mat LogYnew = LogYnew_list[idx];
-            vec Ymu = Ymu_list[idx];
-            for (int i = 0; i < r3; i++) {
-                double R = R_list(i);
-                loss3_mat(idx, i) = get_loss_LM(X,LogY,Xnew,LogYnew,Ymu,inner,opt_lambda,opt_Xdim_max,R,penalty,phi,gamma);
+        if (r3 > 1) {
+            for (int idx = 0; idx < kfold; idx++) {
+                List X = X_list[idx];
+                mat LogY = LogY_list[idx];
+                List Xnew = Xnew_list[idx];
+                mat LogYnew = LogYnew_list[idx];
+                vec Ymu = Ymu_list[idx];
+                for (int i = 0; i < r3; i++) {
+                    double R = R_list(i);
+                    loss3_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, inner, opt_lambda, opt_Xdim_max, R, penalty, phi, gamma);
+                }
             }
         }
+        else {
+            for (int idx = 0; idx < kfold; idx++) {
+                loss3_mat(idx, 0) = loss_min(idx);
+            }
+        }
+        
     
         // find opt_idx with allowing threshold error (for fast computation)
         loss3 = arma::conv_to<vec>::from(mean(loss3_mat,0));
         opt_idx = get_min_idx(loss3, threshold, 0);
         opt_R = R_list(opt_idx);
+        loss_min = loss3_mat.col(opt_idx);
         loss_iter[2] = loss3;
         loss_list[iter] = loss_iter;
     
