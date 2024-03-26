@@ -23,7 +23,7 @@ Xmu.generate = function(m,space){
     mu = as.vector(diag(m))
   } else if (space=='SPD.AffInv'){
     m = sqrt(m)
-    mu = as.vector(0.5*diag(m)+0.5)
+    mu = as.vector(0.8*diag(m)+0.2)
   } else if (space=='sphere'){
     mu = c(rep(0,m-1),1)
   } else if (space=='functional'){
@@ -60,7 +60,7 @@ Ymu.generate = function(m,space){
     mu = as.vector(diag(m))
   } else if (space=='SPD.AffInv'){
     m = sqrt(m)
-    mu = as.vector(0.5*diag(m)+0.5)
+    mu = as.vector(0.8*diag(m)+0.2)
   } else if (space=='functional'){
     m = 100
     mu = rep(0,m)
