@@ -20,7 +20,7 @@ Xmu.generate = function(m,space){
     mu = inv.clr.simplex(rep(0,m))[1,]
   } else if (space=='SPD.LogEuclid'){
     m = sqrt(m)
-    mu = as.vector(diag(m))
+    mu = as.vector(0.8*diag(m)+0.2)
   } else if (space=='SPD.AffInv'){
     m = sqrt(m)
     mu = as.vector(0.8*diag(m)+0.2)
@@ -43,35 +43,14 @@ Xmu.generate = function(m,space){
 
 #' Generate the Frechet means for \eqn{Y}
 #' 
+#' The code is the same as \code{\link{Xmu.generate}}.
+#' 
 #' @param m length of each observation.
 #' @param space a name of space, see \code{\link{Check.manifold}}.
 #' 
 #' @return an \eqn{m} vector.
 Ymu.generate = function(m,space){
-  Check.manifold(space)
-  if (space=='Euclid'){
-    mu = rep(0,m)
-  } else if (space=='simplex'){
-    mu = inv.clr.simplex(rep(0,m))[1,]
-  } else if (space=='sphere'){
-    mu = c(rep(0,m-1),1)
-  } else if (space=='SPD.LogEuclid'){
-    m = sqrt(m)
-    mu = as.vector(diag(m))
-  } else if (space=='SPD.AffInv'){
-    m = sqrt(m)
-    mu = as.vector(0.8*diag(m)+0.2)
-  } else if (space=='functional'){
-    m = 100
-    mu = rep(0,m)
-  } else if (space=='BayesHilbert'){
-    m = 100
-    mu = inv.clr.BayesHilbert(rep(0,m))[1,]
-  } else if (space=='Wasserstein'){
-    m = 100
-    t = seq(0,1,length.out=m+2)[2:(m+1)]
-    mu = 10*t
-  }
+  mu = Xmu.generate(m,space)
   return(mu)
 }
 

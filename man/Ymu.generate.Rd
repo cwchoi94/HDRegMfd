@@ -15,5 +15,5 @@ Ymu.generate(m, space)
 an \eqn{m} vector.
 }
 \description{
-Generate the Frechet means for \eqn{Y}
+The code is the same as \code{\link{Xmu.generate}}.
 }
