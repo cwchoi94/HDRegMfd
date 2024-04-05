@@ -76,6 +76,18 @@ covariates.generate.real = function(n,p,Zrho,Zsigma){
 }
 
 
+#' Generate a non-symmetric identity matrix.
+#' given p1,p2, the matrix I is a p1*p2 matrix with I_{jk}=delta_{jk}
+make.nonsym.Idmat = function(p1,p2){
+  if (p1>=p2){
+    mat = rbind(diag(p2),matrix(0,p1-p2,p2))
+  } else{
+    mat = cbind(diag(p1),matrix(0,p1,p2-p1))
+  }
+  return(mat)
+}
+
+
 #' Generate each manifold-valued covariates
 #' 
 #' @param Xi an \eqn{n\times m'} score matrix.
@@ -145,23 +157,30 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
     }})
   
   # generate scores
-  Z = covariates.generate.real(n,sum(dims_),Xrho,Xsigma)
+  Zeta = lapply(1:p,function(j){covariates.generate.real(n,dims_[j],0,1)})
+  Xi = lapply(1:p,function(j){
+    if (j==1){
+      I2 = make.nonsym.Idmat(dims_[j+1],dims_[j])
+      Xi.each = Zeta[[j]] + Xrho * (Zeta[[j+1]] %*% I2)
+    } else if (j==p){
+      I1 = make.nonsym.Idmat(dims_[j-1],dims_[j])
+      Xi.each = Zeta[[j]] + Xrho * (Zeta[[j-1]] %*% I1)
+    } else{
+      I1 = make.nonsym.Idmat(dims_[j-1],dims_[j])
+      I2 = make.nonsym.Idmat(dims_[j+1],dims_[j])
+      Xi.each = Zeta[[j]] + Xrho * (Zeta[[j-1]] %*% I1 + Zeta[[j+1]] %*% I2)
+    }
+    return(Xi.each)
+  })
   
   # generate X_j
   Xdata = list()
   dims.cumul = c(0,cumsum(dims_))
-  for (j in 1:p){
-    a = dims.cumul[j]+1
-    b = dims.cumul[j+1]
-    
-    Xi = as.matrix(Z[,a:b])
-    Xdata[[j]] = covariates.generate.each(Xi,dims[j],Xspaces[j])
-  }
+  Xdata = lapply(1:p,function(j){covariates.generate.each(Xi[[j]],dims[j],Xspaces[j])})
   Xdata[['spaces']] = Xspaces
   Xdata[['p']] = p
   return(Xdata)
 }
-
 
 
 ######################################################
