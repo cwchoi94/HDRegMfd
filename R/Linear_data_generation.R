@@ -157,7 +157,7 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
     }})
   
   # generate scores
-  Zeta = lapply(1:p,function(j){covariates.generate.real(n,dims_[j],0,1)})
+  Zeta = lapply(1:p,function(j){covariates.generate.real(n,dims_[j],0,Xsigma)})
   Xi = lapply(1:p,function(j){
     if (j==1){
       I2 = make.nonsym.Idmat(dims_[j+1],dims_[j])
