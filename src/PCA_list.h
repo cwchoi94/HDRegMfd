@@ -8,7 +8,7 @@ using namespace std;
 using namespace arma;
 
 
-List PCA_list(List Xall);
+List PCA_list(List Xall, double alpha=0.95);
 List predict_PCA_list(List pca, List Xnew);
 
 #endif

@@ -84,13 +84,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // PCA_list
-List PCA_list(List Xall);
-RcppExport SEXP _NonEuclidReg_PCA_list(SEXP XallSEXP) {
+List PCA_list(List Xall, double alpha);
+RcppExport SEXP _NonEuclidReg_PCA_list(SEXP XallSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type Xall(XallSEXP);
-    rcpp_result_gen = Rcpp::wrap(PCA_list(Xall));
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(PCA_list(Xall, alpha));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -207,7 +208,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NonEuclidReg_LM_each", (DL_FUNC) &_NonEuclidReg_LM_each, 13},
     {"_NonEuclidReg_LM_GCV", (DL_FUNC) &_NonEuclidReg_LM_GCV, 14},
     {"_NonEuclidReg_LM_Kfold", (DL_FUNC) &_NonEuclidReg_LM_Kfold, 15},
-    {"_NonEuclidReg_PCA_list", (DL_FUNC) &_NonEuclidReg_PCA_list, 1},
+    {"_NonEuclidReg_PCA_list", (DL_FUNC) &_NonEuclidReg_PCA_list, 2},
     {"_NonEuclidReg_predict_PCA_list", (DL_FUNC) &_NonEuclidReg_predict_PCA_list, 2},
     {"_NonEuclidReg_LASSO_sol", (DL_FUNC) &_NonEuclidReg_LASSO_sol, 6},
     {"_NonEuclidReg_LASSO_sol2", (DL_FUNC) &_NonEuclidReg_LASSO_sol2, 6},

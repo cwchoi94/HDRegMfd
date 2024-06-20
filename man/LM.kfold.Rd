@@ -12,7 +12,7 @@ LM.kfold(
   lambda.list,
   Xdim.max.list,
   R.list,
-  penalty,
+  penalty = "LASSO",
   phi = 1,
   gamma = 0,
   seed = NULL,

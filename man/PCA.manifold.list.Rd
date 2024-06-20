@@ -4,7 +4,7 @@
 \alias{PCA.manifold.list}
 \title{Principal component analysis for manifold-valued data,}
 \usage{
-PCA.manifold.list(Xdata)
+PCA.manifold.list(Xdata, alpha = 0.95)
 }
 \arguments{
 \item{Xdata}{a list of manifold-valued data.
@@ -13,6 +13,8 @@ PCA.manifold.list(Xdata)
       \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
       \item{p}{a number of \eqn{X_j}.}
 }}
+
+\item{alpha}{a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.}
 }
 \value{
 a PCA.manifold.list object.

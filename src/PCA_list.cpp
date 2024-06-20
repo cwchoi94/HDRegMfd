@@ -11,7 +11,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List PCA_list(List Xall){
+List PCA_list(List Xall, double alpha){
         
     int p = Xall["p"];
     StringVector spaces = Xall["spaces"];
@@ -27,7 +27,7 @@ List PCA_list(List Xall){
     std::string space;
     for (int j=0; j<p; j++){
         space = spaces(j);
-        pca_each = pca_ftn(Xall[j],space);
+        pca_each = pca_ftn(Xall[j],space,alpha);
         pca[j] = pca_each;
     }
 

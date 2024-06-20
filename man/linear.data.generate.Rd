@@ -32,7 +32,7 @@ linear.data.generate(
 
 \item{proper.indices}{an indices of nonzero operators.}
 
-\item{beta.norm}{the tensor norm of nonzero operators.}
+\item{beta.norm}{a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.}
 
 \item{Xrho}{a correlation parameter for \eqn{X_j}.}
 

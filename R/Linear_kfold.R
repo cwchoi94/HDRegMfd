@@ -38,8 +38,8 @@ split.data.org = function(Xall,Yall,test.indices){
   Xorg[['spaces']] = spaces
   Xnew[['spaces']] = spaces
   
-  Yorg = vec.to.mat(Yall[-test.indices,])
-  Ynew = vec.to.mat(Yall[test.indices,])
+  Yorg = vec.to.mat(Yall[-test.indices,,drop=FALSE])
+  Ynew = vec.to.mat(Yall[test.indices,,drop=FALSE])
   data.split = list(Xorg=Xorg,Yorg=Yorg,Xnew=Xnew,Ynew=Ynew)
   return(data.split)
 }
@@ -77,7 +77,7 @@ split.data.org = function(Xall,Yall,test.indices){
 #'       \item{...}{see \code{\link{LM}}.}
 #' }
 #' @export
-LM.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,penalty,phi=1,gamma=0,seed=NULL,
+LM.kfold = function(Xall,Yall,Yspace,kfold,lambda.list,Xdim.max.list,R.list,penalty='LASSO',phi=1,gamma=0,seed=NULL,
                     max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()

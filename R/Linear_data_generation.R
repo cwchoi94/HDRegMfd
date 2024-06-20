@@ -223,6 +223,7 @@ tensor.beta.generate.each = function(Xspace,Yspace,Xdim,Ydim,beta.norm=1){
   }
   
   b = sapply(1:nrow(Xbasis),function(l1){sapply(1:nrow(Ybasis),function(l2){runif(1,-1,1)*b.ftn(l1,l2)})})
+  b = vec.to.mat(b)
   b = t(b) %*% Ybasis
   beta = make.tensor(Xbasis,b,Xspace,Yspace,Xmu,Ymu)
   beta$element2 = beta$element2 / norm.tensor(beta) * beta.norm
@@ -241,25 +242,30 @@ tensor.beta.generate.each = function(Xspace,Yspace,Xdim,Ydim,beta.norm=1){
 #' @param Xdims a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.
 #' @param Ydim an intrinsic dimension of \eqn{H_Y}.
 #' @param proper.indices an indices of nonzero operators.
-#' @param beta.norm the tensor norm.
+#' @param beta.norm a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.
 #' 
 #' @return a list of operators,
 #'    \describe{
 #'       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times Xdim_j} matrix.}
 #'       \item{Xspaces}{a \eqn{p} vector of spaces of \eqn{X_j}.}
 #'       \item{p}{a number of \eqn{X_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of the tensor norm.}
 #' } 
 tensor.beta.generate = function(Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta.norm=1,...){
   p = length(Xspaces)
   if(is.null(proper.indices)){proper.indices = seq(p)}
+  if(length(beta.norm)==1){beta.norm = rep(beta.norm,p)}
+  beta.norm[-proper.indices] = 0
+  beta.norm = beta.norm[1:p]
   
   beta.list = list()
   for (j in 1:p){
-    beta.list[[j]] = tensor.beta.generate.each(Xspaces[[j]],Yspace,Xdims[j],Ydim,beta.norm*(j%in%proper.indices))
+    beta.list[[j]] = tensor.beta.generate.each(Xspaces[[j]],Yspace,Xdims[j],Ydim,beta.norm[j])
   }
   
   beta.list[['Xspaces']] = Xspaces
   beta.list[['p']] = p
+  beta.list[['beta.norm']] = beta.norm
   return(beta.list)
 }
 
@@ -322,7 +328,7 @@ error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
 #' @param Xdims a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.
 #' @param Ydim an intrinsic dimension of \eqn{H_Y}.
 #' @param proper.indices an indices of nonzero operators.
-#' @param beta.norm the tensor norm of nonzero operators.
+#' @param beta.norm a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.
 #' @param Xrho a correlation parameter for \eqn{X_j}.
 #' @param Xsigma a variance parameter for \eqn{X_j}.
 #' @param error.rho a correlation parameter for error.
@@ -346,6 +352,7 @@ linear.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,
   # generate same beta for each simulation
   set.seed(0)
   beta = tensor.beta.generate(Xspaces,Yspace,Xdims,Ydim,proper.indices,beta.norm)
+  beta.norm = beta[['beta.norm']]
   
   # generate X and error
   set.seed(seed)

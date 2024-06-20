@@ -13,8 +13,8 @@ LM_Kfold <- function(X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner
     .Call(`_NonEuclidReg_LM_Kfold`, X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner, kfold, lambda_list, Xdim_max_list, R_list, penalty, phi, gamma, max_cv_iter, threshold)
 }
 
-PCA_list <- function(Xall) {
-    .Call(`_NonEuclidReg_PCA_list`, Xall)
+PCA_list <- function(Xall, alpha) {
+    .Call(`_NonEuclidReg_PCA_list`, Xall, alpha)
 }
 
 predict_PCA_list <- function(pca, Xnew) {

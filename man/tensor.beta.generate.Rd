@@ -25,7 +25,7 @@ tensor.beta.generate(
 
 \item{proper.indices}{an indices of nonzero operators.}
 
-\item{beta.norm}{the tensor norm.}
+\item{beta.norm}{a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.}
 }
 \value{
 a list of operators,
@@ -33,6 +33,7 @@ a list of operators,
       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times Xdim_j} matrix.}
       \item{Xspaces}{a \eqn{p} vector of spaces of \eqn{X_j}.}
       \item{p}{a number of \eqn{X_j}.}
+      \item{beta.norm}{a \eqn{p} vector of the tensor norm.}
 }
 }
 \description{

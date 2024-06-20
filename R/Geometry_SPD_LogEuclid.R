@@ -193,13 +193,4 @@ predict.PCA.SPD.LogEuclid = function(object,Xnew){
   return (scores)
 }
 
-# predict.PCA.SPD.LogEuclid = function(object,Xnew){
-#   n2 = nrow(Xnew)
-#   m = ncol(Xnew)
-#   tnew = seq(0,1,length.out=m)
-#   
-#   Lnew = fdapace::MakeFPCAInputs(IDs=rep(1:n2,each=m),tVec=rep(tnew,n2),t(Xnew))
-#   scores = predict(object$fpca,Lnew$Ly,Lnew$Lt)$scores
-#   return (scores)
-# }
 

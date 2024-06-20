@@ -12,6 +12,7 @@
 #'       \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
 #'       \item{p}{a number of \eqn{X_j}.}
 #' }
+#' @param alpha a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.
 #' 
 #' @return a PCA.manifold.list object.
 #' \describe{
@@ -20,8 +21,8 @@
 #'       \item{p}{a number of \eqn{X_j}.}
 #' }
 #' @export
-PCA.manifold.list = function(Xdata){
-  pca.list = PCA_list(Xdata)
+PCA.manifold.list = function(Xdata,alpha=0.95){
+  pca.list = PCA_list(Xdata,alpha)
   class(pca.list) = 'PCA.manifold.list'
   return(pca.list)
 }
