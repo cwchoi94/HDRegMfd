@@ -5,6 +5,8 @@
 using namespace Rcpp;
 using namespace arma;
 
+mat betaj_update(mat wj, double sigmaj, double normwj, String penalty, double lambdaj, double kappaj, double gamma, mat betaj, double betaj_norm);
+
 mat LASSO_sol(mat xy, double xx, double normxy, double lambda, double kappa=0, double gamma=0);
 mat LASSO_sol2(mat xy, double xx, double normxy, double lambda, double kappa=0, double gamma=0);
 

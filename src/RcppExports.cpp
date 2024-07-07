@@ -11,6 +11,135 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// GLM_each
+List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, String penalty, String link, double phi, double gamma, double eta, int max_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_GLM_each(SEXP XorgSEXP, SEXP YorgSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type Xorg(XorgSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Yorg(YorgSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< int >::type Xdim_max(Xdim_maxSEXP);
+    Rcpp::traits::input_parameter< double >::type R(RSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(GLM_each(Xorg, Yorg, lambda, Xdim_max, R, penalty, link, phi, gamma, eta, max_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// GLM_GCV
+List GLM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, String link, double phi, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_GLM_GCV(SEXP XSEXP, SEXP YSEXP, SEXP XnewSEXP, SEXP YnewSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< List >::type Xnew(XnewSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Ynew(YnewSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(GLM_GCV(X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Link
+arma::mat Link(arma::mat u, String link);
+RcppExport SEXP _NonEuclidReg_Link(SEXP uSEXP, SEXP linkSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type u(uSEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    rcpp_result_gen = Rcpp::wrap(Link(u, link));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Inv_Link
+arma::mat Inv_Link(arma::mat u, String link);
+RcppExport SEXP _NonEuclidReg_Inv_Link(SEXP uSEXP, SEXP linkSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type u(uSEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    rcpp_result_gen = Rcpp::wrap(Inv_Link(u, link));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Psi
+arma::mat Psi(arma::mat u, String link);
+RcppExport SEXP _NonEuclidReg_Psi(SEXP uSEXP, SEXP linkSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type u(uSEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    rcpp_result_gen = Rcpp::wrap(Psi(u, link));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Psi_1d
+arma::mat Psi_1d(arma::mat u, String link);
+RcppExport SEXP _NonEuclidReg_Psi_1d(SEXP uSEXP, SEXP linkSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type u(uSEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    rcpp_result_gen = Rcpp::wrap(Psi_1d(u, link));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Psi_2d
+arma::mat Psi_2d(arma::mat u, String link);
+RcppExport SEXP _NonEuclidReg_Psi_2d(SEXP uSEXP, SEXP linkSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type u(uSEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    rcpp_result_gen = Rcpp::wrap(Psi_2d(u, link));
+    return rcpp_result_gen;
+END_RCPP
+}
+// GLM_Kfold
+List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, String link, double phi, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_GLM_Kfold(SEXP X_listSEXP, SEXP Y_listSEXP, SEXP Xnew_listSEXP, SEXP Ynew_listSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type X_list(X_listSEXP);
+    Rcpp::traits::input_parameter< List >::type Y_list(Y_listSEXP);
+    Rcpp::traits::input_parameter< List >::type Xnew_list(Xnew_listSEXP);
+    Rcpp::traits::input_parameter< List >::type Ynew_list(Ynew_listSEXP);
+    Rcpp::traits::input_parameter< int >::type kfold(kfoldSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< String >::type link(linkSEXP);
+    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(GLM_Kfold(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // LM_each
 List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma, double eta, int max_iter, double threshold);
 RcppExport SEXP _NonEuclidReg_LM_each(SEXP XorgSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
@@ -205,6 +334,14 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_NonEuclidReg_GLM_each", (DL_FUNC) &_NonEuclidReg_GLM_each, 12},
+    {"_NonEuclidReg_GLM_GCV", (DL_FUNC) &_NonEuclidReg_GLM_GCV, 13},
+    {"_NonEuclidReg_Link", (DL_FUNC) &_NonEuclidReg_Link, 2},
+    {"_NonEuclidReg_Inv_Link", (DL_FUNC) &_NonEuclidReg_Inv_Link, 2},
+    {"_NonEuclidReg_Psi", (DL_FUNC) &_NonEuclidReg_Psi, 2},
+    {"_NonEuclidReg_Psi_1d", (DL_FUNC) &_NonEuclidReg_Psi_1d, 2},
+    {"_NonEuclidReg_Psi_2d", (DL_FUNC) &_NonEuclidReg_Psi_2d, 2},
+    {"_NonEuclidReg_GLM_Kfold", (DL_FUNC) &_NonEuclidReg_GLM_Kfold, 14},
     {"_NonEuclidReg_LM_each", (DL_FUNC) &_NonEuclidReg_LM_each, 13},
     {"_NonEuclidReg_LM_GCV", (DL_FUNC) &_NonEuclidReg_LM_GCV, 14},
     {"_NonEuclidReg_LM_Kfold", (DL_FUNC) &_NonEuclidReg_LM_Kfold, 15},

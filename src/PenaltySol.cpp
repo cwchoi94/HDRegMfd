@@ -6,6 +6,44 @@ using namespace Rcpp;
 using namespace arma;
 
 
+// betaj update for each iteration
+arma::mat betaj_update(arma::mat wj, double sigmaj, double normwj, String penalty, double lambdaj, double nuj, double gamma, mat betaj, double betaj_norm) {
+    mat betaj_new;
+    bool is_sol2 = (nuj + lambdaj < 0) & (normwj == 0);
+
+    if (penalty == "LASSO") {
+        if (is_sol2) {
+            betaj_new = LASSO_sol2(betaj, sigmaj, betaj_norm, lambdaj, nuj, gamma);
+        }
+        else {
+            betaj_new = LASSO_sol(wj, sigmaj, normwj, lambdaj, nuj, gamma);
+        }
+    }
+    else if (penalty == "SCAD") {
+        if (is_sol2) {
+            betaj_new = SCAD_sol2(betaj, sigmaj, betaj_norm, lambdaj, nuj, gamma);
+        }
+        else {
+            betaj_new = SCAD_sol(wj, sigmaj, normwj, lambdaj, nuj, gamma);
+        }
+    }
+    else if (penalty == "MCP") {
+        if (is_sol2) {
+            betaj_new = MCP_sol2(betaj, sigmaj, betaj_norm, lambdaj, nuj, gamma);
+        }
+        else {
+            betaj_new = MCP_sol(wj, sigmaj, normwj, lambdaj, nuj, gamma);
+        }
+    }
+
+    return(betaj_new);
+}
+
+
+
+
+
+
 // basic coordinatewise minimizer function
 arma::mat S(arma::mat xy, double xx, double normxy, double lambda){
     double c =  0.0;  
