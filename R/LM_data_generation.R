@@ -357,10 +357,13 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
   # generate X and error
   set.seed(seed)
   X = covariates.generate(n,Xspaces,Xdims,Xrho,Xsigma)
+  Xmu = lapply(1:length(Xdims),function(j){Xmu.generate(Xdims[j],Xspaces[j])})
   error = error.generate(n,Yspace,Ydim,error.rho,error.std)
   
   # compute Xbeta
-  Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],X[[j]])})
+  LogX = lapply(1:length(Xdims),function(j){RieLog.manifold(Xmu[[j]],X[[j]],Xspaces[j])})
+  Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],LogX[[j]])})
+  # Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],X[[j]])})
   Xbeta = Reduce('+',Xbeta.each)
   
   # make Y
@@ -370,7 +373,7 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
   Y = RieExp.manifold(Ymu,LogY,Yspace)
   
   data = list(X=X,Y=Y,beta=beta,error=error,ExpXbeta=ExpXbeta,Ymu=Ymu,
-              LogY=LogY,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
+              LogY=LogY,LogX=LogX,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
               n=n,p=length(Xdims),Xspaces=Xspaces,Yspace=Yspace,Xdims=Xdims,Ydim=Ydim,
               proper.indices=proper.indices,beta.norm=beta.norm,Xrho=Xrho,Xsigma=Xsigma,
               error.rho=error.rho,error.std=error.std,seed=seed)
