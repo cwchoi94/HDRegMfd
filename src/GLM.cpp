@@ -77,7 +77,19 @@ List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, 
         iter = iter+1;
         beta_old = beta;
         beta0_old = beta0;
-            
+        
+
+        // beta0 update
+        mat theta0 = X * beta + repelem(beta0, n, 1);
+        mat psi_1d_theta0 = Psi_1d(theta0, link);
+        double phi0 = max(Psi_2d(theta0, link).max(), phi);
+
+        mat w0 = phi0 * beta0 + Ymean - mean(psi_1d_theta0, 0);
+        double sigma0 = phi0;
+        double normw0 = L2_norm_real(w0);
+
+        beta0 = betaj_update(w0, sigma0, normw0, penalty, 0, 0, 0, beta0, 1);
+
         // beta update
         for (int j=0; j<p; j++){
             // define indices
@@ -86,8 +98,8 @@ List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, 
             
             // compute components
             mat thetaj = X * beta + repelem(beta0, n, 1);
-            mat psi_1d_thetaj = Psi_1d(thetaj);
-            double phij = max(Psi_2d(thetaj).max(),phi);
+            mat psi_1d_thetaj = Psi_1d(thetaj, link);
+            double phij = max(Psi_2d(thetaj, link).max(),phi);
 
             mat wj = phij * beta.rows(ind1) + XY.rows(ind1) - trans(X.cols(ind1)) * psi_1d_thetaj / n;
             double sigmaj = phij + eta * Xdims(j);
@@ -102,17 +114,6 @@ List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, 
             beta_norm_Xdim_sqrt(j) = Xdims_sqrt(j) * beta_norm(j);
         }
 
-        // beta0 update
-        mat theta0 = X * beta + repelem(beta0, n, 1);
-        mat psi_1d_theta0 = Psi_1d(theta0);
-        double phi0 = max(Psi_2d(theta0).max(), phi);
-
-        mat w0 = phi0 * beta0 + Ymean - mean(psi_1d_theta0,0);
-        double sigma0 = phi0;
-        double normw0 = L2_norm_real(w0);
-
-        beta0 = betaj_update(w0, sigma0, normw0, penalty, 0, 0, 0, beta0, 1);
-    
         // A update
         A = max(R - sum(beta_norm_Xdim_sqrt) - B / eta, 0.0);
     
@@ -131,12 +132,13 @@ List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, 
         beta.row(j) = beta.row(j) / sqrt(W(j));
     }
   
-    List result = List::create(Named("beta") = beta, Named("beta0") = beta0 ,Named("A") = A, Named("B") = B, Named("Xdims") = Xdims, Named("iter") = iter,
-                               Named("lambda") = lambda, Named("Xdim.max") = Xdim_max, Named("R") = R, Named("phi") = phi,
-                               Named("penalty") = penalty, Named("gamma") = gamma);
+    List result = List::create(Named("beta") = beta, Named("beta0") = beta0, Named("beta.norm") = beta_norm, Named("A") = A, Named("B") = B,
+                               Named("Xdims") = Xdims, Named("iter") = iter, Named("lambda") = lambda, Named("Xdim.max") = Xdim_max, Named("R") = R, 
+                               Named("phi") = phi, Named("penalty") = penalty, Named("gamma") = gamma);
   
     return(result);
 }
+
 
 
 double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lambda, int Xdim_max, double R, String penalty, String link, double phi, double gamma){
@@ -153,7 +155,7 @@ double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lamb
   
     // compute theta
     mat theta = Xnew * beta + repelem(beta0, n2, 1);
-    mat psi_theta = Psi(theta);
+    mat psi_theta = Psi(theta, link);
 
     // compute loss
     double loss = accu(psi_theta - Ynew % theta) / n2;
@@ -163,4 +165,40 @@ double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lamb
 
 
 
+double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double R, String cv_type, String penalty, String link, double phi, double gamma) {
 
+    // model training
+    List model = GLM_each(X_, Y, lambda, Xdim_max, R, penalty, link, phi, gamma);
+    mat beta = model["beta"];
+    vec beta0 = model["beta0"];
+
+    // Xnew data 
+    int n = Y.n_rows;
+    List Xlist = Make_reduce_dim_matrix(X_, Xdim_max);
+    mat X = Xlist["X"];
+
+    // compute theta
+    mat theta = X * beta + repelem(beta0, n, 1);
+    mat psi_theta = Psi(theta, link);
+
+    // compute loss
+    double loss = accu(psi_theta - Y % theta) / n;
+
+    // compute additional penalty term for AIC
+    double aic = 0;
+    double bic = 0;
+
+    vec beta_norm = model["beta.norm"];
+    vec Xdims = model["Xdims"];
+
+    if (cv_type == "AIC" || cv_type == "ABIC") {
+        aic = 2 * sum(Xdims.elem(find(beta_norm != 0))) / n;
+    }
+    if (cv_type == "BIC" || cv_type == "ABIC") {
+        bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;
+    }
+
+    loss = log(loss) + aic + bic;
+
+    return(loss);
+}

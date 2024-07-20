@@ -5,6 +5,10 @@ GLM_each <- function(Xorg, Yorg, lambda, Xdim_max, R, penalty, link, phi, gamma,
     .Call(`_NonEuclidReg_GLM_each`, Xorg, Yorg, lambda, Xdim_max, R, penalty, link, phi, gamma, eta, max_iter, threshold)
 }
 
+GLM_CV <- function(X, Y, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", link = "binomial", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_NonEuclidReg_GLM_CV`, X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, phi, gamma, max_cv_iter, threshold)
+}
+
 GLM_GCV <- function(X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", link = "binomial", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
     .Call(`_NonEuclidReg_GLM_GCV`, X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
 }
