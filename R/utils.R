@@ -4,6 +4,7 @@ library(MASS)
 library(expm)
 library(pracma)
 library(base)
+library(plyr)
 library(hms)
 library(Rcpp)
 library(RcppArmadillo)
@@ -59,5 +60,26 @@ vector.norm = function(X,p,space='Euclid',type='L2'){
 
 
 
+
+# Check a penalty function.
+Check.penalty = function(penalty){
+  if (!(penalty %in% c('LASSO','SCAD','MCP'))){
+    stop("penalty must be one of 'LASSO','SCAD','MCP'")
+  }
+}
+
+# Check a link function.
+Check.link = function(link){
+  if (!(link %in% c('binomial','poisson','exponential'))){
+    stop("The link should be one of 'binomial','poisson' or 'exponential'. If you use an 'identity' or 'normal' link, please use the 'LM' function.")
+  }
+}
+
+# Check a cv type.
+Check.cv.type = function(cv.type){
+  if (!(cv.type %in% c('AIC','BIC','ABIC'))){
+    stop("The cv.type should be one of 'AIC','BIC' or 'ABIC'.")
+  }
+}
 
 

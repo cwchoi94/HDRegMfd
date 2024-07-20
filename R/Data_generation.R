@@ -1,4 +1,4 @@
-### functions to generate Riemannian metric space-valued data.
+### functions to generate manifold data.
 
 
 #####################################################
@@ -174,8 +174,6 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
   })
   
   # generate X_j
-  Xdata = list()
-  dims.cumul = c(0,cumsum(dims_))
   Xdata = lapply(1:p,function(j){covariates.generate.each(Xi[[j]],dims[j],Xspaces[j])})
   Xdata[['spaces']] = Xspaces
   Xdata[['p']] = p
@@ -372,11 +370,84 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
   ExpXbeta = RieExp.manifold(Ymu,Xbeta,Yspace)
   Y = RieExp.manifold(Ymu,LogY,Yspace)
   
-  data = list(X=X,Y=Y,beta=beta,error=error,ExpXbeta=ExpXbeta,Ymu=Ymu,
+  data = list(X=X,Y=Y,beta=beta,error=error,ExpXbeta=ExpXbeta,Ymu=Ymu,Xmu=Xmu,
               LogY=LogY,LogX=LogX,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
               n=n,p=length(Xdims),Xspaces=Xspaces,Yspace=Yspace,Xdims=Xdims,Ydim=Ydim,
               proper.indices=proper.indices,beta.norm=beta.norm,Xrho=Xrho,Xsigma=Xsigma,
               error.rho=error.rho,error.std=error.std,seed=seed)
+  return(data)
+}
+
+
+#' @title Generate generalized linear regression data
+#' 
+#' @description
+#' Generate generalized linear regression data.
+#' The seed for generating beta is fixed as zero, so each beta is equal in simulations.
+#' 
+#' @param n a number of observation.
+#' @param Xspaces a \eqn{p} vector of underlying spaces of \eqn{X_j}.
+#' @param Xdims a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.
+#' @param link a link function, see \code{\link{Check.link}}.
+#' @param Ydim a dimension of \eqn{Y}. It is only used when link is multinomial.
+#' @param proper.indices an indices of nonzero operators.
+#' @param beta.norm a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.
+#' @param beta0.norm an integer of the norm of \eqn{\beta_0^*}.
+#' @param Xrho a correlation parameter for \eqn{X_j}.
+#' @param Xsigma a variance parameter for \eqn{X_j}.
+#' @param seed a random seed (1<=seed)
+#' 
+#' @return a list of generated data
+#'    \describe{
+#'       \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
+#'       \item{Y}{an \eqn{n\times m} matrix of response.}
+#'       \item{theta}{a canonical parameter.}
+#'       \item{Ymu}{Inverse link of theta.}
+#'       \item{beta}{a \eqn{p} list of generated operators.}
+#'       \item{beta0}{a constant beta0 for }
+#'       \item{error}{a generated random error.}
+#'       \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}
+#'       \item{Xbeta}{a sum of Xbeta.each.}
+#'       \item{...}{the other input parameters.}
+#' }
+GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indices=NULL,beta.norm=1,beta0.norm=1,Xrho=0.5,Xsigma=1,seed=1){
+  
+  Yspace = 'Euclid'
+  Check.link(link)
+  if (link!='multinomial'){
+    Ydim = 1
+  }
+  
+  # generate same beta for each simulation
+  set.seed(0)
+  beta = tensor.beta.generate(Xspaces,Yspace,Xdims,Ydim,proper.indices,beta.norm)
+  beta.norm = beta[['beta.norm']]
+  
+  # generate X
+  set.seed(seed)
+  X = covariates.generate(n,Xspaces,Xdims,Xrho,Xsigma)
+  Xmu = lapply(1:length(Xdims),function(j){Xmu.generate(Xdims[j],Xspaces[j])})
+  
+  # compute Xbeta
+  LogX = lapply(1:length(Xdims),function(j){RieLog.manifold(Xmu[[j]],X[[j]],Xspaces[j])})
+  Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],LogX[[j]])})
+  Xbeta = Reduce('+',Xbeta.each)
+  
+  # make Y
+  beta0 = rep(1,Ydim)/Ydim * beta0.norm
+  theta = beta0 + Xbeta
+  Ymu = Inv_Link(theta,link)
+  if (link=='binomial'){
+    Y = matrix(rbinom(n,1,prob=Ymu),nrow=n,ncol=1)
+  }else if (link=='poisson'){
+    Y = matrix(rpois(n,Ymu),nrow=n,ncol=1)
+  }
+  
+  data = list(X=X,Y=Y,link=link,theta=theta,Ymu=Ymu,beta=beta,beta0=beta0,
+              Xmu=Xmu,LogX=LogX,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
+              n=n,p=length(Xdims),Xspaces=Xspaces,Xdims=Xdims,Ydim=Ydim,
+              proper.indices=proper.indices,beta.norm=beta.norm,beta0.norm=beta0.norm,
+              Xrho=Xrho,Xsigma=Xsigma,seed=seed)
   return(data)
 }
 

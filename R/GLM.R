@@ -3,12 +3,6 @@
 
 
 
-Check.link = function(link){
-  if (!(link %in% c('binomial','poisson','exponential'))){
-    stop("The link should be one of 'binomial','poisson' or 'exponential'. If you use an 'identity' or 'normal' link, please use the 'LM' function.")
-  }
-}
-
 
 
 #' @title High-dimensional linear regression for manifold-valued responses and covariates.
@@ -114,14 +108,15 @@ predict.GLM = function(object,Xnew,is.inv.link=TRUE){
   Xnew = reduce.dimension(Xnew,object$Xdim.max)
   Xnew = do.call(cbind,Xnew)
   
-  theta = Xnew %*% object$beta
-  theta = theta + matrix(rep(object$beta0),nrow=nrow(theta))
+  theta = Xnew %*% object$beta + matrix(rep(object$beta0),nrow=nrow(theta))
   
   if(is.inv.link){
-    theta = Inv_Link(theta,object$link)
+    Ymu = Inv_Link(theta,object$link)
+    return (Ymu)
+  }else{
+    return(theta)
   }
   
-  return(theta)
 }
 
 

@@ -2,12 +2,6 @@
 ### developed only for LASSO, SCAD, MCP
 
 
-# Check a penalty function.
-Check.penalty = function(penalty){
-  if (!(penalty %in% c('LASSO','SCAD','MCP'))){
-    stop("penalty must be one of 'LASSO','SCAD','MCP'")
-  }
-}
 
 
 #' @title Demension reduction function for a list of X.
