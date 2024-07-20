@@ -48,7 +48,7 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices
   
   # Use GLM_GCV function to obtain the optimal parameters
   result = GLM_GCV(Xoracle,Yorg,Xoracle.new,Yorgnew,lambda.list,Xdim.max.list,R.list,
-                   penalty,link,phi,gamma,max.cv.iter,cv.threshold)
+                   'LASSO',link,1,0,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -57,50 +57,13 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices
   # apply GLM with the optimal parameters
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = GLM_each(Xoracle,Yorg,0,opt.Xdim.max,1000,'LASSO',link,phi,0,1e-3,max.iter,threshold)
-  
-  
-  # compute oracle estimator
-  X = reduce.dimension(X,opt.Xdim.max)
-  Xoracle = reduce.dimension(Xoracle,opt.Xdim.max)
-  
-  Xdims = sapply(X,ncol)
-  Xdims_cumul = c(0,cumsum(Xdims))
-  
-  Xdims.oracle = sapply(Xoracle,ncol)
-  Xdims_cumul.oracle = c(0,cumsum(Xdims.oracle))
-  
-  beta.oracle = object$beta
-  beta = matrix(0,sum(Xdims),ncol(Yorg))
-  for (i in 1:length(proper.indices)){
-    j = proper.indices[i]
-    beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],] = beta.oracle[(Xdims_cumul.oracle[i]+1):Xdims_cumul.oracle[i+1],]
-  }
-  
-  
-  # compute other parameters
-  beta.each = lapply(1:p,function(j){beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
-  beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})
-  beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
-  beta.vectors = reduce.dimension(beta.vectors,opt.Xdim.max,margin=2)
-  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
-  proper.indices = which(beta.norm!=0)
+  object = GLM.oracle(Xorg,Yorg,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
-  object[['beta']] = beta
-  object[['pca']] = pca
-  object[['link']] = link
-  object[['beta.each']] = beta.each
-  object[['beta.norm']] = beta.norm
-  object[['beta.vectors']] = beta.vectors
-  object[['beta.tensor']] = beta.tensor
-  object[['proper.indices']] = proper.indices
-  object[['Xdim.max']] = opt.Xdim.max
-  object[['runtime']] = runtime
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
-  class(object) = 'GLM'
+  object[['runtime']] = runtime
   
   return(object)
 }
@@ -170,7 +133,7 @@ GLM.oracle.kfold = function(Xall,Yall,kfold,Xdim.max.list,proper.indices=NULL,li
   
   # Use GLM_kfold function defined in cpp
   result = GLM_Kfold(Xoracle.list,Y.list,Xoracle.new.list,Ynew.list,kfold,lambda.list,Xdim.max.list,R.list,
-                     penalty,link,phi,gamma,max.cv.iter,cv.threshold)
+                     'LASSO',link,1,0,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -178,7 +141,7 @@ GLM.oracle.kfold = function(Xall,Yall,kfold,Xdim.max.list,proper.indices=NULL,li
   # apply GLM with the optimal parameters
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = GLM.oracle(Xall,Yall,opt.Xdim.max,proper.indices,link,phi,max.iter,threshold)
+  object = GLM.oracle(Xall,Yall,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
@@ -223,7 +186,7 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
   Yspace = 'Euclid'
   
   lambda.list = c(0)
-  R.list = c(1000)
+  R.list = c(100000)
   
   proper.indices = get.proper.indices(proper.indices,p)
   
@@ -236,7 +199,7 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
   
   # Use GLM_GCV function to obtain the optimal parameters
   result = GLM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,
-                  penalty,link,phi,gamma,max.cv.iter,cv.threshold)
+                  'LASSO',link,1,0,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -245,50 +208,13 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
   # apply GLM with the optimal parameters
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = GLM_each(Xoracle,Yorg,0,opt.Xdim.max,1000,'LASSO',link,phi,0,1e-3,max.iter,threshold)
-  
-  
-  # compute oracle estimator
-  X = reduce.dimension(X,opt.Xdim.max)
-  Xoracle = reduce.dimension(Xoracle,opt.Xdim.max)
-  
-  Xdims = sapply(X,ncol)
-  Xdims_cumul = c(0,cumsum(Xdims))
-  
-  Xdims.oracle = sapply(Xoracle,ncol)
-  Xdims_cumul.oracle = c(0,cumsum(Xdims.oracle))
-  
-  beta.oracle = object$beta
-  beta = matrix(0,sum(Xdims),ncol(Yorg))
-  for (i in 1:length(proper.indices)){
-    j = proper.indices[i]
-    beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],] = beta.oracle[(Xdims_cumul.oracle[i]+1):Xdims_cumul.oracle[i+1],]
-  }
-  
-  
-  # compute other parameters
-  beta.each = lapply(1:p,function(j){beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
-  beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})
-  beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
-  beta.vectors = reduce.dimension(beta.vectors,opt.Xdim.max,margin=2)
-  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
-  proper.indices = which(beta.norm!=0)
+  object = GLM.oracle(Xorg,Yorg,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
-  object[['beta']] = beta
-  object[['pca']] = pca
-  object[['link']] = link
-  object[['beta.each']] = beta.each
-  object[['beta.norm']] = beta.norm
-  object[['beta.vectors']] = beta.vectors
-  object[['beta.tensor']] = beta.tensor
-  object[['proper.indices']] = proper.indices
-  object[['Xdim.max']] = opt.Xdim.max
-  object[['runtime']] = runtime
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
-  class(object) = 'GLM'
+  object[['runtime']] = runtime
   
   return(object)
 }
