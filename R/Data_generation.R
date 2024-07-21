@@ -345,7 +345,7 @@ error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
 #'       \item{...}{the other input parameters.}
 #' }
 LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta.norm=1,Xrho=0.5,Xsigma=1,
-                                error.rho=0.5,error.std=1,seed=1){
+                            error.rho=0.5,error.std=1,seed=1){
   
   # generate same beta for each simulation
   set.seed(0)
@@ -361,7 +361,6 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
   # compute Xbeta
   LogX = lapply(1:length(Xdims),function(j){RieLog.manifold(Xmu[[j]],X[[j]],Xspaces[j])})
   Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],LogX[[j]])})
-  # Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],X[[j]])})
   Xbeta = Reduce('+',Xbeta.each)
   
   # make Y
@@ -410,18 +409,35 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
 #'       \item{Xbeta}{a sum of Xbeta.each.}
 #'       \item{...}{the other input parameters.}
 #' }
-GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indices=NULL,beta.norm=1,beta0.norm=1,Xrho=0.5,Xsigma=1,seed=1){
+GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indices=NULL,beta.norm=1,beta0.norm=1,Xrho=0.5,Xsigma=1,seed=1,c.beta=NULL){
   
   Yspace = 'Euclid'
   Check.link(link)
-  if (link!='multinomial'){
-    Ydim = 1
-  }
+  if (link!='multinomial'){Ydim = 1}
+  if(is.null(proper.indices)){proper.indices = seq(length(Xdims))}
+  p = length(Xdims)
+  s = length(proper.indices)
   
   # generate same beta for each simulation
   set.seed(0)
   beta = tensor.beta.generate(Xspaces,Yspace,Xdims,Ydim,proper.indices,beta.norm)
   beta.norm = beta[['beta.norm']]
+  beta.oracle = lapply(proper.indices,function(j){beta[[j]]})
+  
+  # generate nuisance X to set |B_j(LogX_j)|=beta.norm[j]
+  if (is.null(c.beta)){
+    Xmu = lapply(1:p,function(j){Xmu.generate(Xdims[j],Xspaces[j])})
+    X.base = covariates.generate(10000,Xspaces,Xdims,Xrho,Xsigma)
+    LogX.base = lapply(proper.indices,function(j){RieLog.manifold(Xmu[[j]],X.base[[j]],Xspaces[j])})
+    Xbeta.each.base = lapply(1:s,function(j){operator.tensor(beta.oracle[[j]],LogX.base[[j]])})
+    c.beta.tmp = sapply(1:s,function(j){sqrt(mean(norm.manifold(Xbeta.each.base[[j]])^2))})
+    c.beta = rep(0,p)
+    c.beta[proper.indices] = c.beta.tmp
+  }
+  
+  for (j in proper.indices){
+    beta[[j]]$element2 = beta[[j]]$element2 / c.beta[j] * beta.norm[j]
+  }
   
   # generate X
   set.seed(seed)
@@ -443,7 +459,7 @@ GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indic
     Y = matrix(rpois(n,Ymu),nrow=n,ncol=1)
   }
   
-  data = list(X=X,Y=Y,link=link,theta=theta,Ymu=Ymu,beta=beta,beta0=beta0,
+  data = list(X=X,Y=Y,link=link,theta=theta,Ymu=Ymu,beta=beta,beta0=beta0,c.beta=c.beta,
               Xmu=Xmu,LogX=LogX,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
               n=n,p=length(Xdims),Xspaces=Xspaces,Xdims=Xdims,Ydim=Ydim,
               proper.indices=proper.indices,beta.norm=beta.norm,beta0.norm=beta0.norm,

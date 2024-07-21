@@ -15,7 +15,8 @@ GLM.data.generate(
   beta0.norm = 1,
   Xrho = 0.5,
   Xsigma = 1,
-  seed = 1
+  seed = 1,
+  c.beta = NULL
 )
 }
 \arguments{

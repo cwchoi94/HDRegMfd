@@ -108,7 +108,8 @@ predict.GLM = function(object,Xnew,is.inv.link=TRUE){
   Xnew = reduce.dimension(Xnew,object$Xdim.max)
   Xnew = do.call(cbind,Xnew)
   
-  theta = Xnew %*% object$beta + matrix(rep(object$beta0),nrow=nrow(Xnew))
+  n2 = nrow(Xnew)
+  theta = Xnew %*% object$beta + matrix(rep(object$beta0,n2),nrow=n2,byrow=TRUE)
   
   if(is.inv.link){
     Ymu = Inv_Link(theta,object$link)
