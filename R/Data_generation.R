@@ -415,13 +415,13 @@ GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indic
   Check.link(link)
   if (link!='multinomial'){Ydim = 1}
   if(is.null(proper.indices)){proper.indices = seq(length(Xdims))}
+  if(length(beta.norm)==1){beta.norm = rep(beta.norm,length(Xdims))}
   p = length(Xdims)
   s = length(proper.indices)
   
   # generate same beta for each simulation
   set.seed(0)
-  beta = tensor.beta.generate(Xspaces,Yspace,Xdims,Ydim,proper.indices,beta.norm)
-  beta.norm = beta[['beta.norm']]
+  beta = tensor.beta.generate(Xspaces,Yspace,Xdims,Ydim,proper.indices,1)
   beta.oracle = lapply(proper.indices,function(j){beta[[j]]})
   
   # generate nuisance X to set |B_j(LogX_j)|=beta.norm[j]
