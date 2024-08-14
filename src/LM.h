@@ -14,5 +14,8 @@ List LM_each(List Xorg, mat LogY, vec Ymu, Function inner, double lambda, int Xd
 double get_loss_LM(List X, mat LogY, List Xnew_, mat LogYnew, vec Ymu, Function inner,
                    double lambda, int Xdim_max, double R=100, String penalty="LASSO", double phi=1, double gamma=0);
 
+double get_loss_CV_LM(List X_, mat LogY, vec Ymu, Function inner, double lambda, int Xdim_max, double R = 100, String cv_type = "AIC",
+                      String penalty = "LASSO", double phi = 1, double gamma = 0);
+
 #endif
 

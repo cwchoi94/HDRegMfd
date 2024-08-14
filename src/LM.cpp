@@ -110,7 +110,7 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double la
         beta.row(j) = beta.row(j) / sqrt(W(j));
     }
   
-    List result = List::create(Named("beta") = beta, Named("A") = A, Named("B") = B, Named("Xdims") = Xdims, Named("iter") = iter,                                
+    List result = List::create(Named("beta") = beta, Named("beta.norm") = beta_norm, Named("A") = A, Named("B") = B, Named("Xdims") = Xdims, Named("iter") = iter,
                                Named("lambda") = lambda, Named("Xdim.max") = Xdim_max, Named("R") = R, Named("phi") = phi,
                                Named("penalty") = penalty, Named("gamma") = gamma);
   
@@ -132,12 +132,49 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
     // compute Yhat
     mat LogYhat = Xnew * beta;
 
-    // compute rmse
-    double rmse = L2_norm(LogYhat-LogYnew,Ymu,inner)/sqrt(n2);
+    // compute mse
+    double loss = L2_norm(LogYhat-LogYnew,Ymu,inner)/sqrt(n2);
+    loss = pow(loss, 2);
 
-    return(rmse);
+    return(loss);
 }
 
 
 
 
+double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String cv_type, String penalty, double phi, double gamma) {
+
+    // model training
+    List model = LM_each(X_, LogY, Ymu, inner, lambda, Xdim_max, R, penalty, phi, gamma);
+    mat beta = model["beta"];
+
+    // Xnew data 
+    int n = LogY.n_rows;
+    List Xlist = Make_reduce_dim_matrix(X_, Xdim_max);
+    mat X = Xlist["X"];
+
+    // compute Yhat
+    mat LogYhat = X * beta;
+
+    // compute mse
+    double loss = L2_norm(LogYhat - LogY, Ymu, inner) / sqrt(n);
+    loss = pow(loss, 2);
+
+    // compute additional penalty term for AIC
+    double aic = 0;
+    double bic = 0;
+
+    vec beta_norm = model["beta.norm"];
+    vec Xdims = model["Xdims"];
+
+    if (cv_type == "AIC" || cv_type == "ABIC") {
+        aic = 2 * sum(Xdims.elem(find(beta_norm != 0))) / n;
+    }
+    if (cv_type == "BIC" || cv_type == "ABIC") {
+        bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;
+    }
+
+    loss = loss + aic + bic;
+
+    return(loss);
+}

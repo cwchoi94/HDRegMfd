@@ -198,5 +198,97 @@ LM.oracle.kfold = function(Xall,Yall,Yspace,kfold,Xdim.max.list,proper.indices=N
 }
 
 
-
+#' CV for an LM.oracle function
+#' 
+#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} response matrix.
+#' @param Yspace an underlying space of Yorg and Ynew.
+#' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
+#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
+#'
+#' @return an \eqn{\code{LM}} object
+#'    \describe{
+#'       \item{Xdim.max.list}{a vector of Xdim.max.}
+#'       \item{loss.list}{a list of loss for each CV step.}
+#'       \item{runtime}{running time.}
+#'       \item{...}{see \code{\link{LM.oracle}}.}
+#' }
+#' @export
+LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.type='AIC',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+  
+  start.time = Sys.time()
+  
+  # check validility of inputs
+  Check.cv.type(cv.type)
+  
+  # define basic parameters
+  n = nrow(Yorg)
+  p = Xorg[['p']]
+  inner = eval(parse(text=paste0('inner.each.',Yspace)))
+  
+  lambda.list = c(0)
+  R.list = c(100000)
+  
+  proper.indices = get.proper.indices(proper.indices,p)
+  
+  # PCA for X
+  pca = PCA.manifold.list(Xorg)
+  X = predict(pca,Xorg)
+  
+  Xoracle = lapply(proper.indices,function(j){X[[j]]})
+  
+  # projection of Yorg and Yorgnew to the tangent space
+  Ymu = FrechetMean.manifold(Yorg,Yspace)
+  LogY = RieLog.manifold(Ymu,Yorg,Yspace)
+  
+  # Use LM_CV function to obtain the optimal parameters
+  result = LM_CV(Xoracle,LogY,Ymu,inner,lambda.list,Xdim.max.list,R.list,cv.type,
+                 'LASSO',1,0,max.cv.iter,cv.threshold)
+  
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
+  
+  
+  # apply LM with the optimal parameters
+  opt.Xdim.max = result$opt.Xdim.max
+  X = reduce.dimension(X,opt.Xdim.max)
+  beta = compute_beta(X,LogY,proper.indices)
+  
+  
+  # compute other parameters
+  Xdims = sapply(X,ncol)
+  Xdims_cumul = c(0,cumsum(Xdims))
+  
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
+  
+  beta.each = lapply(1:p,function(j){beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
+  beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})
+  beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
+  beta.vectors = reduce.dimension(beta.vectors,opt.Xdim.max,margin=2)
+  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
+  proper.indices = which(beta.norm!=0)
+  
+  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  
+  object = list()
+  
+  object[['beta']] = beta
+  object[['pca']] = pca
+  object[['Ymu']] = Ymu
+  object[['Yspace']] = Yspace
+  object[['beta.each']] = beta.each
+  object[['beta.norm']] = beta.norm
+  object[['beta.vectors']] = beta.vectors
+  object[['beta.tensor']] = beta.tensor
+  object[['proper.indices']] = proper.indices
+  object[['parameter.list']] = parameter.list
+  object[['loss.list']] = loss.list
+  object[['cv.type']] = cv.type
+  object[['Xdim.max']] = opt.Xdim.max
+  object[['runtime']] = runtime
+  class(object) = 'LM'
+  
+  return(object)
+}
 

@@ -154,7 +154,7 @@ GLM.oracle.kfold = function(Xall,Yall,kfold,Xdim.max.list,proper.indices=NULL,li
 
 
 
-#' GCV for an LM.oracle function
+#' CV for an GLM.oracle function
 #' 
 #' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
 #' @param Yorg an \eqn{n\times m} response matrix.
@@ -214,6 +214,7 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
   
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
+  object[['cv.type']] = cv.type
   object[['runtime']] = runtime
   
   return(object)

@@ -198,7 +198,7 @@ double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double
         bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;
     }
 
-    loss = log(loss) + aic + bic;
+    loss = loss + aic + bic;
 
     return(loss);
 }

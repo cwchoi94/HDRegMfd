@@ -185,6 +185,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// LM_CV
+List LM_CV(List X, arma::mat LogY, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, double phi, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _NonEuclidReg_LM_CV(SEXP XSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogY(LogYSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< Function >::type inner(innerSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(LM_CV(X, LogY, Ymu, inner, lambda_list, Xdim_max_list, R_list, cv_type, penalty, phi, gamma, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // LM_GCV
 List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, double phi, double gamma, int max_cv_iter, double threshold);
 RcppExport SEXP _NonEuclidReg_LM_GCV(SEXP XSEXP, SEXP LogYSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
@@ -366,6 +389,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NonEuclidReg_Psi_2d", (DL_FUNC) &_NonEuclidReg_Psi_2d, 2},
     {"_NonEuclidReg_GLM_Kfold", (DL_FUNC) &_NonEuclidReg_GLM_Kfold, 14},
     {"_NonEuclidReg_LM_each", (DL_FUNC) &_NonEuclidReg_LM_each, 13},
+    {"_NonEuclidReg_LM_CV", (DL_FUNC) &_NonEuclidReg_LM_CV, 13},
     {"_NonEuclidReg_LM_GCV", (DL_FUNC) &_NonEuclidReg_LM_GCV, 14},
     {"_NonEuclidReg_LM_Kfold", (DL_FUNC) &_NonEuclidReg_LM_Kfold, 15},
     {"_NonEuclidReg_PCA_list", (DL_FUNC) &_NonEuclidReg_PCA_list, 2},
