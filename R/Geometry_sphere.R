@@ -1,8 +1,6 @@
 
 
 
-#' Inner product on tangent space at p for sphere data
-
 #' @describeIn inner.manifold Method
 #' @export
 inner.sphere = function(u,v,p=NULL){
@@ -22,8 +20,6 @@ inner.each.sphere = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for sphere data
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.sphere = function(u,p=NULL){
@@ -31,8 +27,6 @@ norm.sphere = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for sphere data
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -50,8 +44,6 @@ dist.sphere = function(p,q){
   return(z)
 }
 
-
-#' Riemannian exponential map for sphere data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -77,8 +69,6 @@ Exp1 <- function(mu,v,tol=1e-10) {
   }
 }
 
-
-#' Riemannian logarithmic map for sphere data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -109,8 +99,6 @@ Log2 <- function(X, Mu, tol=1e-10) {
 }
 
 
-#' Basis on the tangent space at the point for sphere data
-
 #' @describeIn basis.manifold Method
 #' @export
 basis.sphere = function(p,dim=NULL){
@@ -119,8 +107,6 @@ basis.sphere = function(p,dim=NULL){
   return(z)
 }
 
-
-#' Frechet mean for sphere data
 
 #' @describeIn FrechetMean.manifold Method
 #' @export
@@ -132,8 +118,6 @@ FrechetMean.sphere = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for sphere data
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -155,8 +139,6 @@ PCA.sphere = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for sphere data
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

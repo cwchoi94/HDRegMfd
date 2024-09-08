@@ -1,22 +1,111 @@
-### Cross validation for LM.oracle
 
 
-#' GCV for an LM.oracle function
+
+
+
+#' @title Cross-Validation for Oracle generalized Linear Models
 #' 
-#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n\times m} response matrix.
-#' @param Xnew a new list of manifold-valued covariates.
-#' @param Ynew a new \eqn{n'\times m} response matrix.
-#' @param Yspace an underlying space of Yorg and Ynew.
-#' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
-#'
-#' @return an \eqn{\code{LM}} object
+#' @description 
+#' Implements cross-validation (CV) for oracle generalized linear models based on 'AIC' or 'BIC'.
+#' For a more detailed description of parameters, see \code{\link{GLM.oracle}}.
+#' 
+#' @inheritParams GLM.CV
+#' @inheritParams GLM.oracle
+#' 
+#' @return a \code{\link{GLM}} object with the following compnents:
 #'    \describe{
-#'       \item{Xdim.max.list}{a vector of Xdim.max.}
-#'       \item{loss.list}{a list of loss for each CV step.}
-#'       \item{runtime}{running time.}
-#'       \item{...}{see \code{\link{LM.oracle}}.}
+#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta0}{an \eqn{m} vector of the intercept constant.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm0}{the norm of \eqn{{\beta}_0^*}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+#'       \item{parameter.list}{a list of optimal parameters for each CV update.}
+#'       \item{loss.list}{a list of loss for each CV update.}
+#'       \item{runtime}{the running time.}
+#'       \item{...}{other parameters.}
+#' }
+#' @export
+GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AIC',link='binomial',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+  
+  start.time = Sys.time()
+  
+  # check validility of inputs
+  Check.link(link)
+  
+  # define basic parameters
+  n = nrow(Yorg)
+  p = Xorg[['p']]
+  Ymu = 0
+  Yspace = 'Euclid'
+  
+  lambda.list = c(0)
+  R.list = c(100000)
+  
+  proper.indices = get.proper.indices(proper.indices,p)
+  
+  # PCA
+  pca = PCA.manifold.list(Xorg)
+  X = predict(pca,Xorg)
+  
+  Xoracle = lapply(proper.indices,function(j){X[[j]]})
+  
+  
+  # Use GLM_GCV function to obtain the optimal parameters
+  result = GLM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,
+                  'LASSO',link,1,0,max.cv.iter,cv.threshold)
+  
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
+  
+  
+  # apply GLM with the optimal parameters
+  opt.Xdim.max = result$opt.Xdim.max
+  
+  object = GLM.oracle(Xorg,Yorg,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
+  
+  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  
+  object[['Xdim.max.list']] = Xdim.max.list
+  object[['loss.list']] = loss.list
+  object[['cv.type']] = cv.type
+  object[['runtime']] = runtime
+  
+  return(object)
+}
+
+
+
+
+#' @title Generalized Cross-Validation for Oracle Hilbert-Schmidt Linear Models
+#' 
+#' @description 
+#' Implements a generalized cross-validation (GCV) for oracle generalized linear models.
+#' For a more detailed description of parameters, see \code{\link{GLM.oracle}}.
+#' 
+#' @inheritParams GLM.GCV
+#' @inheritParams GLM.oracle.CV
+#' 
+#' @return a \code{\link{GLM}} object with the following compnents:
+#'    \describe{
+#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta0}{an \eqn{m} vector of the intercept constant.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm0}{the norm of \eqn{{\beta}_0^*}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+#'       \item{parameter.list}{a list of optimal parameters for each CV update.}
+#'       \item{loss.list}{a list of loss for each CV update.}
+#'       \item{runtime}{the running time.}
+#'       \item{...}{other parameters.}
 #' }
 #' @export
 GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices=NULL,link='binomial',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
@@ -72,25 +161,34 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices
 
 
 
-#' Kfold cross validation for a GLM.oracle function
+#' @title Kfold Cross-Validation for Oracle generalized Linear Models
 #' 
-#' @param Xall a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
-#' @param Yall an \eqn{n\times m} response matrix.
-#' @param Yspace an underlying space of Yorg and Ynew.
-#' @param kfold a number of kfold CV, int>0.
-#' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
-#' @param seed a random seed, int>0, default: non-random (NULL).
-#'
-#' @return an \eqn{\code{LM}} object
+#' @description 
+#' Implements a Kfold cross-validation (Kfold-CV) for oracle generalized linear models.
+#' For a more detailed description of parameters, see \code{\link{GLM.oracle}}.
+#' 
+#' @inheritParams GLM.kfold
+#' @inheritParams GLM.oracle.CV
+#' 
+#' @return a \code{\link{GLM}} object with the following compnents:
 #'    \describe{
-#'       \item{Xdim.max.list}{a vector of Xdim.max.}
-#'       \item{loss.list}{a list of loss for each CV step.}
-#'       \item{runtime}{running time.}
-#'       \item{...}{see \code{\link{LM.oracle}}.}
+#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta0}{an \eqn{m} vector of the intercept constant.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm0}{the norm of \eqn{{\beta}_0^*}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+#'       \item{parameter.list}{a list of optimal parameters for each CV update.}
+#'       \item{loss.list}{a list of loss for each CV update.}
+#'       \item{runtime}{the running time.}
+#'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.oracle.kfold = function(Xall,Yall,kfold,Xdim.max.list,proper.indices=NULL,link='binomial',seed=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.oracle.kfold = function(Xorg,Yorg,kfold,Xdim.max.list,proper.indices=NULL,link='binomial',seed=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -153,72 +251,6 @@ GLM.oracle.kfold = function(Xall,Yall,kfold,Xdim.max.list,proper.indices=NULL,li
 }
 
 
-
-#' CV for an GLM.oracle function
-#' 
-#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n\times m} response matrix.
-#' @param Xnew a new list of manifold-valued covariates.
-#' @param Ynew a new \eqn{n'\times m} response matrix.
-#' @param Yspace an underlying space of Yorg and Ynew.
-#' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param proper.indices a vector of indices of relevant \eqn{X_j}.
-#'
-#' @return an \eqn{\code{LM}} object
-#'    \describe{
-#'       \item{Xdim.max.list}{a vector of Xdim.max.}
-#'       \item{loss.list}{a list of loss for each CV step.}
-#'       \item{runtime}{running time.}
-#'       \item{...}{see \code{\link{LM.oracle}}.}
-#' }
-#' @export
-GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AIC',link='binomial',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
-  
-  start.time = Sys.time()
-  
-  # check validility of inputs
-  Check.link(link)
-  
-  # define basic parameters
-  n = nrow(Yorg)
-  p = Xorg[['p']]
-  Ymu = 0
-  Yspace = 'Euclid'
-  
-  lambda.list = c(0)
-  R.list = c(100000)
-  
-  proper.indices = get.proper.indices(proper.indices,p)
-  
-  # PCA
-  pca = PCA.manifold.list(Xorg)
-  X = predict(pca,Xorg)
-  
-  Xoracle = lapply(proper.indices,function(j){X[[j]]})
-  
-  
-  # Use GLM_GCV function to obtain the optimal parameters
-  result = GLM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,
-                  'LASSO',link,1,0,max.cv.iter,cv.threshold)
-  
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
-  loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
-  
-  
-  # apply GLM with the optimal parameters
-  opt.Xdim.max = result$opt.Xdim.max
-  
-  object = GLM.oracle(Xorg,Yorg,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
-  
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
-  
-  object[['Xdim.max.list']] = Xdim.max.list
-  object[['loss.list']] = loss.list
-  object[['cv.type']] = cv.type
-  object[['runtime']] = runtime
-  
-  return(object)
-}
 
 
 

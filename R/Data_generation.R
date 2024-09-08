@@ -1,17 +1,20 @@
-### functions to generate manifold data.
+### data generation codes for simulations.
 
 
 #####################################################
 #####################################################
-### Frechet means generate
+### Generate the Frechet means 
 
 
-#' Generate Frechet means of \eqn{X_j}
+#' @title Generate Frechet means of \eqn{X_j}
 #' 
-#' @param m length of each observation.
-#' @param space a name of space, see \code{\link{Check.manifold}}.
+#' @description 
+#' Generate Frechet means \eqn{\mu_j} of \eqn{X_j}.
 #' 
-#' @return a \eqn{m} vector.
+#' @param m the length of each observation. Typically, this equals the dimension, but it can differ in some cases.
+#' @param space the name of space, see \code{\link{Check.manifold}}.
+#' 
+#' @return the Frechet mean \eqn{\mu_j} of \eqn{X_j}, an \eqn{m} vector.
 Xmu.generate = function(m,space){
   Check.manifold(space)
   if (space=='Euclid'){
@@ -41,14 +44,15 @@ Xmu.generate = function(m,space){
 }
 
 
-#' Generate the Frechet means for \eqn{Y}
+#' @title Generate the Frechet mean for \eqn{Y}
 #' 
-#' The code is the same as \code{\link{Xmu.generate}}.
+#' @description
+#' This code is the same as \code{\link{Xmu.generate}}.
 #' 
-#' @param m length of each observation.
-#' @param space a name of space, see \code{\link{Check.manifold}}.
+#' @param m The length of each observation. Typically, this equals the dimension, but it can differ in some cases.
+#' @param space The name of space, see \code{\link{Check.manifold}}.
 #' 
-#' @return an \eqn{m} vector.
+#' @return The Frechet mean \eqn{\mu_Y} of \eqn{Y}, an \eqn{m} vector.
 Ymu.generate = function(m,space){
   mu = Xmu.generate(m,space)
   return(mu)
@@ -58,15 +62,18 @@ Ymu.generate = function(m,space){
 
 #####################################################
 #####################################################
-### Covariate generate
+### Generate covariates
 
 
-#' Generate real covariates
+#' @title Generate real covariates
 #' 
-#' @param n a number of data.
-#' @param p a number of covariates.
-#' @param Zrho a correlation parameter which ranges from -1 to 1.
-#' @param Zsigma a variance parameter, default 1.
+#' @description
+#' Generate an \eqn{n\times p} matrix \eqn{\bm{X}=(X_{ij})}, where each \eqn{X_{ij}} represents a covariate
+#' 
+#' @param n the number of data points.
+#' @param p the number of covariates.
+#' @param Zrho a correlation parameter ranging from -1 to 1.
+#' @param Zsigma a variance parameter, with a default value of 1.
 #' 
 #' @return an \eqn{n\times p} covariate matrix.
 covariates.generate.real = function(n,p,Zrho,Zsigma){
@@ -76,8 +83,15 @@ covariates.generate.real = function(n,p,Zrho,Zsigma){
 }
 
 
-#' Generate a non-symmetric identity matrix.
-#' given p1,p2, the matrix I is a p1*p2 matrix with I_{jk}=delta_{jk}
+#' @title Generate a non-symmetric identity matrix
+#' 
+#' @description
+#' Creates a \eqn{p1 \times p2} matrix \eqn{I}, where each element \eqn{I_{jk}} is equal to \eqn{\mathbb{I}(j=k)}.
+#' 
+#' @param p1 the number of rows in the matrix.
+#' @param p2 the number of columns in the matrix.
+#' 
+#' @return a \eqn{p1 \times p2} matrix where each element \eqn{I_{jk}} is \eqn{\mathbb{I}(j=k)}.
 make.nonsym.Idmat = function(p1,p2){
   if (p1>=p2){
     mat = rbind(diag(p2),matrix(0,p1-p2,p2))
@@ -88,25 +102,28 @@ make.nonsym.Idmat = function(p1,p2){
 }
 
 
-#' Generate each manifold-valued covariates
+#' @title Generate a manifold-valued covariate
 #' 
-#' @param Xi an \eqn{n\times m'} score matrix.
-#' @param dim a dimension of \eqn{X}.
-#' @param space the underlying spaces, see \code{\link{Check.manifold}}
+#' @description
+#' Given \eqn{j}, generate manifold-valued covariates \eqn{X_{ij}} for \eqn{1\le i\le n}.
 #' 
-#' @return an \eqn{n\times m} matrix with dimension. Each row is an element of the manifold.
+#' @param Xi an \eqn{n\times m'} score matrix, where \eqn{m'} is the intrinsic dimension (the number of scores).
+#' @param dim the dimension of \eqn{X}.
+#' @param space the underlying spaces, see \code{\link{Check.manifold}}.
+#' 
+#' @return an \eqn{n\times m} matrix. Each row represents a manifold-valued covariate.
 #' @export
 covariates.generate.each = function(Xi,dim,space='Euclid'){
   Check.manifold(space)
   mu = Xmu.generate(dim,space)
   basis = basis.manifold(mu,ncol(Xi),space)
   
-  if (space!='Wasserstein'){
-    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)}))
-  } else{
+  if (space=='Wasserstein'){
     # restrict the range of Xi to ensure that LogXj is the quantile function.
     Xi = 2*pnorm(Xi) - 1 
     Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)/sqrt(2)}))
+  } else{
+    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)}))
   }
   
   LogX = Xi %*% basis
@@ -125,24 +142,24 @@ w.ftn = function(k){
 }
 
 
-#' @title Generate a list of Riemannian metric space-valued covariates.
+#' @title Generate a list of manifold-valued covariates.
 #' 
 #' @description
-#' Generate the covariate list.
-#' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{d_j}.
-#' If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set 100.
+#' Generate a list of manifold-valued covariates.
+#' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is set to \eqn{D_j}.
+#' If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set to 100.
 #' 
-#' @param n a number of data
-#' @param Xspaces a \eqn{p} vector of underlying spaces of \eqn{X_j}.
-#' @param dims a \eqn{p} vector of dimension of \eqn{X_j}.
-#' @param Xrho a correlation parameter which ranges from -1 to 1.
-#' @param Xsigma a correlation parameter which ranges from -1 to 1.
+#' @param n the number of data points.
+#' @param Xspaces a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.
+#' @param dims a \eqn{p} vector specifying the dimensions of \eqn{X_j}.
+#' @param Xrho a correlation parameter ranging from -1 to 1, with a default value of 0.5.
+#' @param Xsigma a common standard deviation parameter, with a default value of 1.
 #' 
-#' @return a list of generated data
+#' @return a list of data containing:
 #'    \describe{
-#'       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times d_j} matrix.}
-#'       \item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-#'       \item{p}{a number of \eqn{X_j}.}
+#'       \item{j}{a \eqn{p}-list of generated data, where each \eqn{j}th element is an \eqn{n\times D_j} matrix.}
+#'       \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.}
+#'       \item{p}{the number of \eqn{X_j}.}
 #' }
 covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
   # compute intrinsic dimension
@@ -183,22 +200,22 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
 
 ######################################################
 ######################################################
-### Operator generate
+### Generate Hilbert-Schmidt operators
 
 
-#' @title Generate linear operators from \eqn{H_1} to \eqn{H_2}
+#' @title Generate a Hilbert-Schmidt operator between tangent spaces of \eqn{\mathcal{M}_X} and \eqn{\mathcal{M}_Y}
 #' 
 #' @description
-#' Generate a linear operator \eqn{B_j} from \eqn{H_1} to \eqn{H_2}. 
-#' It can be identified as an element in the tensor product space \eqn{H_1\otimes H_2}. 
+#' Generate a Hilbert-Schmidt operator \eqn{\mathfrak{B}}_j: T_{\mu_X}\mathcal{M}_X \to T_{\mu_Y}\mathcal{M}_Y}, where \eqn{\mu_X} and \eqn{\mu_Y} are the Frechet means of \eqn{X} and \eqn{Y}, respectively.
+#' This operator can be identified as an element in the tensor product space \eqn{T_{\mu_X}\mathcal{M}_X \otimes T_{\mu_Y}\mathcal{M}_Y}. 
 #' 
-#' @param Xspace an underlying space of \eqn{H_1}.
-#' @param Yspace an underlying space of \eqn{H_2}.
-#' @param Xdim an intrinsic dimension of \eqn{H_1}.
-#' @param Ydim an intrinsic dimension of \eqn{H_2}.
-#' @param beta.norm the tensor norm.
+#' @param Xspace the name of the underlying space \eqn{\mathcal{M}_X} of \eqn{X}.
+#' @param Yspace the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.
+#' @param Xdim the intrinsic dimension of \eqn{\mathcal{M}_X}.
+#' @param Ydim the intrinsic dimension of \eqn{\mathcal{M}_Y}.
+#' @param beta.norm the tensor norm, with a default value of 1.
 #' 
-#' @return a tensor product element in \eqn{H_1\otimes H_2} generated by \code{\link{make.tensor}}.
+#' @return a Hilbert-Schmidt operators (an tensor element) in \eqn{T_{\mu_X}\mathcal{M}_X \otimes T_{\mu_Y}\mathcal{M}_Y} generated by \code{\link{make.tensor}}.
 tensor.beta.generate.each = function(Xspace,Yspace,Xdim,Ydim,beta.norm=1){
   Xmu = Xmu.generate(Xdim,Xspace)
   Ymu = Ymu.generate(Ydim,Yspace)
@@ -229,27 +246,27 @@ tensor.beta.generate.each = function(Xspace,Yspace,Xdim,Ydim,beta.norm=1){
 }
 
 
-#' @title Generate a list of operators from \eqn{H_j} to \eqn{H_Y}.
+#' @title Generate a list of Hilbert-SChmidt operators
 #' 
 #' @description
-#' Generate a list of operators \eqn{B_j} from \eqn{H_j} to \eqn{H_Y}.
-#' Each operator can be identified as an element in the tensor product space \eqn{H_j\otimes H_Y}.
+#' Generate a list of Hilbert-Schmidt operators \eqn{\mathfrak{B}_j: T_{\mu_j}\mathcal{M}_j \to T_{\mu_Y}\mathcal{M}_Y}, where \eqn{\mu_j} and \eqn{\mu_Y} are the Frechet means of \eqn{X_j} and \eqn{Y}, respectively.
+#' Each operator is created by \code{\link{tensor.beta.generate.each}} and can be identified as an element in \eqn{T_{\mu_j}\mathcal{M}_j \otimes T_{\mu_Y}\mathcal{M}_Y}.
 #' 
-#' @param Xspaces a \eqn{p} vector of underlying spaces of \eqn{X_j}.
-#' @param Yspace an underlying space of \eqn{Y}.
-#' @param Xdims a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.
-#' @param Ydim an intrinsic dimension of \eqn{H_Y}.
-#' @param proper.indices an indices of nonzero operators.
-#' @param beta.norm a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.
+#' @param Xspaces a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.
+#' @param Yspace the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.
+#' @param Xdims a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.
+#' @param Ydim the intrinsic dimension of \eqn{\mathcal{M}_Y}.
+#' @param proper.indices an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.
+#' @param beta.norm a \eqn{p} vector (or a single integer) of the tensor norms, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.
 #' 
-#' @return a list of operators,
+#' @return a list of Hilbert-Schmidt operators (tensor elements) containing:
 #'    \describe{
-#'       \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times Xdim_j} matrix.}
-#'       \item{Xspaces}{a \eqn{p} vector of spaces of \eqn{X_j}.}
-#'       \item{p}{a number of \eqn{X_j}.}
-#'       \item{beta.norm}{a \eqn{p} vector of the tensor norm.}
+#'       \item{j}{For \eqn{1\le j\le p}, the \eqn{j}th element is an \eqn{n\times D_j} matrix, with each \eqn{i}th row of \eqn{X_{ij}}.}
+#'       \item{Xspaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+#'       \item{p}{the number of \eqn{X_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of the tensor norms}
 #' } 
-tensor.beta.generate = function(Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta.norm=1,...){
+tensor.beta.generate = function(Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta.norm=1){
   p = length(Xspaces)
   if(is.null(proper.indices)){proper.indices = seq(p)}
   if(length(beta.norm)==1){beta.norm = rep(beta.norm,p)}
@@ -272,18 +289,22 @@ tensor.beta.generate = function(Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,be
 
 ############################################################
 ############################################################
-### error generate
+### Generate random errors
 
 
-#' Gerenate random errors on the tangent space at mu.
+#' @title Generate a random error \eqn{\varepsilon} of \eqn{Y}
 #' 
-#' @param n a number of data.
-#' @param space an underlying space.
-#' @param dim an intrinsic dimension of the tangent space.
-#' @param error.rho a correlation parameter.
-#' @param error.std a standard deviation parameter.
+#' @description
+#' For a random element \eqn{Y} taking values in a manifold \eqn{\mathcal{M}_Y} with the Frechet mean \eqn{\mu_Y}, 
+#' generate a random error \eqn{\varepsilon} taking values in \eqn{T_{\mu_Y}\mathcal{M}_Y}.
 #' 
-#' @return an \eqn{n\times m} matrix of generated random error.
+#' @param n the number of data points.
+#' @param space the underlying space of \eqn{\mathcal{M}_Y}.
+#' @param dim the intrinsic dimension of \eqn{\mathcal{M}_Y}.
+#' @param error.rho a correlation parameter for \eqn{\varepsilon}.
+#' @param error.std a standard deviation parameter for \eqn{\varepsilon}.
+#' 
+#' @return an \eqn{n\times m} matrix of random errors.
 error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
   mu = Ymu.generate(dim,space)
   
@@ -314,40 +335,50 @@ error.generate = function(n,space,dim,error.rho=0.5,error.std=1){
 }
 
 
+############################################################
+############################################################
+### Generate simulation data
+
+
 #' @title Generate linear regression data
 #' 
 #' @description
 #' Generate linear regression data.
-#' The seed for generating beta is fixed as zero, so each beta is equal in simulations.
+#' The seed for generating Hilbert-Schmidt operators \eqn{\mathfrak{B}_j} is fixed as zero, ensuring that each \eqn{\mathfrak{B}_j} is the same across simulations.
 #' 
-#' @param n a number of observation.
-#' @param Xspaces a \eqn{p} vector of underlying spaces of \eqn{X_j}.
-#' @param Yspace an underlying space of \eqn{Y}.
-#' @param Xdims a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.
-#' @param Ydim an intrinsic dimension of \eqn{H_Y}.
-#' @param proper.indices an indices of nonzero operators.
-#' @param beta.norm a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.
-#' @param Xrho a correlation parameter for \eqn{X_j}.
-#' @param Xsigma a variance parameter for \eqn{X_j}.
-#' @param error.rho a correlation parameter for error.
-#' @param error.std a standard deviation parameter for error.
-#' @param seed a random seed (1<=seed)
+#' @param n the number of data points
+#' @param Xspaces a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.
+#' @param Yspace the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.
+#' @param Xdims a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.
+#' @param Ydim the intrinsic dimension of \eqn{\mathcal{M}_Y}.
+#' @param proper.indices an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.
+#' @param beta.norm a \eqn{p} vector (or a single integer) of the tensor norms, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.
+#' @param Xrho a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.
+#' @param Xsigma a common standard deviation parameter for \eqn{X_j}, with a default value of 1.
+#' @param error.rho a correlation parameter for \eqn{\varepsilon}.
+#' @param error.std a standard deviation parameter for \eqn{\varepsilon}.
+#' @param seed a random seed, which must be greater than 1.
 #' 
-#' @return a list of generated data
+#' @return a list of data containing:
 #'    \describe{
-#'       \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
-#'       \item{Y}{an \eqn{n\times m} matrix of response.}
-#'       \item{beta}{a \eqn{p} list of generated operators.}
-#'       \item{error}{a generated random error.}
-#'       \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}
-#'       \item{Xbeta}{a sum of Xbeta.each.}
-#'       \item{Ymu}{the Frechet mean of \eqn{Y}.}
-#'       \item{...}{the other input parameters.}
+#'       \item{X}{a list of manifold-valued covariates, see \code{\link{covariates.generate}}.}
+#'       \item{Y}{an \eqn{n\times m} matrix of manifold-valued responses.}
+#'       \item{p}{the number of \eqn{X_j}.}
+#'       \item{beta}{a \eqn{p} list of Hilbert-Schmidt operators, see \code{\link{tensor.beta.generate}}.}
+#'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{Xmu}{a \eqn{p} list of the Frechet means \eqn{\mu_j} of \eqn{X_j}.}
+#'       \item{LogY}{the Riemannian logarithmic transformation \eqn{Log_{\mu_Y}Y}.}
+#'       \item{LogX}{a \eqn{p} list of \eqn{Log_{\mu_j}X_j}, the Riemannian logarithmic transformations of \eqn{X_j}.}
+#'       \item{Xbeta.each}{a \eqn{p} list of \eqn{\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+#'       \item{Xbeta}{the sum of Xbeta.each, i.e., \eqn{\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+#'       \item{ExpXbeta}{the Riemannian exponential of Xbeta, i.e., \eqn{Exp_{\mu_Y}\Big(\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)\Big)}.}
+#'       \item{...}{other input parameters.}
 #' }
+#' @export
 LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta.norm=1,Xrho=0.5,Xsigma=1,
                             error.rho=0.5,error.std=1,seed=1){
   
-  # generate same beta for each simulation
+  # generate the same beta for each simulation
   set.seed(0)
   beta = tensor.beta.generate(Xspaces,Yspace,Xdims,Ydim,proper.indices,beta.norm)
   beta.norm = beta[['beta.norm']]
@@ -369,8 +400,8 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
   ExpXbeta = RieExp.manifold(Ymu,Xbeta,Yspace)
   Y = RieExp.manifold(Ymu,LogY,Yspace)
   
-  data = list(X=X,Y=Y,beta=beta,error=error,ExpXbeta=ExpXbeta,Ymu=Ymu,Xmu=Xmu,
-              LogY=LogY,LogX=LogX,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
+  data = list(X=X,Y=Y,beta=beta,error=error,Ymu=Ymu,Xmu=Xmu,
+              LogY=LogY,LogX=LogX,Xbeta.each=Xbeta.each,Xbeta=Xbeta,ExpXbeta=ExpXbeta,
               n=n,p=length(Xdims),Xspaces=Xspaces,Yspace=Yspace,Xdims=Xdims,Ydim=Ydim,
               proper.indices=proper.indices,beta.norm=beta.norm,Xrho=Xrho,Xsigma=Xsigma,
               error.rho=error.rho,error.std=error.std,seed=seed)
@@ -378,37 +409,45 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
 }
 
 
+
+
 #' @title Generate generalized linear regression data
 #' 
 #' @description
 #' Generate generalized linear regression data.
-#' The seed for generating beta is fixed as zero, so each beta is equal in simulations.
+#' The response \eqn{Y} given the covariates \eqn{X} follows an exponential family distribution, and thus \eqn{Y} is real-valued.
+#' The seed for generating Hilbert-Schmidt operators \eqn{\mathfrak{B}_j} is fixed as zero, ensuring that each \eqn{\mathfrak{B}_j} is the same across simulations.
 #' 
-#' @param n a number of observation.
-#' @param Xspaces a \eqn{p} vector of underlying spaces of \eqn{X_j}.
-#' @param Xdims a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.
+#' @param n the number of data points
+#' @param Xspaces a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.
+#' @param Xdims a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.
 #' @param link a link function, see \code{\link{Check.link}}.
-#' @param Ydim a dimension of \eqn{Y}. It is only used when link is multinomial.
-#' @param proper.indices an indices of nonzero operators.
-#' @param beta.norm a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.
-#' @param beta0.norm an integer of the norm of \eqn{\beta_0^*}.
-#' @param Xrho a correlation parameter for \eqn{X_j}.
-#' @param Xsigma a variance parameter for \eqn{X_j}.
-#' @param seed a random seed (1<=seed)
+#' @param Ydim the intrinsic dimension of \eqn{Y}, typically 1.
+#' @param proper.indices an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.
+#' @param beta.norm a \eqn{p} vector (or a single integer) of the \eqn{L^2} norms of \eqn{\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|}, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.
+#' @param beta0.norm an integer specifying the norm of \eqn{\beta_0^*}, with a default value of 1.
+#' @param Xrho a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.
+#' @param Xsigma a common standard deviation parameter for \eqn{X_j}, with a default value of 1.
+#' @param seed a random seed, which must be greater than 1.
+#' @param c.beta a \eqn{p} vector of pre-computed parameters to ensure that \eqn{\mathbb{E}\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|^2 = \text{beta.norm[j]}^2}, only computed if not provided.
 #' 
-#' @return a list of generated data
+#' @return a list of data containing:
 #'    \describe{
-#'       \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
-#'       \item{Y}{an \eqn{n\times m} matrix of response.}
-#'       \item{theta}{a canonical parameter.}
-#'       \item{Ymu}{Inverse link of theta.}
-#'       \item{beta}{a \eqn{p} list of generated operators.}
-#'       \item{beta0}{a constant beta0 for }
-#'       \item{error}{a generated random error.}
-#'       \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}
-#'       \item{Xbeta}{a sum of Xbeta.each.}
-#'       \item{...}{the other input parameters.}
+#'       \item{X}{a list of manifold-valued covariates, see \code{\link{covariates.generate}}.}
+#'       \item{Y}{an \eqn{n\times m} matrix of responses.}
+#'       \item{p}{the number of \eqn{X_j}.}
+#'       \item{link}{a link function, see \code{\link{Check.link}}.}
+#'       \item{theta}{an \eqn{n\times m} matrix of canonical parameters for \eqn{Y}.}
+#'       \item{Ymu}{an \eqn{n\times m} matrix of the means of \eqn{Y_i}, which is an inverse link of theta.}
+#'       \item{beta}{a \eqn{p} list of Hilbert-Schmidt operators, see \code{\link{tensor.beta.generate}}.}
+#'       \item{beta0}{a \eqn{m} vector, with \eqn{\|\beta_0^*\| = \text{beta0.norm}}.}
+#'       \item{Xmu}{a \eqn{p} list of the Frechet means \eqn{\mu_j} of \eqn{X_j}.}
+#'       \item{LogX}{a \eqn{p} list of \eqn{Log_{\mu_j}X_j}, the Riemannian logarithmic transformations of \eqn{X_j}.}
+#'       \item{Xbeta.each}{a \eqn{p} list of \eqn{\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+#'       \item{Xbeta}{the sum of Xbeta.each, i.e., \eqn{\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+#'       \item{...}{other input parameters.}
 #' }
+#' @export
 GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indices=NULL,beta.norm=1,beta0.norm=1,Xrho=0.5,Xsigma=1,seed=1,c.beta=NULL){
   
   Yspace = 'Euclid'

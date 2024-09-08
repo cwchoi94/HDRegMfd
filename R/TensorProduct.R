@@ -1,25 +1,28 @@
-### utils for tensor product of Hilbert spaces
 
 
-#' @title Make an element in tensor product spaces of \eqn{H_1} and \eqn{H_2}, \eqn{H_1\otimes H_2}
+
+#' @title Make an element in a Tensor Product Space 
 #' 
 #' @description 
-#' Make an element in tensor product spaces of \eqn{H_1} and \eqn{H_2}, \eqn{H_1\otimes H_2}
-#' Let \eqn{d_1} and \eqn{d_2} be the dimensions of \eqn{H_1} and \eqn{H_2}.
+#' Given two Hilbert spaces \eqn{\mathbb{H}_1} and \eqn{\mathbb{H}_2}, make an element in the tensor product space \eqn{H_1\otimes H_2}.
 #' 
-#' @param element1 an \eqn{n}-by-\eqn{m_1} matrix. Each row is an element in \eqn{H_1}.
-#' @param element2 an \eqn{n}-by-\eqn{m_2} matrix. Each row is an element in \eqn{H_2}.
-#' @param space1,space2 the underlying spaces of \eqn{H_1} and \eqn{H_2}, respectively.
-#' @param mu1,mu2 base elements in \eqn{H_1} and \eqn{H_2}, respectively. These will be used for computing norms.
+#' @param element1 an \eqn{n\times m_1} matrix, where each row is an element in \eqn{\mathbb{H}_1}.
+#' @param element2 an \eqn{n\times m_2} matrix, where each row is an element in \eqn{\mathbb{H}_2}.
+#' @param space1 the name of the underlying space \eqn{\mathbb{H}_1}.
+#' @param space2 the name of the underlying space \eqn{\mathbb{H}_2}.
+#' @param mu1 a base point of \eqn{\mathbb{H}_1}.
+#' @param mu2 a base point of \eqn{\mathbb{H}_2}.
 #' 
-#' @return a tensor product object, class "tensor"
+#' @return a "tensor" object with the following arguments:
 #'    \describe{
-#'       \item{n}{a number of elements \eqn{n}.}
-#'       \item{mu1,mu2}{base elements in \eqn{H_1} and \eqn{H_2}, respectively.}
-#'       \item{space1,space2}{the underlying space of \eqn{H_1} and \eqn{H_2}, respectively.}
-#'       \item{element1}{an \eqn{n}-by-\eqn{m_1} matrix. Each row is an element in \eqn{H_1}.}
-#'       \item{element2}{an \eqn{n}-by-\eqn{m_2} matrix. Each row is an element in \eqn{H_2}.}
-#'       \item{dim}{the intrinsic input dimension of \eqn{H_1}.}
+#'       \item{n}{the number of elements.}
+#'       \item{element1}{an \eqn{n\times m_1} matrix, where each row is an element in \eqn{\mathbb{H}_1}.}
+#'       \item{element2}{an \eqn{n\times m_2} matrix, where each row is an element in \eqn{\mathbb{H}_2}.}
+#'       \item{mu1}{a base point of \eqn{\mathbb{H}_1}.}
+#'       \item{mu2}{a base point of \eqn{\mathbb{H}_2}.}
+#'       \item{space1}{the name of the underlying space \eqn{\mathbb{H}_1}.}
+#'       \item{space2}{the name of the underlying space \eqn{\mathbb{H}_2}.}
+#'       \item{dim}{the intrinsic dimension of \eqn{\mathbb{H}_1}.}
 #' }
 #' @export
 make.tensor = function(element1,element2,space1,space2,mu1,mu2){
@@ -33,14 +36,14 @@ make.tensor = function(element1,element2,space1,space2,mu1,mu2){
 }
 
 
-#' @title Inner product of tensor product spaces
+#' @title Inner product on the Tensor Product Space
 #' 
 #' @description
-#' Two elements must have the same underlying spaces \eqn{H_1} and \eqn{H_2}, and base elements \eqn{mu_1} and \eqn{mu_2}. 
+#' Computes the inner product of two elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}.
 #'
-#' @param x,y elements in \eqn{H_1\otimes H_2} with \eqn{n_1} and \eqn{n_2}, created by \code{\link{make.tensor}}.
+#' @param x,y elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.
 #' 
-#' @return an inner product of x and y
+#' @return the inner product of x and y.
 #' @export
 inner.tensor = function(x,y){
   space1 = x$space1
@@ -58,11 +61,14 @@ inner.tensor = function(x,y){
   return(sum(diag(E %*% t(M))))
 }
 
-#' Norm of tensor product spaces
+#' @title Norm on the Tensor Product Space
 #' 
-#' @param x an element in \eqn{H_1\otimes H_2}, created by \code{\link{make.TPspace}}.
+#' @description
+#' Computes the inner product of an element in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}.
 #' 
-#' @return a norm of x
+#' @param x an element in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.
+#' 
+#' @return the norm of x.
 #' @export
 norm.tensor = function(x){
   return(sqrt(inner.tensor(x,x)))
@@ -70,14 +76,14 @@ norm.tensor = function(x){
 
 
 
-#' @title Distance of tensor product spaces
+#' @title Distance on the Tensor Product Space
 #' 
 #' @description
-#' Two elements must have the same underlying spaces \eqn{H_1} and \eqn{H_2}, and base elements \eqn{mu_1} and \eqn{mu_2}.#' 
-#'
-#' @param x,y elements in \eqn{H_1\otimes H_2} with \eqn{n_1} and \eqn{n_2}, created by \code{\link{make.tensor}}.
+#' Computes the distance between two elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}.
 #' 
-#' @return a distance of x and y
+#' @inheritParams inner.tensor
+#' 
+#' @return the distance between x and y.
 #' @export
 dist.tensor = function(x,y){
   distsq = inner.tensor(x,x) + inner.tensor(y,y) - 2*inner.tensor(x,y)
@@ -85,13 +91,15 @@ dist.tensor = function(x,y){
 }
 
 
-#' Compute operator maps from \eqn{H_1} to \eqn{H_2}
+#' @title Operator Map from \eqn{\mathbb{H}_1} to \eqn{\mathbb{H}_2}
 #' 
-#'
-#' @param x a tensor product object, created by \code{\link{make.tensor}}.
-#' @param y an \eqn{n}-by-\eqn{n_1} matrix. Each row is an element in \eqn{H_1}.
+#' @description
+#' Given a tensor \eqn{x\in\mathbb{H}_1\otimes\mathbb{H}_2} and an element \eqn{y\in\mathbb{H}_1}, this function computes the element \eqn{x(y) \in \mathbb{H}_2}.
 #' 
-#' @return an \eqn{n}-by-\eqn{n_2} matrix. Each row is an element in \eqn{H_2}.
+#' @param x an element in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.
+#' @param y an \eqn{n\times m_1} matrix where each row is an element in \eqn{\mathbb{H}_1}.
+#' 
+#' @return an \eqn{n\times m_2} matrix where each row is an element in \eqn{\mathbb{H}_2}.
 #' @export
 operator.tensor = function(x,y){
   mu1 = x$mu1
@@ -101,7 +109,7 @@ operator.tensor = function(x,y){
   dim1 = x$dim
   dim2 = nrow(y)
   
-  # E: (n2,p) matrix
+  # E: (m2,p) matrix
   E = sapply(1:dim1,function(i){sapply(1:dim2,function(j){inner.manifold(element1[i,],y[j,],mu1,space1)})})
   return (E %*% x$element2)
 }

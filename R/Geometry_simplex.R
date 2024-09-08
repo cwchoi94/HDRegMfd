@@ -1,13 +1,14 @@
 
-#' @title Centered log-ratio transform
+#' @title Centered log-ratio transform 
 #' 
 #' @description 
-#' Transform simplex or density data to R^m
-#' clr(x)_i = log(x_i)-sum_j log(x_j)
+#' Compute the centered log-ratio transform for compositional or density data.
+#' Specifically, for each \eqn{x=(x_i)\in\mathbb{R}^m}, the transformation is give by
+#' \deqn{\text{clr}(x)_i = \log(x_i) - \frac{1}{m}\sum_{j}\log(x_j)}.
 #' 
-#' @param x an (n,m) matrix of simplex-valued or Bayes-Hilbert space-valued data
+#' @param x an \eqn{n\times m} matrix of simplex- or Bayes-Hilbert space-valued data.
 #' 
-#' @return A clr transformed (n,m) matrix
+#' @return an \eqn{n\times m} matrix of clr-transformed data.
 #' @export
 clr = function(x){
   x = vec.to.mat(x)
@@ -17,16 +18,17 @@ clr = function(x){
 }
 
 
-#' @title Inverse centered log-transform for simplex data
+#' @title Inverse centered log-transform for simplex-valued data
 #' 
 #' @description 
-#' Inverse transform R^m to simplex data
-#' inv.clr(x)_i = exp(x_i)/(sum_j exp(x_i)) * normalizer
+#' Compute the inverse centered log-ratio transform to convert data from \eqn{\mathbb{R}^m} to compositional data, see \code{\link{clr}}.
+#' Specifically, for each \eqn{x=(x_i)\in\mathbb{R}^m}, the transformation is give by
+#' \deqn{\text{inv.clr}(x)_i = \frac{\exp(x_i)}{\sum_{j} \exp(x_j)} \times \text{normalizer}}.
 #' 
-#' @param x A clr transformed (n,m) matrix
-#' @param normalizer A normalizing constant, default=1 
+#' @param x an \eqn{n\times m} matrix of the clr-transformed data.
+#' @param normalizer a normalization constant, with a default value of 1.
 #' 
-#' @return A simplex-valued (n,m) matrix
+#' @return a \eqn{n\times m} matrix of density data.
 #' @export
 inv.clr.simplex = function(x,normalizer=1){
   x = vec.to.mat(x)
@@ -36,9 +38,6 @@ inv.clr.simplex = function(x,normalizer=1){
   return(y)
 }
 
-
-
-#' Inner product on tangent space at p for simplex data
 
 #' @describeIn inner.manifold Method
 #' @export
@@ -63,8 +62,6 @@ inner.each.simplex = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for simplex data
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.simplex = function(u,p=NULL){
@@ -72,8 +69,6 @@ norm.simplex = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for simplex data
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -92,8 +87,6 @@ dist.simplex = function(p,q){
 }
 
 
-#' Riemannian exponential map for simplex data
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieExp.simplex = function(p,u){
@@ -108,8 +101,6 @@ RieExp.simplex = function(p,u){
   return(z)
 }
 
-
-#' Riemannian logarithmic map for simplex data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -127,8 +118,6 @@ RieLog.simplex = function(p,q){
 }
 
 
-#' Basis on the tangent space at the point for simplex data
-
 #' @describeIn basis.manifold Method
 #' @export
 basis.simplex = function(p,dim=NULL){
@@ -137,8 +126,6 @@ basis.simplex = function(p,dim=NULL){
   return(z)
 }
 
-
-#' Frechet mean for simplex data
 
 #' @describeIn FrechetMean.manifold Method
 #' @export
@@ -167,8 +154,6 @@ real.to.clr = function(y){
 }
 
 
-#' Principal component analysis for simplex data
-
 #' @describeIn PCA.manifold Method
 #' @export
 PCA.simplex = function(X,alpha=0.95){
@@ -190,8 +175,6 @@ PCA.simplex = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for simplex data
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

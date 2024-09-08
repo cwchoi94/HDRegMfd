@@ -1,9 +1,6 @@
 
 
 
-
-#' Inner product on tangent space at p for Euclid data
-
 #' @describeIn inner.manifold Method
 #' @export
 inner.Euclid = function(u,v,p=NULL){
@@ -23,8 +20,6 @@ inner.each.Euclid = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for Euclid data
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.Euclid = function(u,p=NULL){
@@ -32,8 +27,6 @@ norm.Euclid = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for Euclid data
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -49,8 +42,6 @@ dist.Euclid = function(p,q){
 }
 
 
-#' Riemannian exponential map for Euclid data
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieExp.Euclid = function(p,u){
@@ -64,8 +55,6 @@ RieExp.Euclid = function(p,u){
   return(z)
 }
 
-
-#' Riemannian logarithmic map for Euclid data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -81,8 +70,6 @@ RieLog.Euclid = function(p,q){
 }
 
 
-#' Basis on the tangent space at the point for Euclid data
-
 #' @describeIn basis.manifold Method
 #' @export
 basis.Euclid = function(p,dim=NULL){
@@ -90,8 +77,6 @@ basis.Euclid = function(p,dim=NULL){
   return(z)
 }
 
-
-#' Frechet mean for Euclid data
 
 #' @describeIn FrechetMean.manifold Method
 #' @export
@@ -102,8 +87,6 @@ FrechetMean.Euclid = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for Euclid data
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -124,8 +107,6 @@ PCA.Euclid = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for Euclid data
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

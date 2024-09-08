@@ -2,13 +2,14 @@
 #' @title Inverse centered log-transform for density data
 #' 
 #' @description 
-#' Inverse transform R^m to density data
-#' inv.clr(x)_i = exp(x_i)/(sum_j exp(x_i)) * normalizer
+#' Compute the inverse centered log-ratio transform to convert data from \eqn{\mathbb{R}^m} to density data, see \code{\link{clr}}.
+#' Specifically, for each \eqn{x=(x_i)\in\mathbb{R}^m}, the transformation is give by
+#' \deqn{\text{inv.clr}(x)_i = \frac{\exp(x_i)}{\frac{1}{m}\sum_{j} \exp(x_j)} \times \text{normalizer}}.
 #' 
-#' @param x clr data, (n,m) matrix
-#' @param normalizer normalized constant, default=1 
+#' @param x an \eqn{n\times m} matrix of the clr-transformed data.
+#' @param normalizer a normalization constant, with a default value of 1.
 #' 
-#' @return density data, (n,m) matrix
+#' @return a \eqn{n\times m} matrix of density data.
 #' @export
 inv.clr.BayesHilbert = function(x,normalizer=1){
   x = vec.to.mat(x)
@@ -18,8 +19,6 @@ inv.clr.BayesHilbert = function(x,normalizer=1){
   return(y)
 }
 
-
-#' Inner product on tangent space at p for Bayes-Hilbert data
 
 #' @describeIn inner.manifold Method
 #' @export
@@ -41,8 +40,6 @@ inner.each.BayesHilbert = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for Bayes-Hilbert data
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.BayesHilbert = function(u,p=NULL){
@@ -50,8 +47,6 @@ norm.BayesHilbert = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for Bayes-Hilbert data
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -67,8 +62,6 @@ dist.BayesHilbert = function(p,q){
 }
 
 
-#' Riemannian exponential map for Bayes-Hilbert data
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieExp.BayesHilbert = function(p,u){
@@ -83,8 +76,6 @@ RieExp.BayesHilbert = function(p,u){
   return(z)
 }
 
-
-#' Riemannian logarithmic map for Bayes-Hilbert data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -103,8 +94,6 @@ RieLog.BayesHilbert = function(p,q){
 }
 
 
-#' Basis on the tangent space at the point for Bayes-Hilbert data
-
 #' @describeIn Basis.manifold Method
 #' @export
 basis.BayesHilbert = function(p,dim=50){
@@ -114,8 +103,6 @@ basis.BayesHilbert = function(p,dim=50){
   return(z)
 }
 
-
-#' Frechet mean for Bayes-Hilbert data
 
 #' @describeIn FrechetMean.manifold Method
 #' @export
@@ -128,8 +115,6 @@ FrechetMean.BayesHilbert = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for Bayes-Hilbert data
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -169,8 +154,6 @@ PCA.BayesHilbert = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for Bayes-Hilbert data
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

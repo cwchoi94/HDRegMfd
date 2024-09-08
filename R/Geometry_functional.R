@@ -2,8 +2,6 @@
 
 
 
-#' Inner product on tangent space at p for functional data
-
 #' @describeIn inner.manifold Method
 #' @export
 inner.functional = function(u,v,p=NULL){
@@ -24,8 +22,6 @@ inner.each.functional = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for functional data
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.functional = function(u,p=NULL){
@@ -33,8 +29,6 @@ norm.functional = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for functional data
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -50,9 +44,6 @@ dist.functional = function(p,q){
 }
 
 
-
-#' Riemannian exponential map for functional data
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieExp.functional = function(p,u){
@@ -66,8 +57,6 @@ RieExp.functional = function(p,u){
   return(z)
 }
 
-
-#' Riemannian logarithmic map for functional data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -93,7 +82,6 @@ basis.functional_ = function(l,ngrid=100,t=NULL){
   return(phi)
 }
 
-#' Basis on the tangent space at the point for functional data
 
 #' @describeIn Basis.manifold Method
 #' @export
@@ -105,8 +93,6 @@ basis.functional = function(p,dim=50){
 }
 
 
-#' Frechet mean for functional data
-
 #' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.functional = function(X){
@@ -115,8 +101,6 @@ FrechetMean.functional = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for functional data
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -155,8 +139,6 @@ PCA.functional = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for functional data
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

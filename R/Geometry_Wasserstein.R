@@ -1,8 +1,6 @@
 
 
 
-#' Inner product on tangent space at p for Wasserstein data
-
 #' @describeIn inner.manifold Method
 #' @export
 inner.Wasserstein = function(u,v,p=NULL){
@@ -23,8 +21,6 @@ inner.each.Wasserstein = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for Wasserstein data
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.Wasserstein = function(u,p=NULL){
@@ -32,8 +28,6 @@ norm.Wasserstein = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for Wasserstein data
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -50,8 +44,6 @@ dist.Wasserstein = function(p,q){
 
 
 
-#' Riemannian exponential map for Wasserstein data
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieExp.Wasserstein = function(p,u){
@@ -65,8 +57,6 @@ RieExp.Wasserstein = function(p,u){
   return(z)
 }
 
-
-#' Riemannian logarithmic map for Wasserstein data
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -88,7 +78,6 @@ basis.Wasserstein_ = function(l,ngrid=100,t=NULL){
   return(phi)
 }
 
-#' Basis on the tangent space at the point for Wasserstein data
 
 #' @describeIn Basis.manifold Method
 #' @export
@@ -100,8 +89,6 @@ basis.Wasserstein = function(p,dim=50){
 }
 
 
-#' Frechet mean for Wasserstein data
-
 #' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.Wasserstein = function(X){
@@ -110,8 +97,6 @@ FrechetMean.Wasserstein = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for Wasserstein data
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -150,8 +135,6 @@ PCA.Wasserstein = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for Wasserstein data
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

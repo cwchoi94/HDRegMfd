@@ -1,35 +1,32 @@
-### Cross validation for high-dimensional linear regression
 
 
-#' @title Generalized cross validation for high-dimensional linear regression
+
+#' @title Generalized Cross-Validation for High-Dimensional Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' GCV for a LM object
-#' It is based on CBS algorithm and uses a function LM_GCV in LM_GCV.cpp.
+#' Implements a generalized cross-validation (GCV) for high-dimensional Hilbert-Schmidt linear models.
+#' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
+#' For a more detailed description of parameters, see \code{\link{LM}}.
 #' 
-#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n\times m} response matrix.
-#' @param Xnew a list of new covariate observations.
-#' @param Ynew an \eqn{n'\times} new response observations.
-#' @param Yspace an underlying space of \eqn{Y}.
-#' @param lambda.list a vector of lambda.
-#' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param R.list a vector of constrained bound.
-#' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
-#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
-#' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
-#' @param max.cv.iter a number of maximum CV iterations, default 20.
-#' @param cv.threshold a parameter to modify the computation error in CV, default 1e-10.
-#' @param eta a parameter in computing ADMM-MM algorithm for the proximal norm square, default 1e-3.
-#' @param max.iter a maximum iteration, default 500.
-#' @param threshold an algorihtm convergence threshold, default 1e-10.
+#' @inheritParams LM.CV
+#' 
+#' @param Xorgnew a list of new covariates.
+#' @param Yorgnew an \eqn{n'\times m} new responses.
 #'
-#' @return an \code{\link{LM}} object.
+#' @return an \code{\link{LM}} object with the following components:
 #'    \describe{
-#'       \item{parameter.list}{a list of optimal parameters for each CV step.}
-#'       \item{loss.list}{a list of loss for each CV step.}
-#'       \item{runtime}{running time}
-#'       \item{...}{see \code{\link{LM}}.}
+#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
+#'       \item{parameter.list}{a list of optimal parameters for each CV update.}
+#'       \item{loss.list}{a list of loss for each CV update.}
+#'       \item{runtime}{the running time.}
+#'       \item{...}{other parameters.}
 #' }
 #' @export
 LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,penalty='LASSO',phi=1,gamma=0,

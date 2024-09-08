@@ -1,7 +1,5 @@
 
 
-#' Inner product on tangent space at p for SPD data with the Affine-invariant metric
-
 #' @describeIn inner.manifold Method
 #' @export
 inner.SPD.AffInv = function(u,v,p=NULL){
@@ -23,8 +21,6 @@ inner.each.SPD.AffInv = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for SPD data with the Affine-invariant metric
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.SPD.AffInv = function(u,p=NULL){
@@ -32,8 +28,6 @@ norm.SPD.AffInv = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for SPD data with the Affine-invariant metric
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -48,8 +42,6 @@ dist.SPD.AffInv = function(p,q){
   return(z)
 }
 
-
-#' Riemannian exponential map for SPD data with the Affine-invariant metric
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -66,8 +58,6 @@ RieExp.SPD.AffInv = function(p,u){
 }
 
 
-#' Riemannian logarithmic map for SPD data with the Affine-invariant metric
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieLog.SPD.AffInv = function(p,q){
@@ -82,8 +72,6 @@ RieLog.SPD.AffInv = function(p,q){
   return(z)
 }
 
-
-#' Basis on the tangent space at the point for SPD data with the Affine-invariant metric
 
 #' @describeIn Basis.manifold Method
 #' @export
@@ -110,8 +98,6 @@ basis.SPD.AffInv = function(p,dim=50){
 }
 
 
-#' Frechet mean for SPD.AffInv data
-
 #' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.SPD.AffInv = function(X){
@@ -122,8 +108,6 @@ FrechetMean.SPD.AffInv = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for SPD data with the Affine-invariant metric
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -147,8 +131,6 @@ PCA.SPD.AffInv = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for SPD data with the Affine-invariant metric
 
 #' @describeIn predict.PCA.manifold Method
 #' @export

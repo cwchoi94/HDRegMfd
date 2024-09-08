@@ -32,14 +32,18 @@ vec.duplicate = function(x,n=1){
 }
 
 
-#' vector norm of matrices on the tangent space at \eqn{p}
+#' @title Vector Norm on the Tangent Space
+#' 
+#' @description
+#' Computes the vector norm on the tangent space \eqn{T_p\mathcal{M}}.
+#' This function is implemented for \eqn{\ell^2}-, \eqn{\ell^1}- and \eqn{\ell^\infty}-types of norms.
 #' 
 #' @param X a \eqn{p\times m} matrix of manifold-valued data.
-#' @param p a base point on the tangent space.
-#' @param space an underlying space of \eqn{X}.
-#' @param type a type of vector norm. One of 'L2', 'L1', or 'Linf'.
+#' @param p a base point of the tangent space \eqn{T_p\mathcal{M}}.
+#' @param space the name of the underlying space \eqn{\mathcal{M}} of \eqn{X}.
+#' @param type the type of vector norm. One of 'L2', 'L1', or 'Linf'.
 #' 
-#' @return a vector norm
+#' @return the vector norm
 #' @export
 vector.norm = function(X,p,space='Euclid',type='L2'){
   if (!(type %in% c('L2','L1','Linf'))){

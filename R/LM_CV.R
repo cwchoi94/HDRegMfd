@@ -1,41 +1,51 @@
-### Cross validation for high-dimensional linear regression
 
 
-#' @title cross validation for high-dimensional linear regression
+
+#' @title Cross-Validation for High-Dimensional Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' CV for a LM object
-#' It is based on CBS algorithm and uses a function LM_CV in LM_CV.cpp.
+#' Implements cross-validation (CV) for high-dimensional Hilbert-Schmidt linear models based on 'AIC' or 'BIC'.
+#' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
+#' For a more detailed description of parameters, see \code{\link{LM}}.
 #' 
-#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n\times m} response matrix.
-#' @param Yspace an underlying space of \eqn{Y}.
-#' @param lambda.list a vector of lambda.
-#' @param Xdim.max.list a vector of max dimension of \eqn{X_j}.
-#' @param R.list a vector of constrained bound.
-#' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
-#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
-#' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
-#' @param max.cv.iter a number of maximum CV iterations, default 20.
-#' @param cv.threshold a parameter to modify the computation error in CV, default 1e-10.
-#' @param eta a parameter in computing ADMM-MM algorithm for the proximal norm square, default 1e-3.
-#' @param max.iter a maximum iteration, default 500.
-#' @param threshold an algorihtm convergence threshold, default 1e-10.
+#' @param Xorg a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} matrix of manifold-valued responses.
+#' @param Yspace the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.
+#' @param lambda.list a vector of non-negative penalty constants.
+#' @param Xdim.max.list a vector of the maximum dimension to which \eqn{X_j} will be reduced.
+#' @param R.list a vector of \eqn{\ell^1}-type constrained bounds.
+#' @param cv.type a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').
+#' @param penalty the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').
+#' @param phi a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).
+#' @param gamma a parameter for SCAD (default: 3.7) or MCP (default: 3).
+#' @param max.cv.iter a maximum number of CV iterations (default 20).
+#' @param cv.threshold a convergence threshold for the CV (default 1e-10).
+#' @param eta a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).
+#' @param max.iter a maximum number of iterations (default: 500).
+#' @param threshold a convergence threshold for the algorithm (default: 1e-10).
 #'
-#' @return an \code{\link{LM}} object.
+#' @return an \code{\link{LM}} object with the following components:
 #'    \describe{
-#'       \item{parameter.list}{a list of optimal parameters for each CV step.}
-#'       \item{loss.list}{a list of loss for each CV step.}
-#'       \item{runtime}{running time}
-#'       \item{...}{see \code{\link{LM}}.}
+#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
+#'       \item{parameter.list}{a list of optimal parameters for each CV update.}
+#'       \item{loss.list}{a list of loss for each CV update.}
+#'       \item{runtime}{the running time.}
+#'       \item{...}{other parameters.}
 #' }
 #' @export
 LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC',penalty='LASSO',phi=1,gamma=0,
-                  max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+                 max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
-  # check validility of inputs
+  # check validity of inputs
   Check.penalty(penalty)
   Check.cv.type(cv.type)
   
@@ -54,7 +64,7 @@ LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC'
   pca = PCA.manifold.list(Xorg)
   X = predict(pca,Xorg)
   
-  # projection of Yorg and Yorgnew to the tangent space
+  # projection of Yorg and Yorgnew onto the tangent space
   Ymu = FrechetMean.manifold(Yorg,Yspace)
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
@@ -66,7 +76,7 @@ LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC'
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   
-  # apply LM with the optimal parameters
+  # apply an LM function with the optimal parameters
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R

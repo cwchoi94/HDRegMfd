@@ -1,6 +1,6 @@
-#' Basic geometry structure on manifolds
+#' Basic functions for manifolds
 #' 
-#' Basic:
+#' Basic geometry structure:
 #' inner product, norm in tangent spaces, distance
 #' exponential and logarithmic maps
 #' 
@@ -9,26 +9,33 @@
 #' 
 
 
-#' Check whether manifolds or not
+#' @title Check if the given space is a manifold
 #' 
-#' @param space a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.
+#' @description
+#' Check if the given space is a manifold.
+#' The space name must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.
+#' 
+#' @param space the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.
 #' 
 #' @export
 Check.manifold = function(space){
   if (!(space %in% c('Euclid','simplex','sphere','SPD.LogEuclid','SPD.AffInv','functional','BayesHilbert','Wasserstein'))){
-    stop("The space should be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.")
+    stop("The space must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.")
   }
 }
 
 
-#' Inner product on the tangent space at \eqn{p}
+#' @title Inner product on the tangent space 
+#' 
+#' @description
+#' Compute the inner product on the tangent space \eqn{T_p\mathcal{M}} of the manifold \eqn{\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @param u,v \eqn{n\times m'} Matrices. Each row is tangent vector.
-#' @param p an \eqn{m} vector of the base point on tangent space
+#' @param u,v \eqn{n\times m'} matrices, where each row is a tangent vector on \eqn{T_p\mathcal{M}}.
+#' @param p an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.
 #' 
-#' @return an \eqn{n} vector of inner products of each row of u and v
+#' @return an \eqn{n} vector of inner products for each corresponding row of \eqn{u} and \eqn{v}.
 #' @export
 inner.manifold = function(u,v,p,space='Euclid'){
   Check.manifold(space)
@@ -38,14 +45,17 @@ inner.manifold = function(u,v,p,space='Euclid'){
 }
 
 
-#' norm on the tangent space at \eqn{p}
+#' @title Norm on the tangent space
+#' 
+#' @description
+#' Compute the norm on the tangent space \eqn{T_p\mathcal{M}} of the manifold \eqn{\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @param u a \eqn{n\times m'} matrix. Each row is a tangent vector.
-#' @param p an \eqn{m} vector of the base point on tangent space
+#' @param u an \eqn{n\times m'} matrix, where each row is a tangent vector on \eqn{T_p\mathcal{M}}.
+#' @param p an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.
 #' 
-#' @return an \eqn{n} vector of norm. Each entry is the norm of \eqn{u_i} at p
+#' @return an \eqn{n} vector of norms for each row of \eqn{u}.
 #' @export
 norm.manifold = function(u,p,space='Euclid'){
   Check.manifold(space)
@@ -56,13 +66,16 @@ norm.manifold = function(u,p,space='Euclid'){
 
 
 
-#' Geodesic distance on the manfold
+#' @title Geodesic distance on the manifold
 #' 
-#' @param p,q \eqn{m} vectors or \eqn{n\times m} matrices. Each row is a point on the Riemannian metric spaces.
+#' @description
+#' Compute the geodesic distance on the manifold \eqn{\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @return an \eqn{n} vector of geodesic distance. Each entry is a distance between \eqn{p_i} and \eqn{q_i}.
+#' @param p,q \eqn{m} vectors or \eqn{n\times m} matrices, where each row is a point on \eqn{\mathcal{M}}.
+#' 
+#' @return an \eqn{n} vector of geodesic distances between corresponding rows of \eqn{p} and \eqn{q}.
 #' @export
 dist.manifold = function(p,q,space='Euclid'){
   Check.manifold(space)
@@ -72,14 +85,17 @@ dist.manifold = function(p,q,space='Euclid'){
 }
 
 
-#' Riemannian exponential map
+#' @title Riemannian exponential map on the manifold
+#' 
+#' @description
+#' Compute the Riemnnain exponential map on the manifold \eqn{\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @param p an \eqn{m} vector of the base point on tangent space
-#' @param u an \eqn{n\times m'} matrix. Each row is a tangent vector.
+#' @param p an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.
+#' @param u an \eqn{n\times m'} matrix, where each row is a tangent vector on \eqn{T_p\mathcal{M}}.
 #' 
-#' @return an \eqn{n\times m} matrix. Each row is a point on the Riemannian metric spaces.
+#' @return an \eqn{n\times m} matrix of Riemannian exponentials of each row of \eqn{u}.
 #' @export
 RieExp.manifold = function(p,u,space='Euclid'){
   Check.manifold(space)
@@ -89,13 +105,16 @@ RieExp.manifold = function(p,u,space='Euclid'){
 }
 
 
-#' Riemannian logarithmic map
+#' @title Riemannian logarithmic map on the manifold
+#' 
+#' @description
+#' Compute the Riemnnain logarithmic map on the manifold \eqn{\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @param p,q \eqn{m} vectors or \eqn{n\times m} matrices. Each row is a point on the manifold.
+#' @param p,q \eqn{m} vectors or \eqn{n\times m} matrices, where each row is a point on \eqn{\mathcal{M}}.
 #' 
-#' @return an \eqn{n\times m} matrix. Each row is a logarithmic map from \eqn{p_i} to \eqn{q_i}.
+#' @return an \eqn{n\times m} matrix of Riemannian logarithmics from  corresponding rows of \eqn{p} to those of \eqn{q}.
 #' @export
 RieLog.manifold = function(p,q,space='Euclid'){
   Check.manifold(space)
@@ -105,14 +124,17 @@ RieLog.manifold = function(p,q,space='Euclid'){
 }
 
 
-#' Basis on the tangent space at p
+#' @title Orthonormal basis on the tangent space of the manifold
+#' 
+#' @description
+#' Compute the orthonormal basis of the tangent space \eqn{T_p\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @param p an \eqn{m} vector of the point on Riemannian metric spaces.
-#' @param dim a number of basis, only used for infinite-dimensional Riemannian metric spaces.
+#' @param p an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.
+#' @param dim the number of orthonormal basis, only used for infinite-dimensional \eqn{\mathcal{M}}.
 #' 
-#' @return an \eqn{n\times m} matrix. Each row is an orthonormal basis of the tangent space at p.
+#' @return an \eqn{n\times m} matrix where each row is an orthonormal basis of the tangent space \eqn{T_p\mathcal{M}}.
 #' @export
 basis.manifold = function(p,dim=50,space='Euclid'){
   Check.manifold(space)
@@ -122,13 +144,16 @@ basis.manifold = function(p,dim=50,space='Euclid'){
 }
 
 
-#' Frechet mean on the manifold
+#' @title The Frechet mean on the manifold
 #' 
-#' @param X a \eqn{n\times m} matrix. Each row is a point on the Riemannian metric spaces.
+#' @description
+#' Compute the Frechet mean of a random variable \eqn{X} taking values in the manifold \eqn{\mathcal{M}}.
 #' 
 #' @inheritParams Check.manifold
 #' 
-#' @return an \eqn{m} vector
+#' @param X an \eqn{n\times m} matrix where each row \eqn{X_i} is a point in \eqn{\mathcal{M}}.
+#' 
+#' @return an \eqn{m} vector of the Frechet mean \eqn{\mu} of \eqn{X}.
 #' @export
 FrechetMean.manifold = function(X,space='Euclid'){
   Check.manifold(space)
@@ -138,19 +163,23 @@ FrechetMean.manifold = function(X,space='Euclid'){
 }
 
 
-#' Principal component analysis for manifold-valued data.
+#' @title Principal component analysis for manifold-valued data.
 #' 
-#' @inheritParams FrechetMean
-#' @param alpha a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.
+#' @description
+#' Performs the Principal component analysis (spectral decomposition) for a random variable \eqn{X} taking values in the manifold \eqn{\mathcal{M}}.
 #' 
-#' @return a 'PCA.manifold' object
+#' @inheritParams FrechetMean.manifold
+#' 
+#' @param alpha a truncation parameter of the number of basis vectors, used only for infinite dimensional \eqn{\mathcal{M}}. Selects the first index where the cumulative variance is equal to or greater than \eqn{\alpha} of the total variance.
+#' 
+#' @return a 'PCA.manifold' object with the following components:
 #' \describe{
-#'       \item{space}{a name of the underlying space.}
+#'       \item{space}{the name of the underlying space \eqn{\mathcal{M}}.}
 #'       \item{values}{an \eqn{m} vector of eigenvalues.}
-#'       \item{vectors}{a \eqn{K\times m} matrix. Each row is an orthornormal basis generated by PCA.}
-#'       \item{mu}{the Frechet mean of X, \eqn{m} vector.}
+#'       \item{vectors}{a \eqn{K\times m} matrix where each row is a corresponding orthonormal basis.}
+#'       \item{mu}{the Frechet mean of \eqn{X}.}
 #'       \item{dim}{a number of eigenvectors \eqn{K}}
-#'       \item{...}{Passed into specific method}
+#'       \item{...}{additional arguments passed into specific methods.}
 #' }
 #' @export
 PCA.manifold = function(X,space='Euclid',alpha=0.95){
@@ -163,10 +192,13 @@ PCA.manifold = function(X,space='Euclid',alpha=0.95){
 }
 
 
-#' Prediction score matrix of manifold-valued data.
+#' @title Prediction of a score matrix of manifold-valued data.
+#' 
+#' @description
+#' Compute a score matrix of the manifold-valued data using the principal component analysis (spectral decomposition) results made by \code{\link{PCA.manaifold}}.
 #' 
 #' @param object a \code{\link{PCA.manifold}} object.
-#' @param Xnew an \eqn{n\times m} matrix). Each row is a point on the space.
+#' @param Xnew an \eqn{n\times m} matrix where each row is a point in \eqn{\mathcal{M}}.
 #' 
 #' @return an \eqn{n\times m'} score matrix.
 #' @export

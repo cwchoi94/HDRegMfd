@@ -4,18 +4,18 @@
 
 
 
-#' @title Demension reduction function for a list of X.
+#' @title Demension reduction for a list of covariates
 #' 
 #' @description 
-#' Change the dimension of \eqn{X_j} at most \eqn{min(d_j,Xdim.max)}.
+#' Reduces the dimension of each \eqn{X_j} to \eqn{\min\{D_j,\text{Xdim.max}\}}.
 #' 
-#' @param X a \eqn{p} list of matrices. Each \eqn{X_j} is a \eqn{n\times d_j} matrix.
-#' @param Xdim.max a max dimension of \eqn{X_j}, int>0.
-#' @param margin the direction which the dimension reduction applied over.
+#' @param X a \eqn{p} list of covariates, where each \eqn{X_j} is an \eqn{n\times D_j} matrix.
+#' @param Xdim.max the maximum dimension to which \eqn{X_j} will be reduced, with a default value of 100.
+#' @param margin the direction of the dimension reduction, with a default value of 1 (1: column-wise, 2: row-wise).
 #' 
-#' @return a \eqn{p} list of \eqn{X_j'}.
+#' @return a \eqn{p} list of reduced covariates \eqn{X_j'}.
 #' @export
-reduce.dimension = function(X,Xdim.max=200,margin=1){
+reduce.dimension = function(X,Xdim.max=100,margin=1){
   if (!(margin %in% c(1,2))){stop("margin should be 1 or 2.")}
   
   if (margin==1){
@@ -32,40 +32,41 @@ reduce.dimension = function(X,Xdim.max=200,margin=1){
 }
 
 
-#' @title High-dimensional linear regression for manifold-valued responses and covariates.
+#' @title High-dimensional Hilbert-Schmidt linear regression for manifold-valued responses and covariates.
 #' 
 #' @description 
-#' Compute tensor product operators by ADMM-MM algorithm.
+#' Estimate Hilbert-Schmidt operators using an ADMM-based algorithm.
+#' This function supports 'LASSO', 'SCAD', or 'MCP' penalty functions.
 #' 
-#' @param Xorg a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n\times m} response matrix.
-#' @param Yspace an underlying space of \eqn{Y}.
-#' @param lambda a penalty constant, real>0.
-#' @param Xdim.max a max dimension of \eqn{X_j}, real>0.
-#' @param R a constrained bound, real>0.
-#' @param penalty a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.
-#' @param phi a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.
-#' @param gamma a parameter for SCAD (3.7) or MCP (3), parentheses: default value.
-#' @param eta a parameter in computing ADMM-MM algorithm for the proximal norm square, default 1e-3.
-#' @param max.iter a maximum iteration, default 500.
-#' @param threshold an algorihtm convergence threshold, default 1e-10.
+#' @param Xorg a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.
+#' @param Yorg an \eqn{n\times m} matrix of manifold-valued responses.
+#' @param Yspace the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.
+#' @param lambda a non-negative penalty constant (default: 0.1).
+#' @param Xdim.max the maximum dimension to which \eqn{X_j} will be reduced (default: 100).
+#' @param R an \eqn{\ell^1}-type constrained bound (default: 100).
+#' @param penalty the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').
+#' @param phi a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).
+#' @param gamma a parameter for SCAD (default: 3.7) or MCP (default: 3).
+#' @param eta a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).
+#' @param max.iter a maximum number of iterations (default: 500).
+#' @param threshold a convergence threshold for the algorithm (default: 1e-10).
 #'
-#' @return a 'LM' object.
+#' @return a 'LM' object with the following compnents:
 #'    \describe{
 #'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
-#'       \item{Ymu}{an \eqn{m} vector of the Frechet mean of \eqn{Y}.}
-#'       \item{beta}{a \eqn{P\times m} matrix of estimated beta, where \eqn{P=\sum_{j=1}^p K_j}.}
-#'       \item{beta.each}{a \eqn{p} list of each \eqn{beta_j}.}
-#'       \item{beta.norm}{a \eqn{p} vector of norm of each \eqn{beta_j}.}
-#'       \item{beta.vectors}{a \eqn{p} list of corresponding bases of \eqn{X_j}. Each basis is a \eqn{K_j\times T_j} matrix.}
-#'       \item{beta.tensor}{a \eqn{p} list of tensor operators, see \code{\link{make.tensor}}.}
-#'       \item{proper.indices}{a indices of nonzero \code{beta_j}.}
-#'       \item{runtime}{a running time.}
+#'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
+#'       \item{runtime}{the running time.}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',phi=1,gamma=0,
-              eta=1e-3,max.iter=500,threshold=1e-10){
+LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',
+              phi=1,gamma=0,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -125,15 +126,15 @@ LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',phi
 
 
 
-#' @title Prediction function for a LM object
+#' @title Prediction for Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' Predict \eqn{\hat{Y}_{new}} for given \eqn{X_{new}}.
+#' Predict \eqn{\hat{Y}_{new}} for the given \eqn{X_{new}} using an \code{\link{LM}} object.
 #' 
-#' @param object a \code{\link{LM}} class object.
-#' @param Xnew a \eqn{p} list of new observations.
+#' @param object an \code{\link{LM}} object.
+#' @param Xnew a list of new observations, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.
 #'
-#' @return an \eqn{n'\times m} matrix of \eqn{\hat{Y}_{new}}.
+#' @return an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}}.
 #' @export
 predict.LM = function(object,Xnew){
   Xnew = predict.PCA.manifold.list(object$pca,Xnew)

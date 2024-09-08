@@ -1,4 +1,5 @@
 
+
 # matrix logarithmic and exponential maps for SPD matrices
 logMvec = function(M){
   M = vec.to.mat(M)
@@ -28,8 +29,6 @@ expMvec = function(M){
 
 
 
-#' Inner product on tangent space at p for SPD data with the Log-Euclidean metric
-
 #' @describeIn inner.manifold Method
 #' @export
 inner.SPD.LogEuclid = function(u,v,p=NULL){
@@ -49,8 +48,6 @@ inner.each.SPD.LogEuclid = function(u,v,p=NULL){
 }
 
 
-#' norm on tangent space at p for SPD data with the Log-Euclidean metric
-
 #' @describeIn norm.manifold Method
 #' @export
 norm.SPD.LogEuclid = function(u,p=NULL){
@@ -58,8 +55,6 @@ norm.SPD.LogEuclid = function(u,p=NULL){
   return(z)
 }
 
-
-#' Geodesic distance for SPD data with the Log-Euclidean metric
 
 #' @describeIn dist.manifold Method
 #' @export
@@ -78,8 +73,6 @@ dist.SPD.LogEuclid = function(p,q){
 }
 
 
-#' Riemannian exponential map for SPD data with the Log-Euclidean metric
-
 #' @describeIn RieExp.manifold Method
 #' @export
 RieExp.SPD.LogEuclid = function(p,u){
@@ -94,8 +87,6 @@ RieExp.SPD.LogEuclid = function(p,u){
   return(z)
 }
 
-
-#' Riemannian logarithmic map for SPD data with the Log-Euclidean metric
 
 #' @describeIn RieExp.manifold Method
 #' @export
@@ -113,8 +104,6 @@ RieLog.SPD.LogEuclid = function(p,q){
   return(z)
 }
 
-
-#' Basis on the tangent space at the point for SPD data with the Log-Euclidean metric
 
 #' @describeIn Basis.manifold Method
 #' @export
@@ -141,8 +130,6 @@ basis.SPD.LogEuclid = function(p,dim=50){
 }
 
 
-#' Frechet mean for SPD.LogEuclid data
-
 #' @describeIn FrechetMean.manifold Method
 #' @export
 FrechetMean.SPD.LogEuclid = function(X){
@@ -157,8 +144,6 @@ FrechetMean.SPD.LogEuclid = function(X){
   return(mu)
 }
 
-
-#' Principal component analysis for SPD data with the Log-Euclidean metric
 
 #' @describeIn PCA.manifold Method
 #' @export
@@ -182,8 +167,6 @@ PCA.SPD.LogEuclid = function(X,alpha=0.95){
   return(result)
 }
 
-
-#' Prediction score matrix for SPD data with the Log-Euclidean metric
 
 #' @describeIn predict.PCA.manifold Method
 #' @export
