@@ -2,31 +2,31 @@
 % Please edit documentation in R/Data_generation.R
 \name{covariates.generate}
 \alias{covariates.generate}
-\title{Generate a list of Riemannian metric space-valued covariates.}
+\title{Generate a list of manifold-valued covariates.}
 \usage{
 covariates.generate(n, Xspaces, dims, Xrho = 0.5, Xsigma = 1)
 }
 \arguments{
-\item{n}{a number of data}
+\item{n}{the number of data points.}
 
-\item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+\item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.}
 
-\item{dims}{a \eqn{p} vector of dimension of \eqn{X_j}.}
+\item{dims}{a \eqn{p} vector specifying the dimensions of \eqn{X_j}.}
 
-\item{Xrho}{a correlation parameter which ranges from -1 to 1.}
+\item{Xrho}{a correlation parameter ranging from -1 to 1, with a default value of 0.5.}
 
-\item{Xsigma}{a correlation parameter which ranges from -1 to 1.}
+\item{Xsigma}{a common standard deviation parameter, with a default value of 1.}
 }
 \value{
-a list of generated data
+a list of data containing:
    \describe{
-      \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times d_j} matrix.}
-      \item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-      \item{p}{a number of \eqn{X_j}.}
+      \item{j}{a \eqn{p}-list of generated data, where each \eqn{j}th element is an \eqn{n\times D_j} matrix.}
+      \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.}
+      \item{p}{the number of \eqn{X_j}.}
 }
 }
 \description{
-Generate the covariate list.
-If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is equal to \eqn{d_j}.
-If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set 100.
+Generate a list of manifold-valued covariates.
+If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is set to \eqn{D_j}.
+If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set to 100.
 }

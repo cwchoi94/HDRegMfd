@@ -13,7 +13,7 @@
 \alias{inner.functional}
 \alias{inner.simplex}
 \alias{inner.sphere}
-\title{Inner product on the tangent space at \eqn{p}}
+\title{Inner product on the tangent space}
 \usage{
 inner.manifold(u, v, p, space = "Euclid")
 
@@ -34,33 +34,17 @@ inner.simplex(u, v, p = NULL)
 inner.sphere(u, v, p = NULL)
 }
 \arguments{
-\item{u, v}{\eqn{n\times m'} Matrices. Each row is tangent vector.}
+\item{u, v}{\eqn{n\times m'} matrices, where each row is a tangent vector on \eqn{T_p\mathcal{M}}.}
 
-\item{p}{an \eqn{m} vector of the base point on tangent space}
+\item{p}{an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{n} vector of inner products of each row of u and v
+an \eqn{n} vector of inner products for each corresponding row of \eqn{u} and \eqn{v}.
 }
 \description{
-Inner product on the tangent space at \eqn{p}
-
-Inner product on tangent space at p for Bayes-Hilbert data
-
-Inner product on tangent space at p for Euclid data
-
-Inner product on tangent space at p for SPD data with the Affine-invariant metric
-
-Inner product on tangent space at p for SPD data with the Log-Euclidean metric
-
-Inner product on tangent space at p for Wasserstein data
-
-Inner product on tangent space at p for functional data
-
-Inner product on tangent space at p for simplex data
-
-Inner product on tangent space at p for sphere data
+Compute the inner product on the tangent space \eqn{T_p\mathcal{M}} of the manifold \eqn{\mathcal{M}}.
 }
 \section{Functions}{
 \itemize{

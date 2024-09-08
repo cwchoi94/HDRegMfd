@@ -2,20 +2,20 @@
 % Please edit documentation in R/LM.R
 \name{reduce.dimension}
 \alias{reduce.dimension}
-\title{Demension reduction function for a list of X.}
+\title{Demension reduction for a list of covariates}
 \usage{
-reduce.dimension(X, Xdim.max = 200, margin = 1)
+reduce.dimension(X, Xdim.max = 100, margin = 1)
 }
 \arguments{
-\item{X}{a \eqn{p} list of matrices. Each \eqn{X_j} is a \eqn{n\times d_j} matrix.}
+\item{X}{a \eqn{p} list of covariates, where each \eqn{X_j} is an \eqn{n\times D_j} matrix.}
 
-\item{Xdim.max}{a max dimension of \eqn{X_j}, int>0.}
+\item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced, with a default value of 100.}
 
-\item{margin}{the direction which the dimension reduction applied over.}
+\item{margin}{the direction of the dimension reduction, with a default value of 1 (1: column-wise, 2: row-wise).}
 }
 \value{
-a \eqn{p} list of \eqn{X_j'}.
+a \eqn{p} list of reduced covariates \eqn{X_j'}.
 }
 \description{
-Change the dimension of \eqn{X_j} at most \eqn{min(d_j,Xdim.max)}.
+Reduces the dimension of each \eqn{X_j} to \eqn{\min\{D_j,\text{Xdim.max}\}}.
 }

@@ -20,44 +20,48 @@ LM.data.generate(
 )
 }
 \arguments{
-\item{n}{a number of observation.}
+\item{n}{the number of data points}
 
-\item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+\item{Xspaces}{a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
 
-\item{Yspace}{an underlying space of \eqn{Y}.}
+\item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xdims}{a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.}
+\item{Xdims}{a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.}
 
-\item{Ydim}{an intrinsic dimension of \eqn{H_Y}.}
+\item{Ydim}{the intrinsic dimension of \eqn{\mathcal{M}_Y}.}
 
-\item{proper.indices}{an indices of nonzero operators.}
+\item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{beta.norm}{a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.}
+\item{beta.norm}{a \eqn{p} vector (or a single integer) of the tensor norms, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.}
 
-\item{Xrho}{a correlation parameter for \eqn{X_j}.}
+\item{Xrho}{a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.}
 
-\item{Xsigma}{a variance parameter for \eqn{X_j}.}
+\item{Xsigma}{a common standard deviation parameter for \eqn{X_j}, with a default value of 1.}
 
-\item{error.rho}{a correlation parameter for error.}
+\item{error.rho}{a correlation parameter for \eqn{\varepsilon}.}
 
-\item{error.std}{a standard deviation parameter for error.}
+\item{error.std}{a standard deviation parameter for \eqn{\varepsilon}.}
 
-\item{seed}{a random seed (1<=seed)}
+\item{seed}{a random seed, which must be greater than 1.}
 }
 \value{
-a list of generated data
+a list of data containing:
    \describe{
-      \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
-      \item{Y}{an \eqn{n\times m} matrix of response.}
-      \item{beta}{a \eqn{p} list of generated operators.}
-      \item{error}{a generated random error.}
-      \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}
-      \item{Xbeta}{a sum of Xbeta.each.}
-      \item{Ymu}{the Frechet mean of \eqn{Y}.}
-      \item{...}{the other input parameters.}
+      \item{X}{a list of manifold-valued covariates, see \code{\link{covariates.generate}}.}
+      \item{Y}{an \eqn{n\times m} matrix of manifold-valued responses.}
+      \item{p}{the number of \eqn{X_j}.}
+      \item{beta}{a \eqn{p} list of Hilbert-Schmidt operators, see \code{\link{tensor.beta.generate}}.}
+      \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+      \item{Xmu}{a \eqn{p} list of the Frechet means \eqn{\mu_j} of \eqn{X_j}.}
+      \item{LogY}{the Riemannian logarithmic transformation \eqn{Log_{\mu_Y}Y}.}
+      \item{LogX}{a \eqn{p} list of \eqn{Log_{\mu_j}X_j}, the Riemannian logarithmic transformations of \eqn{X_j}.}
+      \item{Xbeta.each}{a \eqn{p} list of \eqn{\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+      \item{Xbeta}{the sum of Xbeta.each, i.e., \eqn{\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+      \item{ExpXbeta}{the Riemannian exponential of Xbeta, i.e., \eqn{Exp_{\mu_Y}\Big(\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)\Big)}.}
+      \item{...}{other input parameters.}
 }
 }
 \description{
 Generate linear regression data.
-The seed for generating beta is fixed as zero, so each beta is equal in simulations.
+The seed for generating Hilbert-Schmidt operators \eqn{\mathfrak{B}_j} is fixed as zero, ensuring that each \eqn{\mathfrak{B}_j} is the same across simulations.
 }

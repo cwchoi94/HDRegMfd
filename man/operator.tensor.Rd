@@ -2,18 +2,18 @@
 % Please edit documentation in R/TensorProduct.R
 \name{operator.tensor}
 \alias{operator.tensor}
-\title{Compute operator maps from \eqn{H_1} to \eqn{H_2}}
+\title{Operator Map from \eqn{\mathbb{H}_1} to \eqn{\mathbb{H}_2}}
 \usage{
 operator.tensor(x, y)
 }
 \arguments{
-\item{x}{a tensor product object, created by \code{\link{make.tensor}}.}
+\item{x}{an element in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.}
 
-\item{y}{an \eqn{n}-by-\eqn{n_1} matrix. Each row is an element in \eqn{H_1}.}
+\item{y}{an \eqn{n\times m_1} matrix where each row is an element in \eqn{\mathbb{H}_1}.}
 }
 \value{
-an \eqn{n}-by-\eqn{n_2} matrix. Each row is an element in \eqn{H_2}.
+an \eqn{n\times m_2} matrix where each row is an element in \eqn{\mathbb{H}_2}.
 }
 \description{
-Compute operator maps from \eqn{H_1} to \eqn{H_2}
+Given a tensor \eqn{x\in\mathbb{H}_1\otimes\mathbb{H}_2} and an element \eqn{y\in\mathbb{H}_1}, this function computes the element \eqn{x(y) \in \mathbb{H}_2}.
 }

@@ -2,24 +2,25 @@
 % Please edit documentation in R/Data_generation.R
 \name{error.generate}
 \alias{error.generate}
-\title{Gerenate random errors on the tangent space at mu.}
+\title{Generate a random error \eqn{\varepsilon} of \eqn{Y}}
 \usage{
 error.generate(n, space, dim, error.rho = 0.5, error.std = 1)
 }
 \arguments{
-\item{n}{a number of data.}
+\item{n}{the number of data points.}
 
-\item{space}{an underlying space.}
+\item{space}{the underlying space of \eqn{\mathcal{M}_Y}.}
 
-\item{dim}{an intrinsic dimension of the tangent space.}
+\item{dim}{the intrinsic dimension of \eqn{\mathcal{M}_Y}.}
 
-\item{error.rho}{a correlation parameter.}
+\item{error.rho}{a correlation parameter for \eqn{\varepsilon}.}
 
-\item{error.std}{a standard deviation parameter.}
+\item{error.std}{a standard deviation parameter for \eqn{\varepsilon}.}
 }
 \value{
-an \eqn{n\times m} matrix of generated random error.
+an \eqn{n\times m} matrix of random errors.
 }
 \description{
-Gerenate random errors on the tangent space at mu.
+For a random element \eqn{Y} taking values in a manifold \eqn{\mathcal{M}_Y} with the Frechet mean \eqn{\mu_Y}, 
+generate a random error \eqn{\varepsilon} taking values in \eqn{T_{\mu_Y}\mathcal{M}_Y}.
 }

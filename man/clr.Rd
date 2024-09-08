@@ -7,12 +7,13 @@
 clr(x)
 }
 \arguments{
-\item{x}{an (n,m) matrix of simplex-valued or Bayes-Hilbert space-valued data}
+\item{x}{an \eqn{n\times m} matrix of simplex- or Bayes-Hilbert space-valued data.}
 }
 \value{
-A clr transformed (n,m) matrix
+an \eqn{n\times m} matrix of clr-transformed data.
 }
 \description{
-Transform simplex or density data to R^m
-clr(x)_i = log(x_i)-sum_j log(x_j)
+Compute the centered log-ratio transform for compositional or density data.
+Specifically, for each \eqn{x=(x_i)\in\mathbb{R}^m}, the transformation is give by
+\deqn{\text{clr}(x)_i = \log(x_i) - \frac{1}{m}\sum_{j}\log(x_j)}.
 }

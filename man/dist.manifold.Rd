@@ -13,7 +13,7 @@
 \alias{dist.functional}
 \alias{dist.simplex}
 \alias{dist.sphere}
-\title{Geodesic distance on the manfold}
+\title{Geodesic distance on the manifold}
 \usage{
 dist.manifold(p, q, space = "Euclid")
 
@@ -34,31 +34,15 @@ dist.simplex(p, q)
 dist.sphere(p, q)
 }
 \arguments{
-\item{p, q}{\eqn{m} vectors or \eqn{n\times m} matrices. Each row is a point on the Riemannian metric spaces.}
+\item{p, q}{\eqn{m} vectors or \eqn{n\times m} matrices, where each row is a point on \eqn{\mathcal{M}}.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{n} vector of geodesic distance. Each entry is a distance between \eqn{p_i} and \eqn{q_i}.
+an \eqn{n} vector of geodesic distances between corresponding rows of \eqn{p} and \eqn{q}.
 }
 \description{
-Geodesic distance on the manfold
-
-Geodesic distance for Bayes-Hilbert data
-
-Geodesic distance for Euclid data
-
-Geodesic distance for SPD data with the Affine-invariant metric
-
-Geodesic distance for SPD data with the Log-Euclidean metric
-
-Geodesic distance for Wasserstein data
-
-Geodesic distance for functional data
-
-Geodesic distance for simplex data
-
-Geodesic distance for sphere data
+Compute the geodesic distance on the manifold \eqn{\mathcal{M}}.
 }
 \section{Functions}{
 \itemize{

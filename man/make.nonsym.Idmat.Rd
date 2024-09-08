@@ -2,12 +2,18 @@
 % Please edit documentation in R/Data_generation.R
 \name{make.nonsym.Idmat}
 \alias{make.nonsym.Idmat}
-\title{Generate a non-symmetric identity matrix.
-given p1,p2, the matrix I is a p1*p2 matrix with I_{jk}=delta_{jk}}
+\title{Generate a non-symmetric identity matrix}
 \usage{
 make.nonsym.Idmat(p1, p2)
 }
+\arguments{
+\item{p1}{the number of rows in the matrix.}
+
+\item{p2}{the number of columns in the matrix.}
+}
+\value{
+a \eqn{p1 \times p2} matrix where each element \eqn{I_{jk}} is \eqn{\mathbb{I}(j=k)}.
+}
 \description{
-Generate a non-symmetric identity matrix.
-given p1,p2, the matrix I is a p1*p2 matrix with I_{jk}=delta_{jk}
+Creates a \eqn{p1 \times p2} matrix \eqn{I}, where each element \eqn{I_{jk}} is equal to \eqn{\mathbb{I}(j=k)}.
 }

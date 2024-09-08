@@ -2,18 +2,18 @@
 % Please edit documentation in R/Geometry.R
 \name{RieLog.manifold}
 \alias{RieLog.manifold}
-\title{Riemannian logarithmic map}
+\title{Riemannian logarithmic map on the manifold}
 \usage{
 RieLog.manifold(p, q, space = "Euclid")
 }
 \arguments{
-\item{p, q}{\eqn{m} vectors or \eqn{n\times m} matrices. Each row is a point on the manifold.}
+\item{p, q}{\eqn{m} vectors or \eqn{n\times m} matrices, where each row is a point on \eqn{\mathcal{M}}.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{n\times m} matrix. Each row is a logarithmic map from \eqn{p_i} to \eqn{q_i}.
+an \eqn{n\times m} matrix of Riemannian logarithmics from  corresponding rows of \eqn{p} to those of \eqn{q}.
 }
 \description{
-Riemannian logarithmic map
+Compute the Riemnnain logarithmic map on the manifold \eqn{\mathcal{M}}.
 }

@@ -7,17 +7,17 @@
 covariates.generate.real(n, p, Zrho, Zsigma)
 }
 \arguments{
-\item{n}{a number of data.}
+\item{n}{the number of data points.}
 
-\item{p}{a number of covariates.}
+\item{p}{the number of covariates.}
 
-\item{Zrho}{a correlation parameter which ranges from -1 to 1.}
+\item{Zrho}{a correlation parameter ranging from -1 to 1.}
 
-\item{Zsigma}{a variance parameter, default 1.}
+\item{Zsigma}{a variance parameter, with a default value of 1.}
 }
 \value{
 an \eqn{n\times p} covariate matrix.
 }
 \description{
-Generate real covariates
+Generate an \eqn{n\times p} matrix \eqn{\bm{X}=(X_{ij})}, where each \eqn{X_{ij}} represents a covariate
 }

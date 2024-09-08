@@ -2,7 +2,7 @@
 % Please edit documentation in R/Data_generation.R
 \name{tensor.beta.generate}
 \alias{tensor.beta.generate}
-\title{Generate a list of operators from \eqn{H_j} to \eqn{H_Y}.}
+\title{Generate a list of Hilbert-SChmidt operators}
 \usage{
 tensor.beta.generate(
   Xspaces,
@@ -10,33 +10,32 @@ tensor.beta.generate(
   Xdims,
   Ydim,
   proper.indices = NULL,
-  beta.norm = 1,
-  ...
+  beta.norm = 1
 )
 }
 \arguments{
-\item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+\item{Xspaces}{a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
 
-\item{Yspace}{an underlying space of \eqn{Y}.}
+\item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xdims}{a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.}
+\item{Xdims}{a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.}
 
-\item{Ydim}{an intrinsic dimension of \eqn{H_Y}.}
+\item{Ydim}{the intrinsic dimension of \eqn{\mathcal{M}_Y}.}
 
-\item{proper.indices}{an indices of nonzero operators.}
+\item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{beta.norm}{a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.}
+\item{beta.norm}{a \eqn{p} vector (or a single integer) of the tensor norms, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.}
 }
 \value{
-a list of operators,
+a list of Hilbert-Schmidt operators (tensor elements) containing:
    \describe{
-      \item{j}{a \eqn{p} list of generated data. Each jth element is an \eqn{n\times Xdim_j} matrix.}
-      \item{Xspaces}{a \eqn{p} vector of spaces of \eqn{X_j}.}
-      \item{p}{a number of \eqn{X_j}.}
-      \item{beta.norm}{a \eqn{p} vector of the tensor norm.}
+      \item{j}{For \eqn{1\le j\le p}, the \eqn{j}th element is an \eqn{n\times D_j} matrix, with each \eqn{i}th row of \eqn{X_{ij}}.}
+      \item{Xspaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+      \item{p}{the number of \eqn{X_j}.}
+      \item{beta.norm}{a \eqn{p} vector of the tensor norms}
 }
 }
 \description{
-Generate a list of operators \eqn{B_j} from \eqn{H_j} to \eqn{H_Y}.
-Each operator can be identified as an element in the tensor product space \eqn{H_j\otimes H_Y}.
+Generate a list of Hilbert-Schmidt operators \eqn{\mathfrak{B}_j: T_{\mu_j}\mathcal{M}_j \to T_{\mu_Y}\mathcal{M}_Y}, where \eqn{\mu_j} and \eqn{\mu_Y} are the Frechet means of \eqn{X_j} and \eqn{Y}, respectively.
+Each operator is created by \code{\link{tensor.beta.generate.each}} and can be identified as an element in \eqn{T_{\mu_j}\mathcal{M}_j \otimes T_{\mu_Y}\mathcal{M}_Y}.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/LM_oracle_CV.R
 \name{LM.oracle.GCV}
 \alias{LM.oracle.GCV}
-\title{GCV for an LM.oracle function}
+\title{Generalized Cross-Validation for Oracle Hilbert-Schmidt Linear Models}
 \usage{
 LM.oracle.GCV(
   Xorg,
@@ -15,29 +15,38 @@ LM.oracle.GCV(
 )
 }
 \arguments{
-\item{Xorg}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
 
-\item{Yorg}{an \eqn{n\times m} response matrix.}
+\item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 
-\item{Yspace}{an underlying space of Yorg and Ynew.}
+\item{Xorgnew}{a list of new covariates.}
 
-\item{Xdim.max.list}{a vector of max dimension of \eqn{X_j}.}
+\item{Yorgnew}{an \eqn{n'\times m} new responses.}
 
-\item{proper.indices}{a vector of indices of relevant \eqn{X_j}.}
+\item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xnew}{a new list of manifold-valued covariates.}
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
-\item{Ynew}{a new \eqn{n'\times m} response matrix.}
+\item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 }
 \value{
-an \eqn{\code{LM}} object
+an \code{\link{LM}} object with the following components:
    \describe{
-      \item{Xdim.max.list}{a vector of Xdim.max.}
-      \item{loss.list}{a list of loss for each CV step.}
-      \item{runtime}{running time.}
-      \item{...}{see \code{\link{LM.oracle}}.}
+      \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+      \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+      \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+      \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+      \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+      \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+      \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+      \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+      \item{parameter.list}{a list of optimal parameters for each CV update.}
+      \item{loss.list}{a list of loss for each CV update.}
+      \item{runtime}{the running time.}
+      \item{...}{other parameters.}
 }
 }
 \description{
-GCV for an LM.oracle function
+Implements a generalized cross-validation (GCV) for oracle Hilbert-Schmidt linear models.
+For a more detailed description of parameters, see \code{\link{LM.oracle}}.
 }

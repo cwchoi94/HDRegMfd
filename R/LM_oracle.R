@@ -42,7 +42,7 @@ compute_beta = function(X,Y,proper.indices){
 #' @title Oracle Hilbert-Schmidt linear regression for manifold-valued responses and covariates.
 #' 
 #' @description 
-#' Estimate Hilbert-Schmidt operators using the knowledge of the nonzero index set \eqn{\mathcal{S}=\{j:\mathfrak{B}_j\neq0}}.
+#' Estimate Hilbert-Schmidt operators using the knowledge of the nonzero index set \eqn{\mathcal{S}=\{j:\mathfrak{B}_j\neq0\}}.
 #' 
 #' @inheritParams LM
 #' 

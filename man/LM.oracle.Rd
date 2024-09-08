@@ -2,36 +2,36 @@
 % Please edit documentation in R/LM_oracle.R
 \name{LM.oracle}
 \alias{LM.oracle}
-\title{High-dimensional linear regression for manifold-valued responses and covariates.}
+\title{Oracle Hilbert-Schmidt linear regression for manifold-valued responses and covariates.}
 \usage{
 LM.oracle(Xorg, Yorg, Yspace, Xdim.max = 100, proper.indices = NULL)
 }
 \arguments{
-\item{Xorg}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
 
-\item{Yorg}{an \eqn{n\times m} response matrix.}
+\item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 
-\item{Yspace}{an underlying space of \eqn{Y}.}
+\item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xdim.max}{a max dimension of \eqn{X_j}, real>0.}
+\item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
 
-\item{proper.indices}{a vector of indices of relevant \eqn{X_j}.}
+\item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 }
 \value{
-an \code{\link{LM}} object.
+a 'LM' object with the following compnents:
    \describe{
-      \item{pca}{an \code{\link{PCA.manifold.list}} object.}
-      \item{Ymu}{an \eqn{m} vector of the Frechet mean of \eqn{Y}.}
-      \item{beta}{a \eqn{P\times m} matrix of estimated beta, where \eqn{P=\sum_{j=1}^p K_j}.}
-      \item{beta.each}{a \eqn{p} list of each \eqn{beta_j}.}
-      \item{beta.norm}{a \eqn{p} vector of norm of each \eqn{beta_j}.}
-      \item{beta.vectors}{a \eqn{p} list of corresponding bases of \eqn{X_j}. Each basis is a \eqn{K_j}-by-\eqn{T_j} matrix.}
-      \item{beta.tensor}{a \eqn{p} list of tensor operators, see \code{\link{make.tensor}}.}
-      \item{proper.indices}{an indices of nonzero \code{beta_j}.}
-      \item{runtime}{a running time.}
-      \item{...}{other input parameters.}
+      \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+      \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+      \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+      \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+      \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+      \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+      \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+      \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+      \item{runtime}{the running time.}
+      \item{...}{other parameters.}
 }
 }
 \description{
-This function is based on a high-dimensional linear regression models with the knowledge of the nonzero indices.
+Estimate Hilbert-Schmidt operators using the knowledge of the nonzero index set \eqn{\mathcal{S}=\{j:\mathfrak{B}_j\neq0\}}.
 }

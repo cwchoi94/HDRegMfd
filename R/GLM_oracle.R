@@ -4,7 +4,7 @@
 #' @title Oracle generalized linear regression for manifold-valued responses and covariates.
 #' 
 #' @description 
-#' Estimate Hilbert-Schmidt operators using an ADMM-based algorithm with the knowledge of the nonzero index set \eqn{\mathcal{S}=\{j:\mathfrak{B}_j\neq0}}.
+#' Estimate Hilbert-Schmidt operators using an ADMM-based algorithm with the knowledge of the nonzero index set \eqn{\mathcal{S}=\{j:\mathfrak{B}_j\neq0\}}.
 #' 
 #' @inheritParams GLM
 #' 

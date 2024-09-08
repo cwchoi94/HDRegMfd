@@ -2,31 +2,36 @@
 % Please edit documentation in R/TensorProduct.R
 \name{make.tensor}
 \alias{make.tensor}
-\title{Make an element in tensor product spaces of \eqn{H_1} and \eqn{H_2}, \eqn{H_1\otimes H_2}}
+\title{Make an element in a Tensor Product Space}
 \usage{
 make.tensor(element1, element2, space1, space2, mu1, mu2)
 }
 \arguments{
-\item{element1}{an \eqn{n}-by-\eqn{m_1} matrix. Each row is an element in \eqn{H_1}.}
+\item{element1}{an \eqn{n\times m_1} matrix, where each row is an element in \eqn{\mathbb{H}_1}.}
 
-\item{element2}{an \eqn{n}-by-\eqn{m_2} matrix. Each row is an element in \eqn{H_2}.}
+\item{element2}{an \eqn{n\times m_2} matrix, where each row is an element in \eqn{\mathbb{H}_2}.}
 
-\item{space1, space2}{the underlying spaces of \eqn{H_1} and \eqn{H_2}, respectively.}
+\item{space1}{the name of the underlying space \eqn{\mathbb{H}_1}.}
 
-\item{mu1, mu2}{base elements in \eqn{H_1} and \eqn{H_2}, respectively. These will be used for computing norms.}
+\item{space2}{the name of the underlying space \eqn{\mathbb{H}_2}.}
+
+\item{mu1}{a base point of \eqn{\mathbb{H}_1}.}
+
+\item{mu2}{a base point of \eqn{\mathbb{H}_2}.}
 }
 \value{
-a tensor product object, class "tensor"
+a "tensor" object with the following arguments:
    \describe{
-      \item{n}{a number of elements \eqn{n}.}
-      \item{mu1,mu2}{base elements in \eqn{H_1} and \eqn{H_2}, respectively.}
-      \item{space1,space2}{the underlying space of \eqn{H_1} and \eqn{H_2}, respectively.}
-      \item{element1}{an \eqn{n}-by-\eqn{m_1} matrix. Each row is an element in \eqn{H_1}.}
-      \item{element2}{an \eqn{n}-by-\eqn{m_2} matrix. Each row is an element in \eqn{H_2}.}
-      \item{dim}{the intrinsic input dimension of \eqn{H_1}.}
+      \item{n}{the number of elements.}
+      \item{element1}{an \eqn{n\times m_1} matrix, where each row is an element in \eqn{\mathbb{H}_1}.}
+      \item{element2}{an \eqn{n\times m_2} matrix, where each row is an element in \eqn{\mathbb{H}_2}.}
+      \item{mu1}{a base point of \eqn{\mathbb{H}_1}.}
+      \item{mu2}{a base point of \eqn{\mathbb{H}_2}.}
+      \item{space1}{the name of the underlying space \eqn{\mathbb{H}_1}.}
+      \item{space2}{the name of the underlying space \eqn{\mathbb{H}_2}.}
+      \item{dim}{the intrinsic dimension of \eqn{\mathbb{H}_1}.}
 }
 }
 \description{
-Make an element in tensor product spaces of \eqn{H_1} and \eqn{H_2}, \eqn{H_1\otimes H_2}
-Let \eqn{d_1} and \eqn{d_2} be the dimensions of \eqn{H_1} and \eqn{H_2}.
+Given two Hilbert spaces \eqn{\mathbb{H}_1} and \eqn{\mathbb{H}_2}, make an element in the tensor product space \eqn{H_1\otimes H_2}.
 }

@@ -13,7 +13,7 @@
 \alias{norm.functional}
 \alias{norm.simplex}
 \alias{norm.sphere}
-\title{norm on the tangent space at \eqn{p}}
+\title{Norm on the tangent space}
 \usage{
 norm.manifold(u, p, space = "Euclid")
 
@@ -34,33 +34,17 @@ norm.simplex(u, p = NULL)
 norm.sphere(u, p = NULL)
 }
 \arguments{
-\item{u}{a \eqn{n\times m'} matrix. Each row is a tangent vector.}
+\item{u}{an \eqn{n\times m'} matrix, where each row is a tangent vector on \eqn{T_p\mathcal{M}}.}
 
-\item{p}{an \eqn{m} vector of the base point on tangent space}
+\item{p}{an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{n} vector of norm. Each entry is the norm of \eqn{u_i} at p
+an \eqn{n} vector of norms for each row of \eqn{u}.
 }
 \description{
-norm on the tangent space at \eqn{p}
-
-norm on tangent space at p for Bayes-Hilbert data
-
-norm on tangent space at p for Euclid data
-
-norm on tangent space at p for SPD data with the Affine-invariant metric
-
-norm on tangent space at p for SPD data with the Log-Euclidean metric
-
-norm on tangent space at p for Wasserstein data
-
-norm on tangent space at p for functional data
-
-norm on tangent space at p for simplex data
-
-norm on tangent space at p for sphere data
+Compute the norm on the tangent space \eqn{T_p\mathcal{M}} of the manifold \eqn{\mathcal{M}}.
 }
 \section{Functions}{
 \itemize{

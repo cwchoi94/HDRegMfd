@@ -2,22 +2,23 @@
 % Please edit documentation in R/utils.R
 \name{vector.norm}
 \alias{vector.norm}
-\title{vector norm of matrices on the tangent space at \eqn{p}}
+\title{Vector Norm on the Tangent Space}
 \usage{
 vector.norm(X, p, space = "Euclid", type = "L2")
 }
 \arguments{
 \item{X}{a \eqn{p\times m} matrix of manifold-valued data.}
 
-\item{p}{a base point on the tangent space.}
+\item{p}{a base point of the tangent space \eqn{T_p\mathcal{M}}.}
 
-\item{space}{an underlying space of \eqn{X}.}
+\item{space}{the name of the underlying space \eqn{\mathcal{M}} of \eqn{X}.}
 
-\item{type}{a type of vector norm. One of 'L2', 'L1', or 'Linf'.}
+\item{type}{the type of vector norm. One of 'L2', 'L1', or 'Linf'.}
 }
 \value{
-a vector norm
+the vector norm
 }
 \description{
-vector norm of matrices on the tangent space at \eqn{p}
+Computes the vector norm on the tangent space \eqn{T_p\mathcal{M}}.
+This function is implemented for \eqn{\ell^2}-, \eqn{\ell^1}- and \eqn{\ell^\infty}-types of norms.
 }

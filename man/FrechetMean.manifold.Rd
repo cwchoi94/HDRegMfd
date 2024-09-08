@@ -13,7 +13,7 @@
 \alias{FrechetMean.functional}
 \alias{FrechetMean.simplex}
 \alias{FrechetMean.sphere}
-\title{Frechet mean on the manifold}
+\title{The Frechet mean on the manifold}
 \usage{
 FrechetMean.manifold(X, space = "Euclid")
 
@@ -34,31 +34,15 @@ FrechetMean.simplex(X)
 FrechetMean.sphere(X)
 }
 \arguments{
-\item{X}{a \eqn{n\times m} matrix. Each row is a point on the Riemannian metric spaces.}
+\item{X}{an \eqn{n\times m} matrix where each row \eqn{X_i} is a point in \eqn{\mathcal{M}}.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{m} vector
+an \eqn{m} vector of the Frechet mean \eqn{\mu} of \eqn{X}.
 }
 \description{
-Frechet mean on the manifold
-
-Frechet mean for Bayes-Hilbert data
-
-Frechet mean for Euclid data
-
-Frechet mean for SPD.AffInv data
-
-Frechet mean for SPD.LogEuclid data
-
-Frechet mean for Wasserstein data
-
-Frechet mean for functional data
-
-Frechet mean for simplex data
-
-Frechet mean for sphere data
+Compute the Frechet mean of a random variable \eqn{X} taking values in the manifold \eqn{\mathcal{M}}.
 }
 \section{Functions}{
 \itemize{

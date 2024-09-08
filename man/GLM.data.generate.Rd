@@ -20,44 +20,50 @@ GLM.data.generate(
 )
 }
 \arguments{
-\item{n}{a number of observation.}
+\item{n}{the number of data points}
 
-\item{Xspaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
+\item{Xspaces}{a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
 
-\item{Xdims}{a \eqn{p} vector of intrinsic dimensions of \eqn{H_j}.}
+\item{Xdims}{a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.}
 
 \item{link}{a link function, see \code{\link{Check.link}}.}
 
-\item{Ydim}{a dimension of \eqn{Y}. It is only used when link is multinomial.}
+\item{Ydim}{the intrinsic dimension of \eqn{Y}, typically 1.}
 
-\item{proper.indices}{an indices of nonzero operators.}
+\item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{beta.norm}{a \eqn{p} vector or an integer of the tensor norm. It is only used for \eqn{j\notin}proper.indices. If it is an integer, we use the same value for all \eqn{X_j}.}
+\item{beta.norm}{a \eqn{p} vector (or a single integer) of the \eqn{L^2} norms of \eqn{\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|}, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.}
 
-\item{beta0.norm}{an integer of the norm of \eqn{\beta_0^*}.}
+\item{beta0.norm}{an integer specifying the norm of \eqn{\beta_0^*}, with a default value of 1.}
 
-\item{Xrho}{a correlation parameter for \eqn{X_j}.}
+\item{Xrho}{a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.}
 
-\item{Xsigma}{a variance parameter for \eqn{X_j}.}
+\item{Xsigma}{a common standard deviation parameter for \eqn{X_j}, with a default value of 1.}
 
-\item{seed}{a random seed (1<=seed)}
+\item{seed}{a random seed, which must be greater than 1.}
+
+\item{c.beta}{a \eqn{p} vector of pre-computed parameters to ensure that \eqn{\mathbb{E}\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|^2 = \text{beta.norm[j]}^2}, only computed if not provided.}
 }
 \value{
-a list of generated data
+a list of data containing:
    \describe{
-      \item{X}{a \eqn{p} list of generated covariates. Each \eqn{X_j} is an \eqn{n\times Xdim_j} matrix.}
-      \item{Y}{an \eqn{n\times m} matrix of response.}
-      \item{theta}{a canonical parameter.}
-      \item{Ymu}{Inverse link of theta.}
-      \item{beta}{a \eqn{p} list of generated operators.}
-      \item{beta0}{a constant beta0 for }
-      \item{error}{a generated random error.}
-      \item{Xbeta.each}{a \eqn{p} list of \eqn{B_j(X_j)}.}
-      \item{Xbeta}{a sum of Xbeta.each.}
-      \item{...}{the other input parameters.}
+      \item{X}{a list of manifold-valued covariates, see \code{\link{covariates.generate}}.}
+      \item{Y}{an \eqn{n\times m} matrix of responses.}
+      \item{p}{the number of \eqn{X_j}.}
+      \item{link}{a link function, see \code{\link{Check.link}}.}
+      \item{theta}{an \eqn{n\times m} matrix of canonical parameters for \eqn{Y}.}
+      \item{Ymu}{an \eqn{n\times m} matrix of the means of \eqn{Y_i}, which is an inverse link of theta.}
+      \item{beta}{a \eqn{p} list of Hilbert-Schmidt operators, see \code{\link{tensor.beta.generate}}.}
+      \item{beta0}{a \eqn{m} vector, with \eqn{\|\beta_0^*\| = \text{beta0.norm}}.}
+      \item{Xmu}{a \eqn{p} list of the Frechet means \eqn{\mu_j} of \eqn{X_j}.}
+      \item{LogX}{a \eqn{p} list of \eqn{Log_{\mu_j}X_j}, the Riemannian logarithmic transformations of \eqn{X_j}.}
+      \item{Xbeta.each}{a \eqn{p} list of \eqn{\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+      \item{Xbeta}{the sum of Xbeta.each, i.e., \eqn{\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
+      \item{...}{other input parameters.}
 }
 }
 \description{
 Generate generalized linear regression data.
-The seed for generating beta is fixed as zero, so each beta is equal in simulations.
+The response \eqn{Y} given the covariates \eqn{X} follows an exponential family distribution, and thus \eqn{Y} is real-valued.
+The seed for generating Hilbert-Schmidt operators \eqn{\mathfrak{B}_j} is fixed as zero, ensuring that each \eqn{\mathfrak{B}_j} is the same across simulations.
 }

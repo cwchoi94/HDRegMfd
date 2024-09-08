@@ -2,18 +2,18 @@
 % Please edit documentation in R/Data_generation.R
 \name{Ymu.generate}
 \alias{Ymu.generate}
-\title{Generate the Frechet means for \eqn{Y}}
+\title{Generate the Frechet mean for \eqn{Y}}
 \usage{
 Ymu.generate(m, space)
 }
 \arguments{
-\item{m}{length of each observation.}
+\item{m}{The length of each observation. Typically, this equals the dimension, but it can differ in some cases.}
 
-\item{space}{a name of space, see \code{\link{Check.manifold}}.}
+\item{space}{The name of space, see \code{\link{Check.manifold}}.}
 }
 \value{
-an \eqn{m} vector.
+The Frechet mean \eqn{\mu_Y} of \eqn{Y}, an \eqn{m} vector.
 }
 \description{
-The code is the same as \code{\link{Xmu.generate}}.
+This code is the same as \code{\link{Xmu.generate}}.
 }

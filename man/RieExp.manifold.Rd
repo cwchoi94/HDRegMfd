@@ -21,7 +21,7 @@
 \alias{RieLog.simplex}
 \alias{RieExp.sphere}
 \alias{RieLog.sphere}
-\title{Riemannian exponential map}
+\title{Riemannian exponential map on the manifold}
 \usage{
 RieExp.manifold(p, u, space = "Euclid")
 
@@ -58,49 +58,17 @@ RieExp.sphere(p, u)
 RieLog.sphere(p, q)
 }
 \arguments{
-\item{p}{an \eqn{m} vector of the base point on tangent space}
+\item{p}{an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.}
 
-\item{u}{an \eqn{n\times m'} matrix. Each row is a tangent vector.}
+\item{u}{an \eqn{n\times m'} matrix, where each row is a tangent vector on \eqn{T_p\mathcal{M}}.}
 
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \value{
-an \eqn{n\times m} matrix. Each row is a point on the Riemannian metric spaces.
+an \eqn{n\times m} matrix of Riemannian exponentials of each row of \eqn{u}.
 }
 \description{
-Riemannian exponential map
-
-Riemannian exponential map for Bayes-Hilbert data
-
-Riemannian logarithmic map for Bayes-Hilbert data
-
-Riemannian exponential map for Euclid data
-
-Riemannian logarithmic map for Euclid data
-
-Riemannian exponential map for SPD data with the Affine-invariant metric
-
-Riemannian logarithmic map for SPD data with the Affine-invariant metric
-
-Riemannian exponential map for SPD data with the Log-Euclidean metric
-
-Riemannian logarithmic map for SPD data with the Log-Euclidean metric
-
-Riemannian exponential map for Wasserstein data
-
-Riemannian logarithmic map for Wasserstein data
-
-Riemannian exponential map for functional data
-
-Riemannian logarithmic map for functional data
-
-Riemannian exponential map for simplex data
-
-Riemannian logarithmic map for simplex data
-
-Riemannian exponential map for sphere data
-
-Riemannian logarithmic map for sphere data
+Compute the Riemnnain exponential map on the manifold \eqn{\mathcal{M}}.
 }
 \section{Functions}{
 \itemize{

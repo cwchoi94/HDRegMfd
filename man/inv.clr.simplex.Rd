@@ -2,19 +2,20 @@
 % Please edit documentation in R/Geometry_simplex.R
 \name{inv.clr.simplex}
 \alias{inv.clr.simplex}
-\title{Inverse centered log-transform for simplex data}
+\title{Inverse centered log-transform for simplex-valued data}
 \usage{
 inv.clr.simplex(x, normalizer = 1)
 }
 \arguments{
-\item{x}{A clr transformed (n,m) matrix}
+\item{x}{an \eqn{n\times m} matrix of the clr-transformed data.}
 
-\item{normalizer}{A normalizing constant, default=1}
+\item{normalizer}{a normalization constant, with a default value of 1.}
 }
 \value{
-A simplex-valued (n,m) matrix
+a \eqn{n\times m} matrix of density data.
 }
 \description{
-Inverse transform R^m to simplex data
-inv.clr(x)_i = exp(x_i)/(sum_j exp(x_i)) * normalizer
+Compute the inverse centered log-ratio transform to convert data from \eqn{\mathbb{R}^m} to compositional data, see \code{\link{clr}}.
+Specifically, for each \eqn{x=(x_i)\in\mathbb{R}^m}, the transformation is give by
+\deqn{\text{inv.clr}(x)_i = \frac{\exp(x_i)}{\sum_{j} \exp(x_j)} \times \text{normalizer}}.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/GLM_oracle_CV.R
 \name{GLM.oracle.GCV}
 \alias{GLM.oracle.GCV}
-\title{GCV for an LM.oracle function}
+\title{Generalized Cross-Validation for Oracle Hilbert-Schmidt Linear Models}
 \usage{
 GLM.oracle.GCV(
   Xorg,
@@ -20,29 +20,50 @@ GLM.oracle.GCV(
 )
 }
 \arguments{
-\item{Xorg}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
 
-\item{Yorg}{an \eqn{n\times m} response matrix.}
+\item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 
-\item{Xdim.max.list}{a vector of max dimension of \eqn{X_j}.}
+\item{Xorgnew}{a list of new covariates.}
 
-\item{proper.indices}{a vector of indices of relevant \eqn{X_j}.}
+\item{Yorgnew}{an \eqn{n'\times m} new responses.}
 
-\item{Xnew}{a new list of manifold-valued covariates.}
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
-\item{Ynew}{a new \eqn{n'\times m} response matrix.}
+\item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{Yspace}{an underlying space of Yorg and Ynew.}
+\item{link}{a link function, see \code{\link{Check.link}}.}
+
+\item{max.cv.iter}{a maximum number of CV iterations (default 20).}
+
+\item{cv.threshold}{a convergence threshold for the CV (default 1e-10).}
+
+\item{eta}{a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).}
+
+\item{max.iter}{a maximum number of iterations (default: 500).}
+
+\item{threshold}{a convergence threshold for the algorithm (default: 1e-10).}
 }
 \value{
-an \eqn{\code{LM}} object
+a \code{\link{GLM}} object with the following compnents:
    \describe{
-      \item{Xdim.max.list}{a vector of Xdim.max.}
-      \item{loss.list}{a list of loss for each CV step.}
-      \item{runtime}{running time.}
-      \item{...}{see \code{\link{LM.oracle}}.}
+      \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+      \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+      \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+      \item{beta0}{an \eqn{m} vector of the intercept constant.}
+      \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+      \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+      \item{beta.norm0}{the norm of \eqn{{\beta}_0^*}.}
+      \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+      \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+      \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+      \item{parameter.list}{a list of optimal parameters for each CV update.}
+      \item{loss.list}{a list of loss for each CV update.}
+      \item{runtime}{the running time.}
+      \item{...}{other parameters.}
 }
 }
 \description{
-GCV for an LM.oracle function
+Implements a generalized cross-validation (GCV) for oracle generalized linear models.
+For a more detailed description of parameters, see \code{\link{GLM.oracle}}.
 }

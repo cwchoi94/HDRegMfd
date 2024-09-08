@@ -206,7 +206,7 @@ covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){
 #' @title Generate a Hilbert-Schmidt operator between tangent spaces of \eqn{\mathcal{M}_X} and \eqn{\mathcal{M}_Y}
 #' 
 #' @description
-#' Generate a Hilbert-Schmidt operator \eqn{\mathfrak{B}}_j: T_{\mu_X}\mathcal{M}_X \to T_{\mu_Y}\mathcal{M}_Y}, where \eqn{\mu_X} and \eqn{\mu_Y} are the Frechet means of \eqn{X} and \eqn{Y}, respectively.
+#' Generate a Hilbert-Schmidt operator \eqn{\mathfrak{B}: T_{\mu_X}\mathcal{M}_X \to T_{\mu_Y}\mathcal{M}_Y}, where \eqn{\mu_X} and \eqn{\mu_Y} are the Frechet means of \eqn{X} and \eqn{Y}, respectively.
 #' This operator can be identified as an element in the tensor product space \eqn{T_{\mu_X}\mathcal{M}_X \otimes T_{\mu_Y}\mathcal{M}_Y}. 
 #' 
 #' @param Xspace the name of the underlying space \eqn{\mathcal{M}_X} of \eqn{X}.

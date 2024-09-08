@@ -2,16 +2,16 @@
 % Please edit documentation in R/TensorProduct.R
 \name{inner.tensor}
 \alias{inner.tensor}
-\title{Inner product of tensor product spaces}
+\title{Inner product on the Tensor Product Space}
 \usage{
 inner.tensor(x, y)
 }
 \arguments{
-\item{x, y}{elements in \eqn{H_1\otimes H_2} with \eqn{n_1} and \eqn{n_2}, created by \code{\link{make.tensor}}.}
+\item{x, y}{elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.}
 }
 \value{
-an inner product of x and y
+the inner product of x and y.
 }
 \description{
-Two elements must have the same underlying spaces \eqn{H_1} and \eqn{H_2}, and base elements \eqn{mu_1} and \eqn{mu_2}.
+Computes the inner product of two elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}.
 }

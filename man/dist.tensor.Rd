@@ -2,16 +2,16 @@
 % Please edit documentation in R/TensorProduct.R
 \name{dist.tensor}
 \alias{dist.tensor}
-\title{Distance of tensor product spaces}
+\title{Distance on the Tensor Product Space}
 \usage{
 dist.tensor(x, y)
 }
 \arguments{
-\item{x, y}{elements in \eqn{H_1\otimes H_2} with \eqn{n_1} and \eqn{n_2}, created by \code{\link{make.tensor}}.}
+\item{x, y}{elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.}
 }
 \value{
-a distance of x and y
+the distance between x and y.
 }
 \description{
-Two elements must have the same underlying spaces \eqn{H_1} and \eqn{H_2}, and base elements \eqn{mu_1} and \eqn{mu_2}.#'
+Computes the distance between two elements in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}.
 }

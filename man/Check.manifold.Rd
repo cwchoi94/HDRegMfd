@@ -2,21 +2,24 @@
 % Please edit documentation in R/Geometry.R
 \name{Check.manifold}
 \alias{Check.manifold}
-\title{Basic geometry structure on manifolds}
+\title{Check if the given space is a manifold}
 \usage{
 Check.manifold(space)
 }
 \arguments{
-\item{space}{a name of space, one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
+\item{space}{the name of space, which must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.}
 }
 \description{
-Basic:
-inner product, norm in tangent spaces, distance
-exponential and logarithmic maps
+Check if the given space is a manifold.
+The space name must be one of 'Euclid', 'simplex', 'sphere', 'SPD.LogEuclid', 'SPD.AffInv', 'functional', 'BayesHilbert', or 'Wasserstein'.
 }
 \details{
+Basic functions for manifolds
+
+Basic geometry structure:
+inner product, norm in tangent spaces, distance
+exponential and logarithmic maps
+
 For PCA:
 Frechet mean, PCA
-
-Check whether manifolds or not
 }

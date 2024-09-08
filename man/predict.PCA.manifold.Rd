@@ -13,7 +13,7 @@
 \alias{predict.PCA.functional}
 \alias{predict.PCA.simplex}
 \alias{predict.PCA.sphere}
-\title{Prediction score matrix of manifold-valued data.}
+\title{Prediction of a score matrix of manifold-valued data.}
 \usage{
 \method{predict}{PCA.manifold}(object, Xnew)
 
@@ -36,29 +36,13 @@
 \arguments{
 \item{object}{a \code{\link{PCA.manifold}} object.}
 
-\item{Xnew}{an \eqn{n\times m} matrix). Each row is a point on the space.}
+\item{Xnew}{an \eqn{n\times m} matrix where each row is a point in \eqn{\mathcal{M}}.}
 }
 \value{
 an \eqn{n\times m'} score matrix.
 }
 \description{
-Prediction score matrix of manifold-valued data.
-
-Prediction score matrix for Bayes-Hilbert data
-
-Prediction score matrix for Euclid data
-
-Prediction score matrix for SPD data with the Affine-invariant metric
-
-Prediction score matrix for SPD data with the Log-Euclidean metric
-
-Prediction score matrix for Wasserstein data
-
-Prediction score matrix for functional data
-
-Prediction score matrix for simplex data
-
-Prediction score matrix for sphere data
+Compute a score matrix of the manifold-valued data using the principal component analysis (spectral decomposition) results made by \code{\link{PCA.manaifold}}.
 }
 \section{Functions}{
 \itemize{

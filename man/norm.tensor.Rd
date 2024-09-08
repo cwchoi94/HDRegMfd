@@ -2,16 +2,16 @@
 % Please edit documentation in R/TensorProduct.R
 \name{norm.tensor}
 \alias{norm.tensor}
-\title{Norm of tensor product spaces}
+\title{Norm on the Tensor Product Space}
 \usage{
 norm.tensor(x)
 }
 \arguments{
-\item{x}{an element in \eqn{H_1\otimes H_2}, created by \code{\link{make.TPspace}}.}
+\item{x}{an element in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}, created by \code{\link{make.tensor}}.}
 }
 \value{
-a norm of x
+the norm of x.
 }
 \description{
-Norm of tensor product spaces
+Computes the inner product of an element in \eqn{\mathbb{H}_1\otimes \mathbb{H}_2}.
 }

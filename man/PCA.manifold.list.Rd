@@ -2,28 +2,28 @@
 % Please edit documentation in R/PCA_list.R
 \name{PCA.manifold.list}
 \alias{PCA.manifold.list}
-\title{Principal component analysis for manifold-valued data,}
+\title{Principal Component Analysis for a List of Manifold-valued Data,}
 \usage{
 PCA.manifold.list(Xdata, alpha = 0.95)
 }
 \arguments{
-\item{Xdata}{a list of manifold-valued data.
+\item{Xdata}{a list of manifold-valued covariates with the following arguments:
 \describe{
-      \item{j}{a \eqn{p} list of generated data. Each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
-      \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-      \item{p}{a number of \eqn{X_j}.}
+      \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+      \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+      \item{p}{the number of \eqn{X_j}.}
 }}
 
-\item{alpha}{a truncation parameter of the number of vectors, only used for infinite dimensional manifolds. Select the first index where the sum of the variances is equal to or greater than the alpha of the total.}
+\item{alpha}{a truncation parameter of the number of basis vectors, used only for infinite dimensional \eqn{\mathcal{M}}. Selects the first index where the cumulative variance is equal to or greater than \eqn{\alpha} of the total variance.}
 }
 \value{
-a PCA.manifold.list object.
+a 'PCA.manifold.list' object with the following arguments:
 \describe{
       \item{j}{a \code{\link{PCA.manifold}} object for \eqn{X_j}.}
-      \item{spaces}{a \eqn{p} vector of underlying spaces of \eqn{X_j}.}
-      \item{p}{a number of \eqn{X_j}.}
+      \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+      \item{p}{the number of \eqn{X_j}.}
 }
 }
 \description{
-PCA fitting for a list of manifold-valued data.
+Performs the principal component analysis (spectral decomposition) for a list of manifold-valued covariates.
 }

@@ -2,18 +2,18 @@
 % Please edit documentation in R/PCA_list.R
 \name{predict.PCA.manifold.list}
 \alias{predict.PCA.manifold.list}
-\title{Prediction of principal component score for manifold-valued data}
+\title{Prediction of Score Matrices for a List of Manifold-valued Data}
 \usage{
 \method{predict}{PCA.manifold.list}(object, Xdatanew)
 }
 \arguments{
 \item{object}{a \code{\link{PCA.manifold.list}} object.}
 
-\item{Xdatanew}{a new \eqn{p} list of manifold-valued data.}
+\item{Xnew}{a new list of manifold-valued covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
 }
 \value{
-a \eqn{p} list of score matrices, see \code{\link{predict.PCA.manifold}}.
+a \eqn{p} list of score matrices.
 }
 \description{
-Prediction of principal component scores for a list of manifold-valued data.
+Computes a list of score matrices for a list of the manifold-valued data based on \code{\link{PCA.manifold.list}}.
 }

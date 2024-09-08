@@ -2,7 +2,7 @@
 % Please edit documentation in R/LM_GCV.R
 \name{LM.GCV}
 \alias{LM.GCV}
-\title{Generalized cross validation for high-dimensional linear regression}
+\title{Generalized Cross-Validation for High-Dimensional Hilbert-Schmidt Linear Models}
 \usage{
 LM.GCV(
   Xorg,
@@ -24,48 +24,57 @@ LM.GCV(
 )
 }
 \arguments{
-\item{Xorg}{a list of manifold-valued covariates, see \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
 
-\item{Yorg}{an \eqn{n\times m} response matrix.}
+\item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 
-\item{Yspace}{an underlying space of \eqn{Y}.}
+\item{Xorgnew}{a list of new covariates.}
 
-\item{lambda.list}{a vector of lambda.}
+\item{Yorgnew}{an \eqn{n'\times m} new responses.}
 
-\item{Xdim.max.list}{a vector of max dimension of \eqn{X_j}.}
+\item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{R.list}{a vector of constrained bound.}
+\item{lambda.list}{a vector of non-negative penalty constants.}
 
-\item{penalty}{a method of penalty. It should be one of 'LASSO', 'SCAD', or 'MCP'.}
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
-\item{phi}{a parameter in computing ADMM-MM algorithm for the majorized objective function, default 1.}
+\item{R.list}{a vector of \eqn{\ell^1}-type constrained bounds.}
 
-\item{gamma}{a parameter for SCAD (3.7) or MCP (3), parentheses: default value.}
+\item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
 
-\item{max.cv.iter}{a number of maximum CV iterations, default 20.}
+\item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 
-\item{cv.threshold}{a parameter to modify the computation error in CV, default 1e-10.}
+\item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
 
-\item{eta}{a parameter in computing ADMM-MM algorithm for the proximal norm square, default 1e-3.}
+\item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 
-\item{max.iter}{a maximum iteration, default 500.}
+\item{cv.threshold}{a convergence threshold for the CV (default 1e-10).}
 
-\item{threshold}{an algorihtm convergence threshold, default 1e-10.}
+\item{eta}{a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).}
 
-\item{Xnew}{a list of new covariate observations.}
+\item{max.iter}{a maximum number of iterations (default: 500).}
 
-\item{Ynew}{an \eqn{n'\times} new response observations.}
+\item{threshold}{a convergence threshold for the algorithm (default: 1e-10).}
 }
 \value{
-an \code{\link{LM}} object.
+an \code{\link{LM}} object with the following components:
    \describe{
-      \item{parameter.list}{a list of optimal parameters for each CV step.}
-      \item{loss.list}{a list of loss for each CV step.}
-      \item{runtime}{running time}
-      \item{...}{see \code{\link{LM}}.}
+      \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+      \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+      \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+      \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+      \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+      \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+      \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+      \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
+      \item{parameter.list}{a list of optimal parameters for each CV update.}
+      \item{loss.list}{a list of loss for each CV update.}
+      \item{runtime}{the running time.}
+      \item{...}{other parameters.}
 }
 }
 \description{
-GCV for a LM object
-It is based on CBS algorithm and uses a function LM_GCV in LM_GCV.cpp.
+Implements a generalized cross-validation (GCV) for high-dimensional Hilbert-Schmidt linear models.
+The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
+For a more detailed description of parameters, see \code{\link{LM}}.
 }

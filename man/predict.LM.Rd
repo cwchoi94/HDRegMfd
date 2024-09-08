@@ -2,18 +2,18 @@
 % Please edit documentation in R/LM.R
 \name{predict.LM}
 \alias{predict.LM}
-\title{Prediction function for a LM object}
+\title{Prediction for Hilbert-Schmidt Linear Models}
 \usage{
 \method{predict}{LM}(object, Xnew)
 }
 \arguments{
-\item{object}{a \code{\link{LM}} class object.}
+\item{object}{an \code{\link{LM}} object.}
 
-\item{Xnew}{a \eqn{p} list of new observations.}
+\item{Xnew}{a list of new observations, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
 }
 \value{
-an \eqn{n'\times m} matrix of \eqn{\hat{Y}_{new}}.
+an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}}.
 }
 \description{
-Predict \eqn{\hat{Y}_{new}} for given \eqn{X_{new}}.
+Predict \eqn{\hat{Y}_{new}} for the given \eqn{X_{new}} using an \code{\link{LM}} object.
 }

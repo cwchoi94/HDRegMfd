@@ -7,13 +7,13 @@
 Xmu.generate(m, space)
 }
 \arguments{
-\item{m}{length of each observation.}
+\item{m}{the length of each observation. Typically, this equals the dimension, but it can differ in some cases.}
 
-\item{space}{a name of space, see \code{\link{Check.manifold}}.}
+\item{space}{the name of space, see \code{\link{Check.manifold}}.}
 }
 \value{
-a \eqn{m} vector.
+the Frechet mean \eqn{\mu_j} of \eqn{X_j}, an \eqn{m} vector.
 }
 \description{
-Generate Frechet means of \eqn{X_j}
+Generate Frechet means \eqn{\mu_j} of \eqn{X_j}.
 }

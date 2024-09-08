@@ -2,20 +2,20 @@
 % Please edit documentation in R/Data_generation.R
 \name{covariates.generate.each}
 \alias{covariates.generate.each}
-\title{Generate each manifold-valued covariates}
+\title{Generate a manifold-valued covariate}
 \usage{
 covariates.generate.each(Xi, dim, space = "Euclid")
 }
 \arguments{
-\item{Xi}{an \eqn{n\times m'} score matrix.}
+\item{Xi}{an \eqn{n\times m'} score matrix, where \eqn{m'} is the intrinsic dimension (the number of scores).}
 
-\item{dim}{a dimension of \eqn{X}.}
+\item{dim}{the dimension of \eqn{X}.}
 
-\item{space}{the underlying spaces, see \code{\link{Check.manifold}}}
+\item{space}{the underlying spaces, see \code{\link{Check.manifold}}.}
 }
 \value{
-an \eqn{n\times m} matrix with dimension. Each row is an element of the manifold.
+an \eqn{n\times m} matrix. Each row represents a manifold-valued covariate.
 }
 \description{
-Generate each manifold-valued covariates
+Given \eqn{j}, generate manifold-valued covariates \eqn{X_{ij}} for \eqn{1\le i\le n}.
 }
