@@ -6,10 +6,10 @@
 #' @description 
 #' Performs the principal component analysis (spectral decomposition) for a list of manifold-valued covariates.
 #' 
-#' @param Xdata a list of manifold-valued covariates with the following arguments:
+#' @param Xdata a list of covariates with the following arguments (see also \code{\link{covariates.generate}}):
 #' \describe{
 #'       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
-#'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+#'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}, see \code{\link{Check.manifold}}.}
 #'       \item{p}{the number of \eqn{X_j}.}
 #' }
 #' @param alpha a truncation parameter of the number of basis vectors, used only for infinite dimensional \eqn{\mathcal{M}}. Selects the first index where the cumulative variance is equal to or greater than \eqn{\alpha} of the total variance.
@@ -44,7 +44,12 @@ PCA.manifold.list = function(Xdata,alpha=0.95){
 #' Computes a list of score matrices for a list of the manifold-valued data based on \code{\link{PCA.manifold.list}}.
 #' 
 #' @param object a \code{\link{PCA.manifold.list}} object.
-#' @param Xnew a new list of manifold-valued covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.
+#' @param Xdatanew a new list of covariates with the following arguments (see also \code{\link{covariates.generate}}):
+#' \describe{
+#'       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+#'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}, see \code{\link{Check.manifold}}.}
+#'       \item{p}{the number of \eqn{X_j}.}
+#' }
 #' 
 #' @return a \eqn{p} list of score matrices.
 #' @export

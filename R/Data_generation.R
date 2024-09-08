@@ -109,7 +109,7 @@ make.nonsym.Idmat = function(p1,p2){
 #' 
 #' @param Xi an \eqn{n\times m'} score matrix, where \eqn{m'} is the intrinsic dimension (the number of scores).
 #' @param dim the dimension of \eqn{X}.
-#' @param space the underlying spaces, see \code{\link{Check.manifold}}.
+#' @param space the underlying space, see \code{\link{Check.manifold}}.
 #' 
 #' @return an \eqn{n\times m} matrix. Each row represents a manifold-valued covariate.
 #' @export
@@ -158,7 +158,7 @@ w.ftn = function(k){
 #' @return a list of data containing:
 #'    \describe{
 #'       \item{j}{a \eqn{p}-list of generated data, where each \eqn{j}th element is an \eqn{n\times D_j} matrix.}
-#'       \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.}
+#'       \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}, see \code{\link{Check.manifold}}.}
 #'       \item{p}{the number of \eqn{X_j}.}
 #' }
 covariates.generate = function(n,Xspaces,dims,Xrho=0.5,Xsigma=1){

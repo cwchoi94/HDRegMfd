@@ -21,7 +21,7 @@ covariates.generate(n, Xspaces, dims, Xrho = 0.5, Xsigma = 1)
 a list of data containing:
    \describe{
       \item{j}{a \eqn{p}-list of generated data, where each \eqn{j}th element is an \eqn{n\times D_j} matrix.}
-      \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.}
+      \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}, see \code{\link{Check.manifold}}.}
       \item{p}{the number of \eqn{X_j}.}
 }
 }

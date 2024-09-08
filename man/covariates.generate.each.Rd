@@ -11,7 +11,7 @@ covariates.generate.each(Xi, dim, space = "Euclid")
 
 \item{dim}{the dimension of \eqn{X}.}
 
-\item{space}{the underlying spaces, see \code{\link{Check.manifold}}.}
+\item{space}{the underlying space, see \code{\link{Check.manifold}}.}
 }
 \value{
 an \eqn{n\times m} matrix. Each row represents a manifold-valued covariate.

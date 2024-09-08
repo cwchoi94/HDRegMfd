@@ -7,10 +7,10 @@
 PCA.manifold.list(Xdata, alpha = 0.95)
 }
 \arguments{
-\item{Xdata}{a list of manifold-valued covariates with the following arguments:
+\item{Xdata}{a list of covariates with the following arguments (see also \code{\link{covariates.generate}}):
 \describe{
       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
-      \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+      \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}, see \code{\link{Check.manifold}}.}
       \item{p}{the number of \eqn{X_j}.}
 }}
 

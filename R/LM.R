@@ -41,7 +41,7 @@ reduce.dimension = function(X,Xdim.max=100,margin=1){
 #' @param Xorg a list of covariates with the following components (see also \code{\link{covariates.generate}}):
 #' \describe{
 #'       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
-#'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+#'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}, see \code{\link{Check.manifold}}.}
 #'       \item{p}{the number of \eqn{X_j}.}
 #' }
 #' @param Yorg an \eqn{n\times m} matrix of manifold-valued responses.
@@ -137,7 +137,12 @@ LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',
 #' Predict \eqn{\hat{Y}_{new}} for the given \eqn{X_{new}} using an \code{\link{LM}} object.
 #' 
 #' @param object an \code{\link{LM}} object.
-#' @param Xnew a list of new observations, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.
+#' @param Xnew a new list of covariates with the following components (see also \code{\link{covariates.generate}}):
+#' \describe{
+#'       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+#'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}, see \code{\link{Check.manifold}}.}
+#'       \item{p}{the number of \eqn{X_j}.}
+#' }
 #'
 #' @return an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}}.
 #' @export
