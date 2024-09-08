@@ -38,7 +38,7 @@ reduce.dimension = function(X,Xdim.max=100,margin=1){
 #' Estimate Hilbert-Schmidt operators using an ADMM-based algorithm.
 #' This function supports 'LASSO', 'SCAD', or 'MCP' penalty functions.
 #' 
-#' @param Xorg a list of covariates with the following components:
+#' @param Xorg a list of covariates with the following components (see also \code{\link{covariates.generate}}):
 #' \describe{
 #'       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
 #'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}

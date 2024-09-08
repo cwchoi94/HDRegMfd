@@ -7,7 +7,7 @@
 LM.oracle(Xorg, Yorg, Yspace, Xdim.max = 100, proper.indices = NULL)
 }
 \arguments{
-\item{Xorg}{a list of covariates with the following components:
+\item{Xorg}{a list of covariates with the following components (see also \code{\link{covariates.generate}}):
 \describe{
       \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
