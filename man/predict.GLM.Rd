@@ -19,7 +19,7 @@
 \item{is.inv.link}{whether to apply the inverse link function (default=TRUE).}
 }
 \value{
-an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}}.
+an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}} or predicted canonical parameters \eqn{\hat{\theta}_{new}}.
 }
 \description{
 Predict \eqn{\hat{Y}_{new}} for the given \eqn{X_{new}} using an \code{\link{GLM}} object.

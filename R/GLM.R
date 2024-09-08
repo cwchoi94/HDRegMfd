@@ -103,7 +103,7 @@ GLM = function(Xorg,Yorg,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',link='bin
 #' }
 #' @param is.inv.link whether to apply the inverse link function (default=TRUE).
 #'
-#' @return an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}}.
+#' @return an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}} or predicted canonical parameters \eqn{\hat{\theta}_{new}}.
 #' @export
 predict.GLM = function(object,Xnew,is.inv.link=TRUE){
   Xnew = predict.PCA.manifold.list(object$pca,Xnew)
