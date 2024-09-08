@@ -11,7 +11,7 @@
 
 \item{Xnew}{a new list of covariates with the following components (see also \code{\link{covariates.generate}}):
 \describe{
-      \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+      \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n'\times T_j} matrix.}
       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}, see \code{\link{Check.manifold}}.}
       \item{p}{the number of \eqn{X_j}.}
 }}
@@ -23,4 +23,5 @@ an \eqn{n'\times m} matrix of predicted values \eqn{\hat{Y}_{new}}.
 }
 \description{
 Predict \eqn{\hat{Y}_{new}} for the given \eqn{X_{new}} using an \code{\link{GLM}} object.
+If 'is.inv.link' is FALSE, this function returns \eqn{\hat{\theta}_{new}}.
 }
