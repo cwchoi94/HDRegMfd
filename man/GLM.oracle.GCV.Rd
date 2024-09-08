@@ -20,7 +20,12 @@ GLM.oracle.GCV(
 )
 }
 \arguments{
-\item{Xorg}{a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.}
+\item{Xorg}{a list of covariates with the following components:
+\describe{
+      \item{j}{a \eqn{p} list of manifold-valued covariates, where each \eqn{j}th element is an \eqn{n\times T_j} matrix.}
+      \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+      \item{p}{the number of \eqn{X_j}.}
+}}
 
 \item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 

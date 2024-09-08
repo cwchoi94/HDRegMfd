@@ -8,21 +8,14 @@
 #' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
 #' For a more detailed description of parameters, see \code{\link{LM}}.
 #' 
-#' @param Xorg a list of covariates, see the "Xdata" argument in \code{\link{PCA.manifold.list}}.
-#' @param Yorg an \eqn{n\times m} matrix of manifold-valued responses.
-#' @param Yspace the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.
+#' @inheritParams LM
+#' 
 #' @param lambda.list a vector of non-negative penalty constants.
 #' @param Xdim.max.list a vector of the maximum dimension to which \eqn{X_j} will be reduced.
 #' @param R.list a vector of \eqn{\ell^1}-type constrained bounds.
 #' @param cv.type a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').
-#' @param penalty the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').
-#' @param phi a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).
-#' @param gamma a parameter for SCAD (default: 3.7) or MCP (default: 3).
 #' @param max.cv.iter a maximum number of CV iterations (default 20).
 #' @param cv.threshold a convergence threshold for the CV (default 1e-10).
-#' @param eta a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).
-#' @param max.iter a maximum number of iterations (default: 500).
-#' @param threshold a convergence threshold for the algorithm (default: 1e-10).
 #'
 #' @return an \code{\link{LM}} object with the following components:
 #'    \describe{
