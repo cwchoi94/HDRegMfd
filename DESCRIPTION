@@ -1,11 +1,11 @@
-Package: NonEuclidReg
+Package: HDRegMfd
 Type: Package
-Title: High-dimensional linear regression for manifold-valued response and covariates
+Title: High-dimensional Regression for Hilbert manifold variables
 Version: 1.0
 Date: 2023-12-18
 Author: Changwon Choi
 Maintainer: Changwon Choi <cwchoi94@gmail.com>
-Description: A package containing functions about high-dimensional linear regression for manifold-valued response and covariates.
+Description: A package containing functions about high-dimensional regression for Hilbert manifold covariates.
              This package has been developed for Euclidean, simplex, sphere, SPD matrices with log-Euclidean metric, functional, Bayes-Hilbert, and Wasserstein spaces.
              For more information, see ...
 Imports: 

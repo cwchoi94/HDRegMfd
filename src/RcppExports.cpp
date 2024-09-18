@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // GLM_each
 List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, String penalty, String link, double phi, double gamma, double eta, int max_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_GLM_each(SEXP XorgSEXP, SEXP YorgSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_GLM_each(SEXP XorgSEXP, SEXP YorgSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,7 +35,7 @@ END_RCPP
 }
 // GLM_CV
 List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, String link, double phi, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_GLM_CV(SEXP XSEXP, SEXP YSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_GLM_CV(SEXP XSEXP, SEXP YSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // GLM_GCV
 List GLM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, String link, double phi, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_GLM_GCV(SEXP XSEXP, SEXP YSEXP, SEXP XnewSEXP, SEXP YnewSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_GLM_GCV(SEXP XSEXP, SEXP YSEXP, SEXP XnewSEXP, SEXP YnewSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // Link
 arma::mat Link(arma::mat u, String link);
-RcppExport SEXP _NonEuclidReg_Link(SEXP uSEXP, SEXP linkSEXP) {
+RcppExport SEXP _HDRegMfd_Link(SEXP uSEXP, SEXP linkSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -92,7 +92,7 @@ END_RCPP
 }
 // Inv_Link
 arma::mat Inv_Link(arma::mat u, String link);
-RcppExport SEXP _NonEuclidReg_Inv_Link(SEXP uSEXP, SEXP linkSEXP) {
+RcppExport SEXP _HDRegMfd_Inv_Link(SEXP uSEXP, SEXP linkSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -104,7 +104,7 @@ END_RCPP
 }
 // Psi
 arma::mat Psi(arma::mat u, String link);
-RcppExport SEXP _NonEuclidReg_Psi(SEXP uSEXP, SEXP linkSEXP) {
+RcppExport SEXP _HDRegMfd_Psi(SEXP uSEXP, SEXP linkSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -116,7 +116,7 @@ END_RCPP
 }
 // Psi_1d
 arma::mat Psi_1d(arma::mat u, String link);
-RcppExport SEXP _NonEuclidReg_Psi_1d(SEXP uSEXP, SEXP linkSEXP) {
+RcppExport SEXP _HDRegMfd_Psi_1d(SEXP uSEXP, SEXP linkSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -128,7 +128,7 @@ END_RCPP
 }
 // Psi_2d
 arma::mat Psi_2d(arma::mat u, String link);
-RcppExport SEXP _NonEuclidReg_Psi_2d(SEXP uSEXP, SEXP linkSEXP) {
+RcppExport SEXP _HDRegMfd_Psi_2d(SEXP uSEXP, SEXP linkSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -140,7 +140,7 @@ END_RCPP
 }
 // GLM_Kfold
 List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, String link, double phi, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_GLM_Kfold(SEXP X_listSEXP, SEXP Y_listSEXP, SEXP Xnew_listSEXP, SEXP Ynew_listSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_GLM_Kfold(SEXP X_listSEXP, SEXP Y_listSEXP, SEXP Xnew_listSEXP, SEXP Ynew_listSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -164,7 +164,7 @@ END_RCPP
 }
 // LM_each
 List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma, double eta, int max_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LM_each(SEXP XorgSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_LM_each(SEXP XorgSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -187,7 +187,7 @@ END_RCPP
 }
 // LM_CV
 List LM_CV(List X, arma::mat LogY, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, double phi, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LM_CV(SEXP XSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_LM_CV(SEXP XSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -210,7 +210,7 @@ END_RCPP
 }
 // LM_GCV
 List LM_GCV(List X, arma::mat LogY, List Xnew, arma::mat LogYnew, arma::vec Ymu, Function inner, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, double phi, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LM_GCV(SEXP XSEXP, SEXP LogYSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_LM_GCV(SEXP XSEXP, SEXP LogYSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP innerSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -234,7 +234,7 @@ END_RCPP
 }
 // LM_Kfold
 List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, Function inner, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String penalty, double phi, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _NonEuclidReg_LM_Kfold(SEXP X_listSEXP, SEXP LogY_listSEXP, SEXP Xnew_listSEXP, SEXP LogYnew_listSEXP, SEXP Ymu_listSEXP, SEXP innerSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP _HDRegMfd_LM_Kfold(SEXP X_listSEXP, SEXP LogY_listSEXP, SEXP Xnew_listSEXP, SEXP LogYnew_listSEXP, SEXP Ymu_listSEXP, SEXP innerSEXP, SEXP kfoldSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP penaltySEXP, SEXP phiSEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -259,7 +259,7 @@ END_RCPP
 }
 // PCA_list
 List PCA_list(List Xall, double alpha);
-RcppExport SEXP _NonEuclidReg_PCA_list(SEXP XallSEXP, SEXP alphaSEXP) {
+RcppExport SEXP _HDRegMfd_PCA_list(SEXP XallSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -271,7 +271,7 @@ END_RCPP
 }
 // predict_PCA_list
 List predict_PCA_list(List pca, List Xnew);
-RcppExport SEXP _NonEuclidReg_predict_PCA_list(SEXP pcaSEXP, SEXP XnewSEXP) {
+RcppExport SEXP _HDRegMfd_predict_PCA_list(SEXP pcaSEXP, SEXP XnewSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -283,7 +283,7 @@ END_RCPP
 }
 // LASSO_sol
 arma::mat LASSO_sol(arma::mat xy, double xx, double normxy, double lambda, double kappa, double gamma);
-RcppExport SEXP _NonEuclidReg_LASSO_sol(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
+RcppExport SEXP _HDRegMfd_LASSO_sol(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -299,7 +299,7 @@ END_RCPP
 }
 // LASSO_sol2
 arma::mat LASSO_sol2(arma::mat xy, double xx, double normxy, double lambda, double kappa, double gamma);
-RcppExport SEXP _NonEuclidReg_LASSO_sol2(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
+RcppExport SEXP _HDRegMfd_LASSO_sol2(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -315,7 +315,7 @@ END_RCPP
 }
 // SCAD_sol
 arma::mat SCAD_sol(arma::mat xy, double xx, double normxy, double lambda, double kappa, double gamma);
-RcppExport SEXP _NonEuclidReg_SCAD_sol(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
+RcppExport SEXP _HDRegMfd_SCAD_sol(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -331,7 +331,7 @@ END_RCPP
 }
 // SCAD_sol2
 arma::mat SCAD_sol2(arma::mat xy, double xx, double normxy, double lambda, double kappa, double gamma);
-RcppExport SEXP _NonEuclidReg_SCAD_sol2(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
+RcppExport SEXP _HDRegMfd_SCAD_sol2(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -347,7 +347,7 @@ END_RCPP
 }
 // MCP_sol
 arma::mat MCP_sol(arma::mat xy, double xx, double normxy, double lambda, double kappa, double gamma);
-RcppExport SEXP _NonEuclidReg_MCP_sol(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
+RcppExport SEXP _HDRegMfd_MCP_sol(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -363,7 +363,7 @@ END_RCPP
 }
 // MCP_sol2
 arma::mat MCP_sol2(arma::mat xy, double xx, double normxy, double lambda, double kappa, double gamma);
-RcppExport SEXP _NonEuclidReg_MCP_sol2(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
+RcppExport SEXP _HDRegMfd_MCP_sol2(SEXP xySEXP, SEXP xxSEXP, SEXP normxySEXP, SEXP lambdaSEXP, SEXP kappaSEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -379,31 +379,31 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_NonEuclidReg_GLM_each", (DL_FUNC) &_NonEuclidReg_GLM_each, 12},
-    {"_NonEuclidReg_GLM_CV", (DL_FUNC) &_NonEuclidReg_GLM_CV, 12},
-    {"_NonEuclidReg_GLM_GCV", (DL_FUNC) &_NonEuclidReg_GLM_GCV, 13},
-    {"_NonEuclidReg_Link", (DL_FUNC) &_NonEuclidReg_Link, 2},
-    {"_NonEuclidReg_Inv_Link", (DL_FUNC) &_NonEuclidReg_Inv_Link, 2},
-    {"_NonEuclidReg_Psi", (DL_FUNC) &_NonEuclidReg_Psi, 2},
-    {"_NonEuclidReg_Psi_1d", (DL_FUNC) &_NonEuclidReg_Psi_1d, 2},
-    {"_NonEuclidReg_Psi_2d", (DL_FUNC) &_NonEuclidReg_Psi_2d, 2},
-    {"_NonEuclidReg_GLM_Kfold", (DL_FUNC) &_NonEuclidReg_GLM_Kfold, 14},
-    {"_NonEuclidReg_LM_each", (DL_FUNC) &_NonEuclidReg_LM_each, 13},
-    {"_NonEuclidReg_LM_CV", (DL_FUNC) &_NonEuclidReg_LM_CV, 13},
-    {"_NonEuclidReg_LM_GCV", (DL_FUNC) &_NonEuclidReg_LM_GCV, 14},
-    {"_NonEuclidReg_LM_Kfold", (DL_FUNC) &_NonEuclidReg_LM_Kfold, 15},
-    {"_NonEuclidReg_PCA_list", (DL_FUNC) &_NonEuclidReg_PCA_list, 2},
-    {"_NonEuclidReg_predict_PCA_list", (DL_FUNC) &_NonEuclidReg_predict_PCA_list, 2},
-    {"_NonEuclidReg_LASSO_sol", (DL_FUNC) &_NonEuclidReg_LASSO_sol, 6},
-    {"_NonEuclidReg_LASSO_sol2", (DL_FUNC) &_NonEuclidReg_LASSO_sol2, 6},
-    {"_NonEuclidReg_SCAD_sol", (DL_FUNC) &_NonEuclidReg_SCAD_sol, 6},
-    {"_NonEuclidReg_SCAD_sol2", (DL_FUNC) &_NonEuclidReg_SCAD_sol2, 6},
-    {"_NonEuclidReg_MCP_sol", (DL_FUNC) &_NonEuclidReg_MCP_sol, 6},
-    {"_NonEuclidReg_MCP_sol2", (DL_FUNC) &_NonEuclidReg_MCP_sol2, 6},
+    {"_HDRegMfd_GLM_each", (DL_FUNC) &_HDRegMfd_GLM_each, 12},
+    {"_HDRegMfd_GLM_CV", (DL_FUNC) &_HDRegMfd_GLM_CV, 12},
+    {"_HDRegMfd_GLM_GCV", (DL_FUNC) &_HDRegMfd_GLM_GCV, 13},
+    {"_HDRegMfd_Link", (DL_FUNC) &_HDRegMfd_Link, 2},
+    {"_HDRegMfd_Inv_Link", (DL_FUNC) &_HDRegMfd_Inv_Link, 2},
+    {"_HDRegMfd_Psi", (DL_FUNC) &_HDRegMfd_Psi, 2},
+    {"_HDRegMfd_Psi_1d", (DL_FUNC) &_HDRegMfd_Psi_1d, 2},
+    {"_HDRegMfd_Psi_2d", (DL_FUNC) &_HDRegMfd_Psi_2d, 2},
+    {"_HDRegMfd_GLM_Kfold", (DL_FUNC) &_HDRegMfd_GLM_Kfold, 14},
+    {"_HDRegMfd_LM_each", (DL_FUNC) &_HDRegMfd_LM_each, 13},
+    {"_HDRegMfd_LM_CV", (DL_FUNC) &_HDRegMfd_LM_CV, 13},
+    {"_HDRegMfd_LM_GCV", (DL_FUNC) &_HDRegMfd_LM_GCV, 14},
+    {"_HDRegMfd_LM_Kfold", (DL_FUNC) &_HDRegMfd_LM_Kfold, 15},
+    {"_HDRegMfd_PCA_list", (DL_FUNC) &_HDRegMfd_PCA_list, 2},
+    {"_HDRegMfd_predict_PCA_list", (DL_FUNC) &_HDRegMfd_predict_PCA_list, 2},
+    {"_HDRegMfd_LASSO_sol", (DL_FUNC) &_HDRegMfd_LASSO_sol, 6},
+    {"_HDRegMfd_LASSO_sol2", (DL_FUNC) &_HDRegMfd_LASSO_sol2, 6},
+    {"_HDRegMfd_SCAD_sol", (DL_FUNC) &_HDRegMfd_SCAD_sol, 6},
+    {"_HDRegMfd_SCAD_sol2", (DL_FUNC) &_HDRegMfd_SCAD_sol2, 6},
+    {"_HDRegMfd_MCP_sol", (DL_FUNC) &_HDRegMfd_MCP_sol, 6},
+    {"_HDRegMfd_MCP_sol2", (DL_FUNC) &_HDRegMfd_MCP_sol2, 6},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_NonEuclidReg(DllInfo *dll) {
+RcppExport void R_init_HDRegMfd(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

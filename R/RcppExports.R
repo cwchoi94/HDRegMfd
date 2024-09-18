@@ -2,86 +2,86 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 GLM_each <- function(Xorg, Yorg, lambda, Xdim_max, R, penalty, link, phi, gamma, eta, max_iter, threshold) {
-    .Call(`_NonEuclidReg_GLM_each`, Xorg, Yorg, lambda, Xdim_max, R, penalty, link, phi, gamma, eta, max_iter, threshold)
+    .Call(`_HDRegMfd_GLM_each`, Xorg, Yorg, lambda, Xdim_max, R, penalty, link, phi, gamma, eta, max_iter, threshold)
 }
 
 GLM_CV <- function(X, Y, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", link = "binomial", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_NonEuclidReg_GLM_CV`, X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, phi, gamma, max_cv_iter, threshold)
+    .Call(`_HDRegMfd_GLM_CV`, X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, phi, gamma, max_cv_iter, threshold)
 }
 
 GLM_GCV <- function(X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", link = "binomial", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_NonEuclidReg_GLM_GCV`, X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
+    .Call(`_HDRegMfd_GLM_GCV`, X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
 }
 
 Link <- function(u, link) {
-    .Call(`_NonEuclidReg_Link`, u, link)
+    .Call(`_HDRegMfd_Link`, u, link)
 }
 
 Inv_Link <- function(u, link) {
-    .Call(`_NonEuclidReg_Inv_Link`, u, link)
+    .Call(`_HDRegMfd_Inv_Link`, u, link)
 }
 
 Psi <- function(u, link) {
-    .Call(`_NonEuclidReg_Psi`, u, link)
+    .Call(`_HDRegMfd_Psi`, u, link)
 }
 
 Psi_1d <- function(u, link) {
-    .Call(`_NonEuclidReg_Psi_1d`, u, link)
+    .Call(`_HDRegMfd_Psi_1d`, u, link)
 }
 
 Psi_2d <- function(u, link) {
-    .Call(`_NonEuclidReg_Psi_2d`, u, link)
+    .Call(`_HDRegMfd_Psi_2d`, u, link)
 }
 
 GLM_Kfold <- function(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", link = "binomial", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_NonEuclidReg_GLM_Kfold`, X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
+    .Call(`_HDRegMfd_GLM_Kfold`, X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
 }
 
 LM_each <- function(Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, penalty, phi, gamma, eta, max_iter, threshold) {
-    .Call(`_NonEuclidReg_LM_each`, Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, penalty, phi, gamma, eta, max_iter, threshold)
+    .Call(`_HDRegMfd_LM_each`, Xorg, LogY, Ymu, inner, lambda, Xdim_max, R, penalty, phi, gamma, eta, max_iter, threshold)
 }
 
 LM_CV <- function(X, LogY, Ymu, inner, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_NonEuclidReg_LM_CV`, X, LogY, Ymu, inner, lambda_list, Xdim_max_list, R_list, cv_type, penalty, phi, gamma, max_cv_iter, threshold)
+    .Call(`_HDRegMfd_LM_CV`, X, LogY, Ymu, inner, lambda_list, Xdim_max_list, R_list, cv_type, penalty, phi, gamma, max_cv_iter, threshold)
 }
 
 LM_GCV <- function(X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_NonEuclidReg_LM_GCV`, X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, penalty, phi, gamma, max_cv_iter, threshold)
+    .Call(`_HDRegMfd_LM_GCV`, X, LogY, Xnew, LogYnew, Ymu, inner, lambda_list, Xdim_max_list, R_list, penalty, phi, gamma, max_cv_iter, threshold)
 }
 
 LM_Kfold <- function(X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner, kfold, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_NonEuclidReg_LM_Kfold`, X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner, kfold, lambda_list, Xdim_max_list, R_list, penalty, phi, gamma, max_cv_iter, threshold)
+    .Call(`_HDRegMfd_LM_Kfold`, X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, inner, kfold, lambda_list, Xdim_max_list, R_list, penalty, phi, gamma, max_cv_iter, threshold)
 }
 
 PCA_list <- function(Xall, alpha) {
-    .Call(`_NonEuclidReg_PCA_list`, Xall, alpha)
+    .Call(`_HDRegMfd_PCA_list`, Xall, alpha)
 }
 
 predict_PCA_list <- function(pca, Xnew) {
-    .Call(`_NonEuclidReg_predict_PCA_list`, pca, Xnew)
+    .Call(`_HDRegMfd_predict_PCA_list`, pca, Xnew)
 }
 
 LASSO_sol <- function(xy, xx, normxy, lambda, kappa, gamma) {
-    .Call(`_NonEuclidReg_LASSO_sol`, xy, xx, normxy, lambda, kappa, gamma)
+    .Call(`_HDRegMfd_LASSO_sol`, xy, xx, normxy, lambda, kappa, gamma)
 }
 
 LASSO_sol2 <- function(xy, xx, normxy, lambda, kappa, gamma) {
-    .Call(`_NonEuclidReg_LASSO_sol2`, xy, xx, normxy, lambda, kappa, gamma)
+    .Call(`_HDRegMfd_LASSO_sol2`, xy, xx, normxy, lambda, kappa, gamma)
 }
 
 SCAD_sol <- function(xy, xx, normxy, lambda, kappa, gamma) {
-    .Call(`_NonEuclidReg_SCAD_sol`, xy, xx, normxy, lambda, kappa, gamma)
+    .Call(`_HDRegMfd_SCAD_sol`, xy, xx, normxy, lambda, kappa, gamma)
 }
 
 SCAD_sol2 <- function(xy, xx, normxy, lambda, kappa, gamma) {
-    .Call(`_NonEuclidReg_SCAD_sol2`, xy, xx, normxy, lambda, kappa, gamma)
+    .Call(`_HDRegMfd_SCAD_sol2`, xy, xx, normxy, lambda, kappa, gamma)
 }
 
 MCP_sol <- function(xy, xx, normxy, lambda, kappa, gamma) {
-    .Call(`_NonEuclidReg_MCP_sol`, xy, xx, normxy, lambda, kappa, gamma)
+    .Call(`_HDRegMfd_MCP_sol`, xy, xx, normxy, lambda, kappa, gamma)
 }
 
 MCP_sol2 <- function(xy, xx, normxy, lambda, kappa, gamma) {
-    .Call(`_NonEuclidReg_MCP_sol2`, xy, xx, normxy, lambda, kappa, gamma)
+    .Call(`_HDRegMfd_MCP_sol2`, xy, xx, normxy, lambda, kappa, gamma)
 }
 

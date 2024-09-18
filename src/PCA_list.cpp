@@ -18,7 +18,7 @@ List PCA_list(List Xall, double alpha){
 
     // use PCA.manifold function defined in R
     //Environment myEnv = Environment::global_env();
-    Environment myEnv = Environment::namespace_env("NonEuclidReg");
+    Environment myEnv = Environment::namespace_env("HDRegMfd");
     Function pca_ftn = myEnv["PCA.manifold"];
     
     // compute hpca for each Xj
@@ -45,7 +45,7 @@ List predict_PCA_list(List pca, List Xnew){
     
     // use predict.PCA.manfold function defined in R
     //Environment myEnv = Environment::global_env();
-    Environment myEnv = Environment::namespace_env("NonEuclidReg");
+    Environment myEnv = Environment::namespace_env("HDRegMfd");
     Function pca_predict = myEnv["predict.PCA.manifold"];
 
     List scores(p);
