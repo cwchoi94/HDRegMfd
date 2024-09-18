@@ -6,7 +6,7 @@ Date: 2023-12-18
 Author: Changwon Choi
 Maintainer: Changwon Choi <cwchoi94@gmail.com>
 Description: A package containing functions about high-dimensional regression for Hilbert manifold covariates.
-             This package has been developed for Euclidean, simplex, sphere, SPD matrices with log-Euclidean metric, functional, Bayes-Hilbert, and Wasserstein spaces.
+             This package has been developed for Euclidean, simplex, sphere, SPD matrices with log-Euclidean and affine-invariant metrics, functional, Bayes-Hilbert, and Wasserstein spaces.
              For more information, see ...
 Imports: 
     base (>= 4.3.0),
