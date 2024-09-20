@@ -4,12 +4,14 @@
 \alias{covariates.generate}
 \title{Generate a list of manifold-valued covariates.}
 \usage{
-covariates.generate(n, Xspaces, dims, Xrho = 0.5, Xsigma = 1)
+covariates.generate(n, Xspaces, Xmu.list, dims, Xrho = 0.5, Xsigma = 1)
 }
 \arguments{
 \item{n}{the number of data points.}
 
 \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.}
+
+\item{Xmu.list}{a \eqn{p} list of the Frechet means of \eqn{X_j}.}
 
 \item{dims}{a \eqn{p} vector specifying the dimensions of \eqn{X_j}.}
 

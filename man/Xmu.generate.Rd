@@ -4,12 +4,14 @@
 \alias{Xmu.generate}
 \title{Generate Frechet means of \eqn{X_j}}
 \usage{
-Xmu.generate(m, space)
+Xmu.generate(m, space, ngrid = 100)
 }
 \arguments{
 \item{m}{the length of each observation. Typically, this equals the dimension, but it can differ in some cases.}
 
 \item{space}{the name of space, see \code{\link{Check.manifold}}.}
+
+\item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
 }
 \value{
 the Frechet mean \eqn{\mu_j} of \eqn{X_j}, an \eqn{m} vector.

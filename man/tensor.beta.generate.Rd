@@ -7,6 +7,8 @@
 tensor.beta.generate(
   Xspaces,
   Yspace,
+  Xmu.list,
+  Ymu,
   Xdims,
   Ydim,
   proper.indices = NULL,
@@ -17,6 +19,10 @@ tensor.beta.generate(
 \item{Xspaces}{a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
+
+\item{Xmu.list}{a \eqn{p} list of the Frechet means of \eqn{X_j}.}
+
+\item{Ymu}{the Frechet mean of \eqn{Y}.}
 
 \item{Xdims}{a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.}
 

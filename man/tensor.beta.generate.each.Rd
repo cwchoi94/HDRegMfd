@@ -4,12 +4,16 @@
 \alias{tensor.beta.generate.each}
 \title{Generate a Hilbert-Schmidt operator between tangent spaces of \eqn{\mathcal{M}_X} and \eqn{\mathcal{M}_Y}}
 \usage{
-tensor.beta.generate.each(Xspace, Yspace, Xdim, Ydim, beta.norm = 1)
+tensor.beta.generate.each(Xspace, Yspace, Xmu, Ymu, Xdim, Ydim, beta.norm = 1)
 }
 \arguments{
 \item{Xspace}{the name of the underlying space \eqn{\mathcal{M}_X} of \eqn{X}.}
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
+
+\item{Xmu}{the Frechet mean of \eqn{X_j}.}
+
+\item{Ymu}{the Frechet mean of \eqn{Y}.}
 
 \item{Xdim}{the intrinsic dimension of \eqn{\mathcal{M}_X}.}
 

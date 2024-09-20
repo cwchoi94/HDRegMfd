@@ -16,6 +16,7 @@ LM.data.generate(
   Xsigma = 1,
   error.rho = 0.5,
   error.std = 1,
+  ngrid = 100,
   seed = 1
 )
 }
@@ -41,6 +42,8 @@ LM.data.generate(
 \item{error.rho}{a correlation parameter for \eqn{\varepsilon}.}
 
 \item{error.std}{a standard deviation parameter for \eqn{\varepsilon}.}
+
+\item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
 
 \item{seed}{a random seed, which must be greater than 1.}
 }

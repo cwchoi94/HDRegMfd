@@ -4,12 +4,12 @@
 \alias{covariates.generate.each}
 \title{Generate a manifold-valued covariate}
 \usage{
-covariates.generate.each(Xi, dim, space = "Euclid")
+covariates.generate.each(Xi, mu, space = "Euclid")
 }
 \arguments{
 \item{Xi}{an \eqn{n\times m'} score matrix, where \eqn{m'} is the intrinsic dimension (the number of scores).}
 
-\item{dim}{the dimension of \eqn{X}.}
+\item{mu}{the Frechet mean of \eqn{X_j}.}
 
 \item{space}{the underlying space, see \code{\link{Check.manifold}}.}
 }

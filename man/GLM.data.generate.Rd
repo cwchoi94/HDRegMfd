@@ -15,6 +15,7 @@ GLM.data.generate(
   beta0.norm = 1,
   Xrho = 0.5,
   Xsigma = 1,
+  ngrid = 100,
   seed = 1,
   c.beta = NULL
 )
@@ -39,6 +40,8 @@ GLM.data.generate(
 \item{Xrho}{a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.}
 
 \item{Xsigma}{a common standard deviation parameter for \eqn{X_j}, with a default value of 1.}
+
+\item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
 
 \item{seed}{a random seed, which must be greater than 1.}
 

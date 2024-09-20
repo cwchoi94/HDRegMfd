@@ -4,12 +4,14 @@
 \alias{Ymu.generate}
 \title{Generate the Frechet mean for \eqn{Y}}
 \usage{
-Ymu.generate(m, space)
+Ymu.generate(m, space, ngrid = 100)
 }
 \arguments{
-\item{m}{The length of each observation. Typically, this equals the dimension, but it can differ in some cases.}
+\item{m}{the length of each observation. Typically, this equals the dimension, but it can differ in some cases.}
 
-\item{space}{The name of space, see \code{\link{Check.manifold}}.}
+\item{space}{the name of space, see \code{\link{Check.manifold}}.}
+
+\item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
 }
 \value{
 The Frechet mean \eqn{\mu_Y} of \eqn{Y}, an \eqn{m} vector.

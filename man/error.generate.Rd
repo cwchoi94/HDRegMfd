@@ -4,14 +4,16 @@
 \alias{error.generate}
 \title{Generate a random error \eqn{\varepsilon} of \eqn{Y}}
 \usage{
-error.generate(n, space, dim, error.rho = 0.5, error.std = 1)
+error.generate(n, Yspace, Ymu, Ydim, error.rho = 0.5, error.std = 1)
 }
 \arguments{
 \item{n}{the number of data points.}
 
-\item{space}{the underlying space of \eqn{\mathcal{M}_Y}.}
+\item{Yspace}{the underlying space of \eqn{\mathcal{M}_Y}.}
 
-\item{dim}{the intrinsic dimension of \eqn{\mathcal{M}_Y}.}
+\item{Ymu}{the Frechet mean of \eqn{Y}.}
+
+\item{Ydim}{the intrinsic dimension of \eqn{\mathcal{M}_Y}.}
 
 \item{error.rho}{a correlation parameter for \eqn{\varepsilon}.}
 
