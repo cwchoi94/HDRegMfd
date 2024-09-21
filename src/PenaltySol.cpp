@@ -41,6 +41,21 @@ arma::mat betaj_update(arma::mat wj, double sigmaj, double normwj, String penalt
 
 
 
+arma::cube hatmj_update(cube tmp_hatmj, double sigma, double norm_hatmj, String penalty, double lambda, double nu, double gamma, cube mhat_j, double norm_mhat_j) {
+    cube mhat_j_new(size(tmp_hatmj));
+    int g = tmp_hatmj.n_rows;
+
+    for (int k = 0; k < g; k++) {
+        mat tmp_hatm_jk = tmp_hatmj.row(k);
+        mat mhat_jk = mhat_j.row(k);
+        mat hatm_jk_new = betaj_update(tmp_hatm_jk, sigma, norm_hatmj, penalty, lambda, nu, gamma, mhat_jk, norm_mhat_j);
+
+        mhat_j_new.row(k) = hatm_jk_new;
+    }
+
+    return(mhat_j_new);
+}
+
 
 
 

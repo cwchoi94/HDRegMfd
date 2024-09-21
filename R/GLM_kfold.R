@@ -29,8 +29,8 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.kfold = function(Xorg,Yorg,kfold,lambda.list,Xdim.max.list,R.list,penalty='LASSO',link='binomial',phi=1,gamma=0,seed=NULL,
-                     max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.kfold = function(Xorg,Yorg,kfold,lambda.list,Xdim.max.list,R.list,penalty='LASSO',link='binomial',gamma=0,seed=NULL,
+                     phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -76,7 +76,7 @@ GLM.kfold = function(Xorg,Yorg,kfold,lambda.list,Xdim.max.list,R.list,penalty='L
   
   # Use LM_kfold function defined in cpp
   result = GLM_Kfold(Xorg.list,Y.list,Xnew.list,Ynew.list,kfold,lambda.list,Xdim.max.list,R.list,
-                     penalty,link,phi,gamma,max.cv.iter,cv.threshold)
+                     penalty,link,gamma,phi,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -87,7 +87,7 @@ GLM.kfold = function(Xorg,Yorg,kfold,lambda.list,Xdim.max.list,R.list,penalty='L
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = GLM(Xall,Yall,opt.lambda,opt.Xdim.max,opt.R,penalty,link,phi,gamma,eta,max.iter,threshold)
+  object = GLM(Xall,Yall,opt.lambda,opt.Xdim.max,opt.R,penalty,link,gamma,phi,eta,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   

@@ -50,8 +50,8 @@ reduce.dimension = function(X,Xdim.max=100,margin=1){
 #' @param Xdim.max the maximum dimension to which \eqn{X_j} will be reduced (default: 100).
 #' @param R an \eqn{\ell^1}-type constrained bound (default: 100).
 #' @param penalty the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').
-#' @param phi a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).
 #' @param gamma a parameter for SCAD (default: 3.7) or MCP (default: 3).
+#' @param phi a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).
 #' @param eta a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).
 #' @param max.iter a maximum number of iterations (default: 500).
 #' @param threshold a convergence threshold for the algorithm (default: 1e-10).
@@ -70,8 +70,8 @@ reduce.dimension = function(X,Xdim.max=100,margin=1){
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',
-              phi=1,gamma=0,eta=1e-3,max.iter=500,threshold=1e-10){
+LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',gamma=0,
+              phi=1,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -103,7 +103,7 @@ LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # apply LM_each function in cpp
-  object = LM_each(X,LogY,Ymu,Yspace,lambda,Xdim.max,R,penalty,phi,gamma,eta,max.iter,threshold)
+  object = LM_each(X,LogY,Ymu,Yspace,lambda,Xdim.max,R,penalty,gamma,phi,eta,max.iter,threshold)
   
   # compute other parameters
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})

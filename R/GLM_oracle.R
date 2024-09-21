@@ -53,7 +53,7 @@ GLM.oracle = function(Xorg,Yorg,Xdim.max=100,proper.indices=NULL,link='binomial'
   Xdims_cumul.oracle = c(0,cumsum(Xdims.oracle))
   
   # apply GLM_each function in cpp
-  object = GLM_each(Xoracle,Yorg,0,Xdim.max,1e10,'LASSO',link,phi,0,1e-3,max.iter,threshold)
+  object = GLM_each(Xoracle,Yorg,0,Xdim.max,1e10,'LASSO',link,0,phi,1e-3,max.iter,threshold)
   
   # compute oracle estimator
   beta.oracle = object$beta

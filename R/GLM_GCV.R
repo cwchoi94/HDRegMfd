@@ -30,8 +30,8 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,penalty='LASSO',link='binomial',phi=1,gamma=0,
-                  max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,penalty='LASSO',link='binomial',gamma=0,
+                   phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -57,8 +57,7 @@ GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,pe
   Xnew = predict(pca,Xorgnew)
   
   # Use GLM_GCV function to obtain the optimal parameters
-  result = GLM_GCV(X,Yorg,Xnew,Yorgnew,lambda.list,Xdim.max.list,R.list,
-                   penalty,link,phi,gamma,max.cv.iter,cv.threshold)
+  result = GLM_GCV(X,Yorg,Xnew,Yorgnew,lambda.list,Xdim.max.list,R.list,penalty,link,gamma,phi,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -69,14 +68,11 @@ GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,pe
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = GLM_each(X,Yorg,opt.lambda,opt.Xdim.max,opt.R,penalty,link,phi,gamma,eta,max.iter,threshold)
+  object = GLM_each(X,Yorg,opt.lambda,opt.Xdim.max,opt.R,penalty,link,gamma,phi,eta,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims
   Xdims_cumul = c(0,cumsum(Xdims))
-  
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
-  loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
   beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})

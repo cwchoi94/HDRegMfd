@@ -15,7 +15,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, String penalty, String link, double phi, double gamma, double eta, int max_iter, double threshold){
+List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, String penalty, String link, double gamma, double phi, double eta, int max_iter, double threshold){
 
     int p = Xorg.size();
     int n = Yorg.n_rows;
@@ -141,10 +141,10 @@ List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, 
 
 
 
-double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lambda, int Xdim_max, double R, String penalty, String link, double phi, double gamma){
+double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lambda, int Xdim_max, double R, String penalty, String link, double gamma, double phi){
          
     // model training
-    List model = GLM_each(X,Y,lambda,Xdim_max,R,penalty,link,phi,gamma);
+    List model = GLM_each(X, Y, lambda, Xdim_max, R, penalty, link, gamma, phi);
     mat beta = model["beta"];
     vec beta0 = model["beta0"];
   
@@ -165,10 +165,10 @@ double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lamb
 
 
 
-double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double R, String cv_type, String penalty, String link, double phi, double gamma) {
+double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double R, String cv_type, String penalty, String link, double gamma, double phi) {
 
     // model training
-    List model = GLM_each(X_, Y, lambda, Xdim_max, R, penalty, link, phi, gamma);
+    List model = GLM_each(X_, Y, lambda, Xdim_max, R, penalty, link, gamma, phi);
     mat beta = model["beta"];
     vec beta0 = model["beta0"];
 
@@ -192,7 +192,7 @@ double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double
     vec Xdims = model["Xdims"];
 
     if (cv_type == "AIC" || cv_type == "ABIC") {
-        aic = 2 * sum(Xdims.elem(find(beta_norm != 0))) / n;
+        aic = 2.0 * sum(Xdims.elem(find(beta_norm != 0))) / n;
     }
     if (cv_type == "BIC" || cv_type == "ABIC") {
         bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;

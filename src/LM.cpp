@@ -14,7 +14,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma, double eta, int max_iter, double threshold){
+List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double gamma, double phi, double eta, int max_iter, double threshold){
 
     int p = Xorg.size();
     int n = LogY.n_rows;
@@ -119,10 +119,10 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, String Yspace, double lam
 }
 
 
-double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma){
+double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double gamma){
          
     // model training
-    List model = LM_each(X, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, phi, gamma);
+    List model = LM_each(X, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma);
     mat beta = model["beta"];
   
     // Xnew data 
@@ -143,10 +143,10 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
 
 
 
-double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double phi, double gamma) {
+double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double gamma) {
 
     // model training
-    List model = LM_each(X_, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, phi, gamma);
+    List model = LM_each(X_, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma);
     mat beta = model["beta"];
 
     // Xnew data 
@@ -161,7 +161,7 @@ double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, dou
     double loss = L2_norm(LogYhat - LogY, Ymu, Yspace) / sqrt(n);
     loss = pow(loss, 2);
 
-    // compute additional penalty term for AIC
+    // compute additional penalty term for AIC and BIC
     double aic = 0;
     double bic = 0;
 
@@ -169,7 +169,7 @@ double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, dou
     vec Xdims = model["Xdims"];
 
     if (cv_type == "AIC" || cv_type == "ABIC") {
-        aic = 2 * sum(Xdims.elem(find(beta_norm != 0))) / n;
+        aic = 2.0 * sum(Xdims.elem(find(beta_norm != 0))) / n;
     }
     if (cv_type == "BIC" || cv_type == "ABIC") {
         bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;

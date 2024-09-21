@@ -24,7 +24,7 @@ List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfo
     int r2 = Xdim_max_list.size();
     int r3 = R_list.size();
         
-    // CBS cross validation  
+    // coordinate-wise cross validation  
     double opt_lambda = lambda_list(r1-1);
     double opt_Xdim_max = Xdim_max_list(r2-1);
     double opt_R = R_list(r3-1);

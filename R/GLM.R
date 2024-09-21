@@ -32,8 +32,8 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM = function(Xorg,Yorg,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',link='binomial',
-               phi=1,gamma=0,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM = function(Xorg,Yorg,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',link='binomial',gamma=0,
+               phi=1,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -61,7 +61,7 @@ GLM = function(Xorg,Yorg,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',link='bin
   Xdims_cumul = c(0,cumsum(Xdims))
   
   # apply GLM_each function in cpp
-  object = GLM_each(X,Yorg,lambda,Xdim.max,R,penalty,link,phi,gamma,eta,max.iter,threshold)
+  object = GLM_each(X,Yorg,lambda,Xdim.max,R,penalty,link,gamma,phi,eta,max.iter,threshold)
   
   # compute other parameters
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})

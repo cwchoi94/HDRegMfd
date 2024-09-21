@@ -13,8 +13,8 @@ GLM.CV(
   cv.type = "AIC",
   penalty = "LASSO",
   link = "binomial",
-  phi = 1,
   gamma = 0,
+  phi = 1,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
   eta = 0.001,
@@ -44,9 +44,9 @@ GLM.CV(
 
 \item{link}{a link function, see \code{\link{Check.link}}.}
 
-\item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
-
 \item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
+
+\item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 
 \item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 

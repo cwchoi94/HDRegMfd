@@ -29,8 +29,8 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,penalty='LASSO',phi=1,gamma=0,
-                  max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,penalty='LASSO',gamma=0,
+                  phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -76,9 +76,6 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   # compute other parameters
   Xdims = object$Xdims
   Xdims_cumul = c(0,cumsum(Xdims))
-  
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
-  loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
   beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})

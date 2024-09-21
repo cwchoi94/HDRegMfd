@@ -231,7 +231,7 @@ GLM.oracle.kfold = function(Xorg,Yorg,kfold,Xdim.max.list,proper.indices=NULL,li
   
   # Use GLM_kfold function defined in cpp
   result = GLM_Kfold(Xoracle.list,Y.list,Xoracle.new.list,Ynew.list,kfold,lambda.list,Xdim.max.list,R.list,
-                     'LASSO',link,1,0,max.cv.iter,cv.threshold)
+                     'LASSO',link,0,1,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]

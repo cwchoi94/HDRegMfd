@@ -12,8 +12,8 @@ LM(
   Xdim.max = 100,
   R = 100,
   penalty = "LASSO",
-  phi = 1,
   gamma = 0,
+  phi = 1,
   eta = 0.001,
   max.iter = 500,
   threshold = 1e-10
@@ -39,9 +39,9 @@ LM(
 
 \item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
 
-\item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
-
 \item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
+
+\item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 
 \item{eta}{a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).}
 

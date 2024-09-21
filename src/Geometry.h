@@ -7,7 +7,7 @@ using namespace std;
 using namespace arma;
 
 
-vec inner(mat u, mat v, vec p, String space);
+arma::vec inner(arma::mat u, arma::mat v, arma::vec p, String space);
 
 
 #endif

@@ -17,7 +17,7 @@ using namespace arma;
 
 // [[Rcpp::export]]
 List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type = "AIC",
-             String penalty = "LASSO", String link = "binomial", double phi = 1, double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
+             String penalty = "LASSO", String link = "binomial", double gamma = 0, double phi = 1, int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -30,7 +30,7 @@ List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list,
     double opt_Xdim_max_old = opt_Xdim_max;
     double opt_R_old = opt_R;
 
-    // CBS cross validation
+    // coordinate-wise cross validation
     List loss_list(max_cv_iter);
     mat parameter_list(3 * max_cv_iter, 3, fill::zeros);
     int iter = 0;
@@ -48,7 +48,7 @@ List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list,
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_GLM(X, Y, lambda, opt_Xdim_max, opt_R, cv_type, penalty, link, phi, gamma);
+                loss1(i) = get_loss_CV_GLM(X, Y, lambda, opt_Xdim_max, opt_R, cv_type, penalty, link, gamma, phi);
             }
         }
         else {
@@ -77,7 +77,7 @@ List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list,
         if (r2 > 1) {
             for (int i = 0; i < r2; i++) {
                 double Xdim_max = Xdim_max_list(i);
-                loss2(i) = get_loss_CV_GLM(X, Y, opt_lambda, Xdim_max, opt_R, cv_type, penalty, link, phi, gamma);
+                loss2(i) = get_loss_CV_GLM(X, Y, opt_lambda, Xdim_max, opt_R, cv_type, penalty, link, gamma, phi);
             }
         }
         else {
@@ -106,7 +106,7 @@ List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list,
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_GLM(X, Y, opt_lambda, opt_Xdim_max, R, cv_type, penalty, link, phi, gamma);
+                loss3(i) = get_loss_CV_GLM(X, Y, opt_lambda, opt_Xdim_max, R, cv_type, penalty, link, gamma, phi);
             }
         }
         else {

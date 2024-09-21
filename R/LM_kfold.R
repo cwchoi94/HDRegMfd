@@ -73,8 +73,8 @@ split.data.org = function(Xall,Yall,test.indices){
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,penalty='LASSO',phi=1,gamma=0,seed=NULL,
-                    max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,penalty='LASSO',gamma=0,seed=NULL,
+                    phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -120,7 +120,7 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,pe
   
   # Use LM_kfold function defined in cpp
   result = LM_Kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,
-                    lambda.list,Xdim.max.list,R.list,penalty,phi,gamma,max.cv.iter,cv.threshold)
+                    lambda.list,Xdim.max.list,R.list,penalty,gamma,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -131,7 +131,7 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,pe
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = LM(Xall,Yall,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,phi,gamma,eta,max.iter,threshold)
+  object = LM(Xall,Yall,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
