@@ -196,6 +196,9 @@ GLM.oracle.kfold = function(Xorg,Yorg,kfold,Xdim.max.list,proper.indices=NULL,li
   Check.link(link)
   
   # define basic parameters
+  Xall = Xorg
+  Yall = Yorg
+  
   n = nrow(Yall)
   p = Xall[['p']]
   Ymu = 0
