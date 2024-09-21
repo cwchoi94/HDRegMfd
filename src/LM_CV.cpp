@@ -16,7 +16,7 @@ using namespace arma;
 
 // [[Rcpp::export]]
 List LM_CV(List X, arma::mat LogY, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type = "AIC",
-           String penalty = "LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
+           String penalty = "LASSO", double gamma = 0, double phi = 1 , int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -47,7 +47,7 @@ List LM_CV(List X, arma::mat LogY, arma::vec Ymu, String Yspace, arma::vec lambd
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_LM(X, LogY, Ymu, Yspace, lambda, opt_Xdim_max, opt_R, cv_type, penalty, gamma);
+                loss1(i) = get_loss_CV_LM(X, LogY, Ymu, Yspace, lambda, opt_Xdim_max, opt_R, cv_type, penalty, gamma, phi);
             }
         }
         else {
@@ -76,7 +76,7 @@ List LM_CV(List X, arma::mat LogY, arma::vec Ymu, String Yspace, arma::vec lambd
         if (r2 > 1) {
             for (int i = 0; i < r2; i++) {
                 double Xdim_max = Xdim_max_list(i);
-                loss2(i) = get_loss_CV_LM(X, LogY, Ymu, Yspace, opt_lambda, Xdim_max, opt_R, cv_type, penalty, gamma);
+                loss2(i) = get_loss_CV_LM(X, LogY, Ymu, Yspace, opt_lambda, Xdim_max, opt_R, cv_type, penalty, gamma, phi);
             }
         }
         else {
@@ -105,7 +105,7 @@ List LM_CV(List X, arma::mat LogY, arma::vec Ymu, String Yspace, arma::vec lambd
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_LM(X, LogY, Ymu, Yspace, opt_lambda, opt_Xdim_max, R, cv_type, penalty, gamma);
+                loss3(i) = get_loss_CV_LM(X, LogY, Ymu, Yspace, opt_lambda, opt_Xdim_max, R, cv_type, penalty, gamma, phi);
             }
         }
         else {

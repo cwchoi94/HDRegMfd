@@ -119,10 +119,10 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, String Yspace, double lam
 }
 
 
-double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double gamma){
+double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double gamma, double phi) {
          
     // model training
-    List model = LM_each(X, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma);
+    List model = LM_each(X, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma, phi);
     mat beta = model["beta"];
   
     // Xnew data 
@@ -143,10 +143,10 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
 
 
 
-double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double gamma) {
+double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double gamma, double phi) {
 
     // model training
-    List model = LM_each(X_, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma);
+    List model = LM_each(X_, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma, phi);
     mat beta = model["beta"];
 
     // Xnew data 
