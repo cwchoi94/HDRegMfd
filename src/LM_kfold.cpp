@@ -16,7 +16,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, Function inner, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, 
+List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, String Yspace, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list,
               String penalty="LASSO", double phi=1, double gamma=0, int max_cv_iter=20, double threshold=1e-10){
   
     int r1 = lambda_list.size();
@@ -57,7 +57,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r1; i++) {
                     double lambda = lambda_list(i);
-                    loss1_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, inner, lambda, opt_Xdim_max, opt_R, penalty, phi, gamma);
+                    loss1_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, Yspace, lambda, opt_Xdim_max, opt_R, penalty, phi, gamma);
                 }
             }
         }
@@ -96,7 +96,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r2; i++) {
                     double Xdim_max = Xdim_max_list(i);
-                    loss2_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, inner, opt_lambda, Xdim_max, opt_R, penalty, phi, gamma);
+                    loss2_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, Yspace, opt_lambda, Xdim_max, opt_R, penalty, phi, gamma);
                 }
             }
         }
@@ -135,7 +135,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r3; i++) {
                     double R = R_list(i);
-                    loss3_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, inner, opt_lambda, opt_Xdim_max, R, penalty, phi, gamma);
+                    loss3_mat(idx, i) = get_loss_LM(X, LogY, Xnew, LogYnew, Ymu, Yspace, opt_lambda, opt_Xdim_max, R, penalty, phi, gamma);
                 }
             }
         }

@@ -3,6 +3,7 @@
 #include <string>
 #include <math.h>
 #include "utils.h"
+#include "Geometry.h"
 
 using namespace Rcpp;
 using namespace std;
@@ -24,18 +25,12 @@ arma::mat SEXP_to_mat(SEXP X){
 }
 
 
-double L2_norm(arma::mat Y, arma::vec Ymu, Function inner){    
+double L2_norm(arma::mat Y, arma::vec Ymu, String Yspace){    
 
-    int n = Y.n_rows;
-    double z = 0;
-
-    for (int i = 0; i < n; i++) {
-        SEXP x = inner(Y.row(i),Y.row(i),Ymu);
-        z = z + pow(*REAL(x), 1);
-    }
-    z = sqrt(z);
+    vec z_vec = inner(Y, Y, Ymu, Yspace);
+    double z = sum(z_vec);
     
-    return (z);
+    return sqrt(z);
 }
 
 
@@ -96,9 +91,7 @@ List Make_reduce_dim_matrix(List Xorg, int Xdim_max) {
         X = join_rows(X, Xj);
     }
 
-    List result = List::create(Named("X") = X, Named("Xdims") = Xdims);
-
-    return(result);
+    return List::create(Named("X") = X, Named("Xdims") = Xdims);
 }
 
 
@@ -130,8 +123,7 @@ List Make_dimension_indices(arma::vec Xdims_cumul) {
         ind_list2[j] = ind2;
     }
 
-    List ind_list = List::create(Named("ind1") = ind_list1, Named("ind2") = ind_list2);
-
-    return (ind_list);
+    return List::create(Named("ind1") = ind_list1, Named("ind2") = ind_list2);
 }
+
 

@@ -94,7 +94,6 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,pe
   
   n = nrow(Yall)
   p = Xall[['p']]
-  inner = eval(parse(text=paste0('inner.each.',Yspace)))
   
   # data split and preprocessing
   test.indices.list = get.kfold.test.indices(n,kfold,seed)
@@ -120,7 +119,7 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,pe
   }
   
   # Use LM_kfold function defined in cpp
-  result = LM_Kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,inner,kfold,
+  result = LM_Kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,
                     lambda.list,Xdim.max.list,R.list,penalty,phi,gamma,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]

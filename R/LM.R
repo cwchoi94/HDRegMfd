@@ -56,9 +56,9 @@ reduce.dimension = function(X,Xdim.max=100,margin=1){
 #' @param max.iter a maximum number of iterations (default: 500).
 #' @param threshold a convergence threshold for the algorithm (default: 1e-10).
 #'
-#' @return a 'LM' object with the following compnents:
+#' @return an \code{LM} object with the following compnents:
 #'    \describe{
-#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{pca}{a \code{PCA.manifold.list} object, see \code{\link{PCA.manifold.list}}.}
 #'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
 #'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
 #'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
@@ -103,7 +103,7 @@ LM = function(Xorg,Yorg,Yspace,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # apply LM_each function in cpp
-  object = LM_each(X,LogY,Ymu,inner,lambda,Xdim.max,R,penalty,phi,gamma,eta,max.iter,threshold)
+  object = LM_each(X,LogY,Ymu,Yspace,lambda,Xdim.max,R,penalty,phi,gamma,eta,max.iter,threshold)
   
   # compute other parameters
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})

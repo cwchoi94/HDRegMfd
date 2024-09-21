@@ -2,7 +2,7 @@
 
 
 # Compute loss for each Xdim.max
-get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Xdim.max,proper.indices){
+get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max,proper.indices){
   X = reduce.dimension(X,Xdim.max)
   Xnew = reduce.dimension(Xnew,Xdim.max)
   Xnew = do.call(cbind,Xnew)
@@ -71,7 +71,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.ty
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # Use LM_CV function to obtain the optimal parameters
-  result = LM_CV(Xoracle,LogY,Ymu,inner,lambda.list,Xdim.max.list,R.list,cv.type,
+  result = LM_CV(Xoracle,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,
                  'LASSO',1,0,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
@@ -178,7 +178,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.i
   Xdim.max.list = unique(Xdim.max.list)
   r2 = length(Xdim.max.list)
   
-  loss.list = sapply(1:r2,function(i){get.loss.LM.oracle(X,LogY,Xnew,LogYnew,Ymu,Xdim.max.list[i],proper.indices)})
+  loss.list = sapply(1:r2,function(i){get.loss.LM.oracle(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max.list[i],proper.indices)})
   
   # compute optimal beta
   opt.Xdim.max = Xdim.max.list[which.min(loss.list)]
@@ -300,7 +300,7 @@ LM.oracle.kfold = function(Xorg,Yorg,Yspace,kfold,Xdim.max.list,proper.indices=N
     LogYnew = LogYnew.list[[idx]]
     Ymu = Ymu.list[[idx]]
     
-    loss = sapply(1:r2,function(i){get.loss.LM.oracle(Xorg,LogY,Xnew,LogYnew,Ymu,Xdim.max.list[i],proper.indices)})
+    loss = sapply(1:r2,function(i){get.loss.LM.oracle(Xorg,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max.list[i],proper.indices)})
     loss.list[,idx] = unlist(loss)
   }
     

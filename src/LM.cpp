@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "PenaltySol.h"
+#include "Geometry.h"
 #include "utils.h"
 #include "LM.h"
 
@@ -13,7 +14,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma, double eta, int max_iter, double threshold){
+List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma, double eta, int max_iter, double threshold){
 
     int p = Xorg.size();
     int n = LogY.n_rows;
@@ -81,14 +82,14 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double la
             // compute components
             mat wj = phi * beta.rows(ind1) + XY.rows(ind1) - XX.rows(ind1) * beta;
             double sigmaj = phi + eta * Xdims(j);
-            double normwj = L2_norm(wj, Ymu, inner);
+            double normwj = L2_norm(wj, Ymu, Yspace);
             double lambdaj = Xdims_sqrt(j) * lambda;
             double nuj = B * Xdims_sqrt(j) + eta*(sum(beta_norm_Xdim_sqrt)-beta_norm_Xdim_sqrt(j)+A-R);
 
             // betaj update
             mat betaj = betaj_update(wj,sigmaj,normwj,penalty,lambdaj,nuj,gamma,beta.rows(ind1),beta_norm(j));
             beta.rows(ind1) = betaj;
-            beta_norm(j) = L2_norm(betaj,Ymu,inner);
+            beta_norm(j) = L2_norm(betaj,Ymu, Yspace);
             beta_norm_Xdim_sqrt(j) = Xdims_sqrt(j) * beta_norm(j);
         }
     
@@ -98,7 +99,7 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double la
         // B update
         B = B + eta*(sum(beta_norm_Xdim_sqrt) + A - R);
     
-        residual = L2_norm(X * (beta-beta_old),Ymu,inner) / sqrt(n);
+        residual = L2_norm(X * (beta - beta_old), Ymu, Yspace) / sqrt(n);
         if (abs(residual)<threshold){
             break;
         }
@@ -118,10 +119,10 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, Function inner, double la
 }
 
 
-double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma){
+double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String penalty, double phi, double gamma){
          
     // model training
-    List model = LM_each(X,LogY,Ymu,inner,lambda,Xdim_max,R,penalty,phi,gamma);
+    List model = LM_each(X, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, phi, gamma);
     mat beta = model["beta"];
   
     // Xnew data 
@@ -133,7 +134,7 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
     mat LogYhat = Xnew * beta;
 
     // compute mse
-    double loss = L2_norm(LogYhat-LogYnew,Ymu,inner)/sqrt(n2);
+    double loss = L2_norm(LogYhat - LogYnew, Ymu, Yspace) / sqrt(n2);
     loss = pow(loss, 2);
 
     return(loss);
@@ -142,10 +143,10 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
 
 
 
-double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, Function inner, double lambda, int Xdim_max, double R, String cv_type, String penalty, double phi, double gamma) {
+double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double phi, double gamma) {
 
     // model training
-    List model = LM_each(X_, LogY, Ymu, inner, lambda, Xdim_max, R, penalty, phi, gamma);
+    List model = LM_each(X_, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, phi, gamma);
     mat beta = model["beta"];
 
     // Xnew data 
@@ -157,7 +158,7 @@ double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, Function inner, do
     mat LogYhat = X * beta;
 
     // compute mse
-    double loss = L2_norm(LogYhat - LogY, Ymu, inner) / sqrt(n);
+    double loss = L2_norm(LogYhat - LogY, Ymu, Yspace) / sqrt(n);
     loss = pow(loss, 2);
 
     // compute additional penalty term for AIC
