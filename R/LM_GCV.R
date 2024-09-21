@@ -59,7 +59,7 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   LogYnew = RieLog.manifold(Ymu,Yorgnew,Yspace)
   
   # Use LM_GCV function to obtain the optimal parameters
-  result = LM_GCV(X,LogY,Xnew,LogYnew,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,penalty,gamma,max.cv.iter,cv.threshold)
+  result = LM_GCV(X,LogY,Xnew,LogYnew,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,penalty,gamma,phi,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -70,7 +70,7 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = LM_each(X,LogY,Ymu,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,phi,gamma,eta,max.iter,threshold)
+  object = LM_each(X,LogY,Ymu,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims

@@ -61,7 +61,7 @@ LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC'
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # Use LM_CV function to obtain the optimal parameters
-  result = LM_CV(X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,penalty,gamma,max.cv.iter,cv.threshold)
+  result = LM_CV(X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,penalty,gamma,phi,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
@@ -72,7 +72,7 @@ LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC'
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = LM_each(X,LogY,Ymu,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,phi,gamma,eta,max.iter,threshold)
+  object = LM_each(X,LogY,Ymu,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims

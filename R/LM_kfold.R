@@ -120,7 +120,7 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,pe
   
   # Use LM_kfold function defined in cpp
   result = LM_Kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,
-                    lambda.list,Xdim.max.list,R.list,penalty,gamma,max.cv.iter,cv.threshold)
+                    lambda.list,Xdim.max.list,R.list,penalty,gamma,phi,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]

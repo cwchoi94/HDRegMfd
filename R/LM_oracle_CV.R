@@ -71,8 +71,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.ty
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # Use LM_CV function to obtain the optimal parameters
-  result = LM_CV(Xoracle,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,
-                 'LASSO',1,0,max.cv.iter,cv.threshold)
+  result = LM_CV(Xoracle,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,'LASSO',0,1,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
