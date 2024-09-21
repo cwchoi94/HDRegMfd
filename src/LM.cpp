@@ -135,7 +135,8 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
 
     // compute mse
     double loss = L2_norm(LogYhat - LogYnew, Ymu, Yspace) / sqrt(n2);
-    loss = pow(loss, 2);
+    loss = pow(loss, 2) / 2;
+    loss = log(loss);
 
     return(loss);
 }
@@ -159,7 +160,8 @@ double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, dou
 
     // compute mse
     double loss = L2_norm(LogYhat - LogY, Ymu, Yspace) / sqrt(n);
-    loss = pow(loss, 2);
+    loss = pow(loss, 2) / 2;
+    loss = log(loss);
 
     // compute additional penalty term for AIC and BIC
     double aic = 0;
