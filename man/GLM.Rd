@@ -50,7 +50,7 @@ GLM(
 \item{threshold}{a convergence threshold for the algorithm (default: 1e-10).}
 }
 \value{
-a 'GLM' object with the following compnents:
+a '\code{GLM}' object with the following compnents:
    \describe{
       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}

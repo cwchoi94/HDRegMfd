@@ -15,7 +15,7 @@
 #'
 #' @return an \code{\link{LM}} object with the following components:
 #'    \describe{
-#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
 #'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
 #'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
 #'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}

@@ -48,17 +48,18 @@ compute_beta = function(X,Y,proper.indices){
 #' 
 #' @param proper.indices an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.
 #'
-#' @return a \code{\link{LM}} object with the following compnents:\tabular{ll}{
-#' \code{pca}\tab{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
-#' \code{Ymu}\tab{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
-#' \code{beta}\tab{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
-#' \code{beta.each}\tab{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
-#' \code{beta.norm}\tab{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
-#' \code{beta.vectors}\tab{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
-#' \code{beta.tensor}\tab{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
-#' \code{proper.indices}\tab{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
-#' \code{runtime}\tab{the running time.}
-#' \code{...}\tab{other parameters.}
+#' @return a \code{\link{LM}} object with the following compnents:
+#'    \describe{
+#'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
+#'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
+#'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
+#'       \item{beta.each}{a \eqn{p} list of \eqn{L_j^*\times m} matrices of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.norm}{a \eqn{p} vector of norms of \eqn{\bm{\beta}_j}.}
+#'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
+#'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
+#'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
+#'       \item{runtime}{the running time.}
+#'       \item{...}{other parameters.}
 #' }
 #' @export
 LM.oracle = function(Xorg,Yorg,Yspace,Xdim.max=100,proper.indices=NULL){

@@ -11,6 +11,28 @@ library(RcppArmadillo)
 
 
 
+# Check a penalty function.
+Check.penalty = function(penalty){
+  if (!(penalty %in% c('LASSO','SCAD','MCP'))){
+    stop("The penalty must be one of 'LASSO','SCAD','MCP'")
+  }
+}
+
+# Check a link function.
+Check.link = function(link){
+  if (!(link %in% c('binomial','poisson','exponential'))){
+    stop("The link should be one of 'binomial','poisson' or 'exponential'. If you use an 'identity' or 'normal' link, please use the 'LM' function.")
+  }
+}
+
+# Check a cv type.
+Check.cv.type = function(cv.type){
+  if (!(cv.type %in% c('AIC','BIC','ABIC'))){
+    stop("The cv.type should be one of 'AIC','BIC' or 'ABIC'.")
+  }
+}
+
+
 
 # if x is a p-vector, change x to (1,p) matrix
 vec.to.mat = function(x){
@@ -62,28 +84,5 @@ vector.norm = function(X,p,space='Euclid',type='L2'){
   return(vec)
 }
 
-
-
-
-# Check a penalty function.
-Check.penalty = function(penalty){
-  if (!(penalty %in% c('LASSO','SCAD','MCP'))){
-    stop("penalty must be one of 'LASSO','SCAD','MCP'")
-  }
-}
-
-# Check a link function.
-Check.link = function(link){
-  if (!(link %in% c('binomial','poisson','exponential'))){
-    stop("The link should be one of 'binomial','poisson' or 'exponential'. If you use an 'identity' or 'normal' link, please use the 'LM' function.")
-  }
-}
-
-# Check a cv type.
-Check.cv.type = function(cv.type){
-  if (!(cv.type %in% c('AIC','BIC','ABIC'))){
-    stop("The cv.type should be one of 'AIC','BIC' or 'ABIC'.")
-  }
-}
 
 

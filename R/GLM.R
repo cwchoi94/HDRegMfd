@@ -16,7 +16,7 @@
 #' @param Yorg an \eqn{n\times m} matrix of responses.
 #' @param link a link function, see \code{\link{Check.link}}.
 #'
-#' @return a 'GLM' object with the following compnents:
+#' @return a '\code{GLM}' object with the following compnents:
 #'    \describe{
 #'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
 #'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}

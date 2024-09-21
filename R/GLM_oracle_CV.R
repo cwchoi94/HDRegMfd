@@ -14,7 +14,7 @@
 #' 
 #' @return a \code{\link{GLM}} object with the following compnents:
 #'    \describe{
-#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
 #'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
 #'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
 #'       \item{beta0}{an \eqn{m} vector of the intercept constant.}
@@ -92,7 +92,7 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
 #' 
 #' @return a \code{\link{GLM}} object with the following compnents:
 #'    \describe{
-#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
 #'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
 #'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
 #'       \item{beta0}{an \eqn{m} vector of the intercept constant.}
@@ -172,7 +172,7 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices
 #' 
 #' @return a \code{\link{GLM}} object with the following compnents:
 #'    \describe{
-#'       \item{pca}{a 'PCA.manifold.list' object, see \code{\link{PCA.manifold.list}}.}
+#'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
 #'       \item{link}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
 #'       \item{beta}{a \eqn{L_+^{*} \times m} matrix of estimated \eqn{\bm{\beta}}, where \eqn{L_+^{*}=\sum_{j=1}^p L_j^*} and \eqn{m} is the intrinsic dimension of \eqn{T_{\mu_Y}\mathcal{M}_Y}.}
 #'       \item{beta0}{an \eqn{m} vector of the intercept constant.}

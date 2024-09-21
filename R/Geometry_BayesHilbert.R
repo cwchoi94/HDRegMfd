@@ -54,6 +54,9 @@ dist.BayesHilbert = function(p,q){
   p = vec.to.mat(p)
   q = vec.to.mat(q)
   
+  p = vec.duplicate(p,nrow(q))
+  q = vec.duplicate(q,nrow(p))
+  
   p = clr(p)
   q = clr(q)
   

@@ -1,7 +1,7 @@
 
 
 
-#' @title Principal Component Analysis for a List of Manifold-valued Data,
+#' @title Principal Component Analysis for a List of Manifold-valued Data.
 #' 
 #' @description 
 #' Performs the principal component analysis (spectral decomposition) for a list of manifold-valued covariates.
@@ -14,7 +14,7 @@
 #' }
 #' @param alpha a truncation parameter of the number of basis vectors, used only for infinite dimensional \eqn{\mathcal{M}}. Selects the first index where the cumulative variance is equal to or greater than \eqn{\alpha} of the total variance.
 #' 
-#' @return a 'PCA.manifold.list' object with the following arguments:
+#' @return a \code{PCA.manifold.list} object with the following arguments:
 #' \describe{
 #'       \item{j}{a \code{\link{PCA.manifold}} object for \eqn{X_j}.}
 #'       \item{spaces}{a \eqn{p} vector of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
