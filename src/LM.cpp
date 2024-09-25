@@ -94,7 +94,12 @@ List LM_each(List Xorg, arma::mat LogY, arma::vec Ymu, String Yspace, double lam
         }
     
         // A update
-        A = max(R - sum(beta_norm_Xdim_sqrt) - B / eta, 0.0);
+        if (eta != 0) {
+            A = max(R - sum(beta_norm_Xdim_sqrt) - B / eta, 0.0);
+        }
+        else {
+            A = 0.0;
+        }
     
         // B update
         B = B + eta*(sum(beta_norm_Xdim_sqrt) + A - R);

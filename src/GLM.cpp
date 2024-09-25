@@ -115,7 +115,13 @@ List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, 
         }
 
         // A update
-        A = max(R - sum(beta_norm_Xdim_sqrt) - B / eta, 0.0);
+        if (eta != 0) {
+            A = max(R - sum(beta_norm_Xdim_sqrt) - B / eta, 0.0);
+        }
+        else {
+            A = 0.0;
+        }
+        
     
         // B update
         B = B + eta*(sum(beta_norm_Xdim_sqrt) + A - R);
