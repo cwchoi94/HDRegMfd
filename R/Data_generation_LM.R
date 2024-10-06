@@ -1,6 +1,62 @@
 ### data generation codes for simulations.
 
 
+
+### basic functions
+
+
+#' @title Generate a non-symmetric identity matrix
+#' 
+#' @description
+#' Creates a \eqn{p1 \times p2} matrix \eqn{I}, where each element \eqn{I_{jk}} is equal to \eqn{\mathbb{I}(j=k)}.
+#' 
+#' @param p1 the number of rows in the matrix.
+#' @param p2 the number of columns in the matrix.
+#' 
+#' @return a \eqn{p1 \times p2} matrix where each element \eqn{I_{jk}} is \eqn{\mathbb{I}(j=k)}.
+make.nonsym.Idmat = function(p1,p2){
+  if (p1>=p2){
+    mat = rbind(diag(p2),matrix(0,p1-p2,p2))
+  } else{
+    mat = cbind(diag(p1),matrix(0,p1,p2-p1))
+  }
+  return(mat)
+}
+
+
+
+Transform.Xi = function(Xi,space,a){
+  Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k,a)}))
+  return(Xi)
+}
+
+# weight bound for w_jk
+w.ftn = function(k,a=1){
+  if (k<=4){
+    w = k^(-a)
+  } else if (k>4){
+    w = k^(-a)
+  }
+  return(w)
+}
+
+
+# weight bound for b_l1l2
+b.ftn = function(l1,l2){
+  if (l1<=5 & l2<=5){
+    z = 1
+  } else if (l1<=5 & l2>5){
+    z = (l2-2)^(-1)
+  } else if (l1>5 & l2<=5){
+    z = (l1-2)^(-2)
+  } else if (l1>5 & l2>5){
+    z = (l1-2)^(-2)*(l2-2)^(-1)
+  }
+  return(z)
+}
+
+
+
 #####################################################
 #####################################################
 ### Generate the Frechet means 
@@ -80,24 +136,6 @@ covariates.generate.real = function(n,p,Zrho,Zsigma){
 }
 
 
-#' @title Generate a non-symmetric identity matrix
-#' 
-#' @description
-#' Creates a \eqn{p1 \times p2} matrix \eqn{I}, where each element \eqn{I_{jk}} is equal to \eqn{\mathbb{I}(j=k)}.
-#' 
-#' @param p1 the number of rows in the matrix.
-#' @param p2 the number of columns in the matrix.
-#' 
-#' @return a \eqn{p1 \times p2} matrix where each element \eqn{I_{jk}} is \eqn{\mathbb{I}(j=k)}.
-make.nonsym.Idmat = function(p1,p2){
-  if (p1>=p2){
-    mat = rbind(diag(p2),matrix(0,p1-p2,p2))
-  } else{
-    mat = cbind(diag(p1),matrix(0,p1,p2-p1))
-  }
-  return(mat)
-}
-
 
 #' @title Generate a manifold-valued covariate
 #' 
@@ -114,28 +152,12 @@ covariates.generate.each = function(Xi,mu,space='Euclid'){
   Check.manifold(space)
   basis = basis.manifold(mu,ncol(Xi),space)
   
-  if (space=='Wasserstein'){
-    # restrict the range of Xi to ensure that LogXj is the quantile function.
-    Xi = 2*pnorm(Xi) - 1 
-    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)/sqrt(2)}))
-  } else{
-    Xi = Xi %*% diag(sapply(1:ncol(Xi),function(k){w.ftn(k)}))
-  }
-  
   LogX = Xi %*% basis
   X = RieExp.manifold(mu,LogX,space)
   return(X)
 }
 
-# weight bound for w_jk
-w.ftn = function(k){
-  if (k<=4){
-    w = k^(-1)
-  } else if (k>4){
-    w = k^(-1)
-  }
-  return(w)
-}
+
 
 
 #' @title Generate a list of manifold-valued covariates.
@@ -148,9 +170,10 @@ w.ftn = function(k){
 #' @param n the number of data points.
 #' @param Xspaces a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.
 #' @param Xmu.list a \eqn{p} list of the Frechet means of \eqn{X_j}.
-#' @param dims a \eqn{p} vector specifying the dimensions of \eqn{X_j}.
+#' @param Xdims a \eqn{p} vector specifying the dimensions of \eqn{X_j}.
 #' @param Xrho a correlation parameter ranging from -1 to 1, with a default value of 0.5.
 #' @param Xsigma a common standard deviation parameter, with a default value of 1.
+#' @param a a parameter such that \eqn{\text{Var}(\xi_{jk})\asymp k^{-2a}}.
 #' 
 #' @return a list of data containing:
 #'    \describe{
@@ -158,39 +181,46 @@ w.ftn = function(k){
 #'       \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}, see \code{\link{Check.manifold}}.}
 #'       \item{p}{the number of \eqn{X_j}.}
 #' }
-covariates.generate = function(n,Xspaces,Xmu.list,dims,Xrho=0.5,Xsigma=1){
+covariates.generate = function(n,Xspaces,Xmu.list,Xdims,Xrho=0.5,Xsigma=1,a=1){
   # compute intrinsic dimension
-  p = length(dims)
-  dims_ = sapply(1:p,function(i){
+  p = length(Xdims)
+  Xdims_ = sapply(1:p,function(i){
     if(Xspaces[i] %in% c('simplex','sphere')){
-      dims[i]-1
+      Xdims[i]-1
     }else if (Xspaces[i]=='SPD.LogEuclid'){
-      (dims[i]+sqrt(dims[i]))/2
+      (Xdims[i]+sqrt(Xdims[i]))/2
     }else{
-      dims[i]
+      Xdims[i]
     }})
   
   # generate scores
-  Zeta = lapply(1:p,function(j){covariates.generate.real(n,dims_[j],0,Xsigma)})
+  Zeta = lapply(1:p,function(j){covariates.generate.real(n,Xdims_[j],0,Xsigma)})
   Xi = lapply(1:p,function(j){
     if (j==1){
-      I2 = make.nonsym.Idmat(dims_[j+1],dims_[j])
+      I2 = make.nonsym.Idmat(Xdims_[j+1],Xdims_[j])
       Xi.each = Zeta[[j]] + Xrho * (Zeta[[j+1]] %*% I2)
     } else if (j==p){
-      I1 = make.nonsym.Idmat(dims_[j-1],dims_[j])
+      I1 = make.nonsym.Idmat(Xdims_[j-1],Xdims_[j])
       Xi.each = Zeta[[j]] + Xrho * (Zeta[[j-1]] %*% I1)
     } else{
-      I1 = make.nonsym.Idmat(dims_[j-1],dims_[j])
-      I2 = make.nonsym.Idmat(dims_[j+1],dims_[j])
+      I1 = make.nonsym.Idmat(Xdims_[j-1],Xdims_[j])
+      I2 = make.nonsym.Idmat(Xdims_[j+1],Xdims_[j])
       Xi.each = Zeta[[j]] + Xrho * (Zeta[[j-1]] %*% I1 + Zeta[[j+1]] %*% I2)
+    }
+    if (Xspaces[j]=='Wasserstein'){
+      Xi.each = (2*pnorm(Xi.each) - 1)/sqrt(2)
     }
     return(Xi.each)
   })
   
+  Xi.scaled = lapply(1:p,function(j){Transform.Xi(Xi[[j]],Xspaces[j],a)})
+  
   # generate X_j
-  Xdata = lapply(1:p,function(j){covariates.generate.each(Xi[[j]],Xmu.list[[j]],Xspaces[j])})
-  Xdata[['spaces']] = Xspaces
-  Xdata[['p']] = p
+  X = lapply(1:p,function(j){covariates.generate.each(Xi.scaled[[j]],Xmu.list[[j]],Xspaces[j])})
+  X[['spaces']] = Xspaces
+  X[['p']] = p
+  
+  Xdata = list(X=X,Xi=Xi,Xi.scaled=Xi.scaled)
   return(Xdata)
 }
 
@@ -219,20 +249,6 @@ tensor.beta.generate.each = function(Xspace,Yspace,Xmu,Ymu,Xdim,Ydim,beta.norm=1
   
   Xbasis = basis.manifold(Xmu,Xdim,Xspace)
   Ybasis = basis.manifold(Ymu,Ydim,Yspace)
-  
-  # weight bound for b_l1l2
-  b.ftn = function(l1,l2){
-    if (l1<=5 & l2<=5){
-      b = 1
-    } else if (l1<=5 & l2>5){
-      b = (l2-2)^(-1)
-    } else if (l1>5 & l2<=5){
-      b = (l1-2)^(-2)
-    } else if (l1>5 & l2>5){
-      b = (l1-2)^(-2)*(l2-2)^(-1)
-    }
-    return(b)
-  }
   
   b = sapply(1:nrow(Xbasis),function(l1){sapply(1:nrow(Ybasis),function(l2){runif(1,-1,1)*b.ftn(l1,l2)})})
   b = vec.to.mat(b)
@@ -351,7 +367,7 @@ error.generate = function(n,Yspace,Ymu,Ydim,error.rho=0.5,error.std=1){
 #' @param Xdims a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.
 #' @param Ydim the intrinsic dimension of \eqn{\mathcal{M}_Y}.
 #' @param proper.indices an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.
-#' @param beta.norm a \eqn{p} vector (or a single integer) of the tensor norms, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.
+#' @param beta.norm a \eqn{p} vector (or a single integer) of the \eqn{\|\mathfrak{B}_j\|_{\mathcal{HS}}}, used only for \eqn{j\in\mathcal{S}}. If an integer is provided, the same value is applied to all \eqn{\|\mathfrak{B}_j\|_{\mathcal{HS}}}.
 #' @param Xrho a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.
 #' @param Xsigma a common standard deviation parameter for \eqn{X_j}, with a default value of 1.
 #' @param error.rho a correlation parameter for \eqn{\varepsilon}.
@@ -389,7 +405,7 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
   
   # generate X and error
   set.seed(seed)
-  X = covariates.generate(n,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
+  X = covariates.generate(n,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)$X
   error = error.generate(n,Yspace,Ymu,Ydim,error.rho,error.std)
   
   # compute Xbeta
@@ -407,107 +423,6 @@ LM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.indices=NULL,beta
               n=n,p=length(Xdims),Xspaces=Xspaces,Yspace=Yspace,Xdims=Xdims,Ydim=Ydim,
               proper.indices=proper.indices,beta.norm=beta.norm,Xrho=Xrho,Xsigma=Xsigma,
               error.rho=error.rho,error.std=error.std,seed=seed)
-  return(data)
-}
-
-
-
-
-#' @title Generate generalized linear regression data
-#' 
-#' @description
-#' Generate generalized linear regression data.
-#' The response \eqn{Y} given the covariates \eqn{X} follows an exponential family distribution, and thus \eqn{Y} is real-valued.
-#' The seed for generating Hilbert-Schmidt operators \eqn{\mathfrak{B}_j} is fixed as zero, ensuring that each \eqn{\mathfrak{B}_j} is the same across simulations.
-#' 
-#' @param n the number of data points
-#' @param Xspaces a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.
-#' @param Xdims a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.
-#' @param link a link function, see \code{\link{Check.link}}.
-#' @param Ydim the intrinsic dimension of \eqn{Y}, typically 1.
-#' @param proper.indices an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.
-#' @param beta.norm a \eqn{p} vector (or a single integer) of the \eqn{L^2} norms of \eqn{\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|}, used only for \eqn{j\notin\mathcal{S}}. If an integer is provided, the same value is applied for all \eqn{X_j}.
-#' @param beta0.norm an integer specifying the norm of \eqn{\beta_0^*}, with a default value of 1.
-#' @param Xrho a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.
-#' @param Xsigma a common standard deviation parameter for \eqn{X_j}, with a default value of 1.
-#' @param ngrid the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.
-#' @param seed a random seed, which must be greater than 1.
-#' @param c.beta a \eqn{p} vector of pre-computed parameters to ensure that \eqn{\mathbb{E}\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|^2 = \text{beta.norm[j]}^2}, only computed if not provided.
-#' 
-#' @return a list of data containing:
-#'    \describe{
-#'       \item{X}{a list of manifold-valued covariates, see \code{\link{covariates.generate}}.}
-#'       \item{Y}{an \eqn{n\times m} matrix of responses.}
-#'       \item{p}{the number of \eqn{X_j}.}
-#'       \item{link}{a link function, see \code{\link{Check.link}}.}
-#'       \item{theta}{an \eqn{n\times m} matrix of canonical parameters for \eqn{Y}.}
-#'       \item{Ymu}{an \eqn{n\times m} matrix of the means of \eqn{Y_i}, which is an inverse link of theta.}
-#'       \item{beta}{a \eqn{p} list of Hilbert-Schmidt operators, see \code{\link{tensor.beta.generate}}.}
-#'       \item{beta0}{a \eqn{m} vector, with \eqn{\|\beta_0^*\| = \text{beta0.norm}}.}
-#'       \item{Xmu}{a \eqn{p} list of the Frechet means \eqn{\mu_j} of \eqn{X_j}.}
-#'       \item{LogX}{a \eqn{p} list of \eqn{Log_{\mu_j}X_j}, the Riemannian logarithmic transformations of \eqn{X_j}.}
-#'       \item{Xbeta.each}{a \eqn{p} list of \eqn{\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
-#'       \item{Xbeta}{the sum of Xbeta.each, i.e., \eqn{\sum_{j=1}^p\mathfrak{B}_j(Log_{\mu_j}X_j)}.}
-#'       \item{...}{other input parameters.}
-#' }
-#' @export
-GLM.data.generate = function(n,Xspaces,Xdims,link='binomial',Ydim=1,proper.indices=NULL,beta.norm=1,beta0.norm=1,Xrho=0.5,Xsigma=1,ngrid=100,seed=1,c.beta=NULL){
-  
-  Yspace = 'Euclid'
-  Check.link(link)
-  if (link!='multinomial'){Ydim = 1}
-  if(is.null(proper.indices)){proper.indices = seq(length(Xdims))}
-  if(length(beta.norm)==1){beta.norm = rep(beta.norm,length(Xdims))}
-  p = length(Xdims)
-  s = length(proper.indices)
-  
-  # generate Xmu 
-  Xmu.list = lapply(1:length(Xdims),function(j){Xmu.generate(Xdims[j],Xspaces[j],ngrid)})
-  Ymu = Ymu.generate(Ydim,Yspace,ngrid) # pseudo Ymu
-  
-  # generate same beta for each simulation
-  set.seed(0)
-  beta = tensor.beta.generate(Xspaces,Yspace,Xmu.list,Ymu,Xdims,Ydim,proper.indices,1)
-  beta.oracle = lapply(proper.indices,function(j){beta[[j]]})
-  
-  # generate nuisance X to set |B_j(LogX_j)|=beta.norm[j]
-  if (is.null(c.beta)){
-    X.base = covariates.generate(10000,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
-    LogX.base = lapply(proper.indices,function(j){RieLog.manifold(Xmu.list[[j]],X.base[[j]],Xspaces[j])})
-    Xbeta.each.base = lapply(1:s,function(j){operator.tensor(beta.oracle[[j]],LogX.base[[j]])})
-    c.beta.tmp = sapply(1:s,function(j){sqrt(mean(norm.manifold(Xbeta.each.base[[j]])^2))})
-    c.beta = rep(0,p)
-    c.beta[proper.indices] = c.beta.tmp
-  }
-  
-  for (j in proper.indices){
-    beta[[j]]$element2 = beta[[j]]$element2 / c.beta[j] * beta.norm[j]
-  }
-  
-  # generate X
-  set.seed(seed)
-  X = covariates.generate(n,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
-  
-  # compute Xbeta
-  LogX = lapply(1:length(Xdims),function(j){RieLog.manifold(Xmu.list[[j]],X[[j]],Xspaces[j])})
-  Xbeta.each = lapply(1:length(Xdims),function(j){operator.tensor(beta[[j]],LogX[[j]])})
-  Xbeta = Reduce('+',Xbeta.each)
-  
-  # make Y
-  beta0 = rep(1,Ydim)/Ydim * beta0.norm
-  theta = beta0 + Xbeta
-  Ymu = Inv_Link(theta,link)
-  if (link=='binomial'){
-    Y = matrix(rbinom(n,1,prob=Ymu),nrow=n,ncol=1)
-  }else if (link=='poisson'){
-    Y = matrix(rpois(n,Ymu),nrow=n,ncol=1)
-  }
-  
-  data = list(X=X,Y=Y,link=link,theta=theta,Ymu=Ymu,beta=beta,beta0=beta0,c.beta=c.beta,
-              Xmu.list=Xmu.list,LogX=LogX,Xbeta=Xbeta,Xbeta.each=Xbeta.each,
-              n=n,p=length(Xdims),Xspaces=Xspaces,Xdims=Xdims,Ydim=Ydim,
-              proper.indices=proper.indices,beta.norm=beta.norm,beta0.norm=beta0.norm,
-              Xrho=Xrho,Xsigma=Xsigma,seed=seed)
   return(data)
 }
 
