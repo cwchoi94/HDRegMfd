@@ -94,6 +94,7 @@ AM = function(Xorg,Yorg,Yspace,degree=0,penalty='LASSO',gamma=0,lambda=0.1,Xdim.
     
     SBF.comp = SBF.preprocessing(X,LogY,bandwidths,degree,ngrid,Kdenom_method)
   }
+  bandwidths = SBF.comp[['bandwidths']]
   
   
   # apply AM_each function in cpp

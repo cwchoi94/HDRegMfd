@@ -5,7 +5,7 @@
 #' 
 #' @description 
 #' Implements cross-validation (CV) for high-dimensional additive models based on 'AIC' or 'BIC'.
-#' The CV process is based on the coordinate-wise variable selection and is implemented using a function \code{AM_CV} in 'AM_CV.cpp'.
+#' The CV process follows the coordinate-wise variable selection and is implemented using a function \code{AM_CV} in 'AM_CV.cpp'.
 #' For a more detailed description of parameters, see \code{\link{AM}}.
 #' 
 #' @inheritParams AM
@@ -14,6 +14,7 @@
 #' @param R.list a vector of \eqn{\ell^1}-type constrained bounds, multiplied by \eqn{\hat\sigma_Y} (default: c(100)).
 #' @param max.cv.iter a maximum number of CV iterations (default: 20).
 #' @param cv.threshold a convergence threshold for the CV (default: 1e-6).
+#' @param loss.type the type of loss function. Options are 'average' or 'integral' (default).
 #'
 #' @return a \code{AM} object with the following compnents:
 #'    \describe{
@@ -34,13 +35,14 @@
 #' }
 #' @export
 AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=c(100),bandwidths.list=NULL,
-                 max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,SBF.comp=NULL){
+                 max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,loss.type='integral',SBF.comp=NULL){
   
   start.time = Sys.time()
   
   # check validity of inputs
   Check.penalty(penalty)
   Check.manifold(Yspace)
+  Check.loss.type(loss.type)
   
   if ((penalty=='SCAD') & (gamma<2)){
     gamma = 3.7
@@ -51,6 +53,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   if (ngrid<=1){
     ngrid = 2
   }
+  
   
   # define basic parameters
   n = nrow(Yorg)
@@ -97,11 +100,17 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
     
     SBF.comp = SBF.preprocessing(X,LogY,bandwidths,degree,ngrid,Kdenom_method)
   }
+  bandwidths = SBF.comp[['bandwidths']]
   
   
   # Use AM_CV function to obtain the optimal parameters
-  result = AM_CV(SBF.comp,X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
-                 cv.type,penalty,gamma,max.cv.iter,cv.threshold)
+  if (loss.type=='average'){
+    result = AM_CV(SBF.comp,X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
+                   cv.type,penalty,gamma,max.cv.iter,cv.threshold)
+  }else{
+    result = AM_CV2(SBF.comp,X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
+                    cv.type,penalty,gamma,max.cv.iter,cv.threshold)
+  }
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]

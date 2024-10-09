@@ -88,6 +88,7 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
     
     SBF.comp = SBF.preprocessing(X,LogY,bandwidths,degree,ngrid,Kdenom_method)
   }
+  bandwidths = SBF.comp[['bandwidths']]
   
   
   # apply AM_each function in cpp

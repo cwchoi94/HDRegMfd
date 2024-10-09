@@ -97,6 +97,7 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
     
     SBF.comp = SBF.preprocessing(X,LogY,bandwidths,degree,ngrid,Kdenom_method)
   }
+  bandwidths = SBF.comp[['bandwidths']]
   
   
   # Use AM_CV function to obtain the optimal parameters

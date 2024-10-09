@@ -196,4 +196,79 @@ SBF.preprocessing = function(X,LogY,bandwidths,degree=0,ngrid=51,Kdenom_method='
 
 
 
+# for fast computation in simulation
+compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric'){
+  
+  start.time = Sys.time()
+  
+  # check validility of inputs
+  Check.penalty(penalty)
+  Check.manifold(Yspace)
+  
+  if ((penalty=='SCAD') & (gamma<2)){
+    gamma = 3.7
+  } else if ((penalty=='MCP') & (gamma<1)){
+    gamma = 3
+  }
+  
+  if (ngrid<=1){
+    ngrid = 2
+  }
+  
+  # define basic parameters
+  n = nrow(Yorg)
+  p = Xorg[['p']]
+  
+  # compute LogY
+  Ymu = FrechetMean.manifold(Yorg,Yspace)
+  LogY = RieLog.manifold(Ymu,Yorg,Yspace)
+  
+  # preprocessing for X
+  ## PCA
+  pca = PCA.manifold.list(Xorg)
+  X_ = predict(pca,Xorg)
+  
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X_,ncol)))}
+  Xdim.max.max = max(Xdim.max.list)
+  X = reduce.dimension(X_,Xdim.max.max)
+  Xdims = sapply(X,ncol)
+  
+  ## transformation
+  object.transform = Transform.Score(X,transform,normalize)
+  index.mat = object.transform$index.mat
+  X = predict(object.transform,X)
+  
+  # define some functions for SBF from the SBF.preprocessing function
+  # kde.1d: p list - (g,r,r) cube
+  # proj: (p1,p2,g1,g2,r1,r2) = (p1*p2*g1*g2,r1,r2) cube
+  # tildem: p list - (g,r,m) cube
+  bandwidths = get.rule.of.thumbs.bandwidths(X,degree)
+  
+  SBF.comp = SBF.preprocessing(X,LogY,bandwidths,degree,ngrid,Kdenom_method)
+  
+  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  
+  SBF.comp[['runtime']] = runtime
+  
+  return(SBF.comp) 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

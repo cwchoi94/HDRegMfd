@@ -26,6 +26,7 @@ AM.CV(
   eta = 0.001,
   max.iter = 200,
   threshold = 1e-06,
+  loss.type = "integral",
   SBF.comp = NULL
 )
 }
@@ -74,6 +75,8 @@ AM.CV(
 \item{max.iter}{a maximum number of iterations (default: 200).}
 
 \item{threshold}{a convergence threshold for the algorithm (default: 1e-6).}
+
+\item{loss.type}{the type of loss function. Options are 'average' or 'integral' (default).}
 }
 \value{
 a \code{AM} object with the following compnents:
@@ -96,6 +99,6 @@ a \code{AM} object with the following compnents:
 }
 \description{
 Implements cross-validation (CV) for high-dimensional additive models based on 'AIC' or 'BIC'.
-The CV process is based on the coordinate-wise variable selection and is implemented using a function \code{AM_CV} in 'AM_CV.cpp'.
+The CV process follows the coordinate-wise variable selection and is implemented using a function \code{AM_CV} in 'AM_CV.cpp'.
 For a more detailed description of parameters, see \code{\link{AM}}.
 }
