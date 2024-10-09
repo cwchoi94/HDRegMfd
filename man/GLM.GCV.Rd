@@ -37,7 +37,7 @@ GLM.GCV(
 
 \item{Yorgnew}{an \eqn{n'\times m} new responses.}
 
-\item{link}{a link function, see \code{\link{Check.link}}.}
+\item{link}{a link function. This must be one of 'binomial', 'poisson', or 'exponential' (default: 'binomial').}
 
 \item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
 

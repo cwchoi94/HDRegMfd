@@ -131,7 +131,7 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,seed=NULL,penalty='LASSO',gamma=0,l
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = LM(Xall,Yall,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
+  object = LM(Xall,Yall,Yspace,penalty,gamma,opt.lambda,opt.Xdim.max,opt.R,phi,eta,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
