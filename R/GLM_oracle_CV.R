@@ -67,7 +67,7 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
   # apply GLM with the optimal parameters
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = GLM.oracle(Xorg,Yorg,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
+  object = GLM.oracle(Xorg,Yorg,link,proper.indices,opt.Xdim.max,1,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
@@ -148,7 +148,7 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,link='binomial',proper.indic
   # apply GLM with the optimal parameters
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = GLM.oracle(Xorg,Yorg,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
+  object = GLM.oracle(Xorg,Yorg,link,proper.indices,opt.Xdim.max,1,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
@@ -252,7 +252,7 @@ GLM.oracle.kfold = function(Xorg,Yorg,link='binomial',proper.indices=NULL,kfold=
   # apply GLM with the optimal parameters
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = GLM.oracle(Xall,Yall,opt.Xdim.max,proper.indices,link,1,max.iter,threshold)
+  object = GLM.oracle(Xorg,Yorg,link,proper.indices,opt.Xdim.max,1,max.iter,threshold)
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
   
