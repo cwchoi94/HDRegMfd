@@ -86,7 +86,7 @@ get.rule.of.thumbs.bandwidths = function(X,degree=0,const=1.001){
   p = ncol(X)
   
   h.min = get.min.bandwidths(X,degree,const)
-  h.vec = apply(X,2,std)
+  h.vec = apply(X,2,pracma::std)
   if (degree==0){
     h.vec = h.vec * n**(-1/5)
   }else{
@@ -202,14 +202,7 @@ compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,transfo
   start.time = Sys.time()
   
   # check validility of inputs
-  Check.penalty(penalty)
   Check.manifold(Yspace)
-  
-  if ((penalty=='SCAD') & (gamma<2)){
-    gamma = 3.7
-  } else if ((penalty=='MCP') & (gamma<1)){
-    gamma = 3
-  }
   
   if (ngrid<=1){
     ngrid = 2
