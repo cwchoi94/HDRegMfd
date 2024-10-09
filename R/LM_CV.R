@@ -10,10 +10,10 @@
 #' 
 #' @inheritParams LM
 #' 
+#' @param cv.type a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').
 #' @param lambda.list a vector of non-negative penalty constants.
 #' @param Xdim.max.list a vector of the maximum dimension to which \eqn{X_j} will be reduced.
 #' @param R.list a vector of \eqn{\ell^1}-type constrained bounds.
-#' @param cv.type a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').
 #' @param max.cv.iter a maximum number of CV iterations (default 20).
 #' @param cv.threshold a convergence threshold for the CV (default 1e-10).
 #'
@@ -33,7 +33,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC',penalty='LASSO',gamma=0,
+LM.CV = function(Xorg,Yorg,Yspace,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
                  phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -51,10 +51,13 @@ LM.CV = function(Xorg,Yorg,Yspace,lambda.list,Xdim.max.list,R.list,cv.type='AIC'
   # define basic parameters
   n = nrow(Yorg)
   p = Xorg[['p']]
+  if(is.null(lambda.list)){lambda.list=c(0)}
+  if(is.null(R.list)){R.list=c(1000)}
   
   # PCA for X
   pca = PCA.manifold.list(Xorg)
   X = predict(pca,Xorg)
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
   # projection of Yorg and Yorgnew onto the tangent space
   Ymu = FrechetMean.manifold(Yorg,Yspace)

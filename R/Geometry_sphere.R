@@ -70,7 +70,7 @@ Exp1 <- function(mu,v,tol=1e-10) {
 }
 
 
-#' @describeIn RieExp.manifold Method
+#' @describeIn RieLog.manifold Method
 #' @export
 RieLog.sphere = function(p,q){
   p = vec.to.mat(p)

@@ -4,7 +4,7 @@
 #' @title Kfold Cross-Validation for High-Dimensional generalized Linear Models
 #' 
 #' @description 
-#' Implements a Kfold cross-validation (Kfold-CV) for high-dimensional generalized linear models.
+#' Implements Kfold cross-validation (Kfold-CV) for high-dimensional generalized linear models.
 #' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_CV' in 'GLM_CV.cpp'.
 #' For a more detailed description of parameters, see \code{\link{GLM}}.
 #' 
@@ -29,7 +29,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.kfold = function(Xorg,Yorg,kfold,lambda.list,Xdim.max.list,R.list,penalty='LASSO',link='binomial',gamma=0,seed=NULL,
+GLM.kfold = function(Xorg,Yorg,link='binomial',kfold=5,seed=NULL,penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
                      phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -50,8 +50,17 @@ GLM.kfold = function(Xorg,Yorg,kfold,lambda.list,Xdim.max.list,R.list,penalty='L
   
   n = nrow(Yall)
   p = Xall[['p']]
+  if(is.null(lambda.list)){lambda.list=c(0)}
+  if(is.null(R.list)){R.list=c(100)}
   Ymu = 0
   Yspace = 'Euclid'
+  
+  ## compute Xdim.max.list when it doesn't exist
+  if (is.null(Xdim.max.list)){
+    pca = PCA.manifold.list(Xall)
+    X = predict(pca,Xall)
+    Xdim.max.list = c(max(sapply(X,ncol)))
+  }
   
   # data split and preprocessing
   test.indices.list = get.kfold.test.indices(n,kfold,seed)

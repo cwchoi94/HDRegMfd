@@ -30,7 +30,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AIC',link='binomial',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -53,6 +53,7 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
   X = predict(pca,Xorg)
   
   Xoracle = lapply(proper.indices,function(j){X[[j]]})
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(Xoracle,ncol)))}
   
   
   # Use GLM_GCV function to obtain the optimal parameters
@@ -108,7 +109,7 @@ GLM.oracle.CV = function(Xorg,Yorg,Xdim.max.list,proper.indices=NULL,cv.type='AI
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices=NULL,link='binomial',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,link='binomial',proper.indices=NULL,Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -133,6 +134,7 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices
   
   Xoracle = lapply(proper.indices,function(j){X[[j]]})
   Xoracle.new = lapply(proper.indices,function(j){Xnew[[j]]})
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(Xoracle,ncol)))}
   
   
   # Use GLM_GCV function to obtain the optimal parameters
@@ -188,7 +190,7 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Xdim.max.list,proper.indices
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.oracle.kfold = function(Xorg,Yorg,kfold,Xdim.max.list,proper.indices=NULL,link='binomial',seed=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.oracle.kfold = function(Xorg,Yorg,link='binomial',proper.indices=NULL,kfold=5,seed=NULL,Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -206,6 +208,14 @@ GLM.oracle.kfold = function(Xorg,Yorg,kfold,Xdim.max.list,proper.indices=NULL,li
   
   lambda.list = c(0)
   R.list = c(1000)
+  
+  ## compute Xdim.max.list when it doesn't exist
+  if (is.null(Xdim.max.list)){
+    pca = PCA.manifold.list(Xall)
+    X = predict(pca,Xall)
+    X.oracle = lapply(proper.indices,function(j){X[[j]]})
+    Xdim.max.list = c(max(sapply(X,ncol)))
+  }
   
   proper.indices = get.proper.indices(proper.indices,p)
   

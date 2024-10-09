@@ -4,7 +4,7 @@
 \alias{LM.oracle}
 \title{Oracle Hilbert-Schmidt linear regression for manifold-valued responses and covariates.}
 \usage{
-LM.oracle(Xorg, Yorg, Yspace, Xdim.max = 100, proper.indices = NULL)
+LM.oracle(Xorg, Yorg, Yspace, proper.indices = NULL, Xdim.max = 100)
 }
 \arguments{
 \item{Xorg}{a list of covariates with the following components (see also \code{\link{covariates.generate}}):
@@ -18,9 +18,9 @@ LM.oracle(Xorg, Yorg, Yspace, Xdim.max = 100, proper.indices = NULL)
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
-
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
+
+\item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
 }
 \value{
 a \code{\link{LM}} object with the following compnents:

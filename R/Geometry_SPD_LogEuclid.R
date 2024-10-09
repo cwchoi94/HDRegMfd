@@ -88,7 +88,7 @@ RieExp.SPD.LogEuclid = function(p,u){
 }
 
 
-#' @describeIn RieExp.manifold Method
+#' @describeIn RieLog.manifold Method
 #' @export
 RieLog.SPD.LogEuclid = function(p,q){
   p = vec.to.mat(p)
@@ -105,7 +105,7 @@ RieLog.SPD.LogEuclid = function(p,q){
 }
 
 
-#' @describeIn Basis.manifold Method
+#' @describeIn basis.manifold Method
 #' @export
 basis.SPD.LogEuclid = function(p,dim=50){
   m = length(p)

@@ -8,10 +8,10 @@ LM.oracle.kfold(
   Xorg,
   Yorg,
   Yspace,
-  kfold,
-  Xdim.max.list,
   proper.indices = NULL,
-  seed = NULL
+  kfold = 5,
+  seed = NULL,
+  Xdim.max.list
 )
 }
 \arguments{
@@ -26,13 +26,13 @@ LM.oracle.kfold(
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{kfold}{the number of kfolds (default: 5).}
-
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
-
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
+\item{kfold}{the number of kfolds (default: 5).}
+
 \item{seed}{a random seed for kfolds. When it is not provided, the data will be partitioned in index order.}
+
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 }
 \value{
 an \code{\link{LM}} object with the following components:
@@ -52,6 +52,6 @@ an \code{\link{LM}} object with the following components:
 }
 }
 \description{
-Implements a Kfold cross-validation (Kfold-CV) for oracle Hilbert-Schmidt linear models.
+Implements Kfold cross-validation (Kfold-CV) for oracle Hilbert-Schmidt linear models.
 For a more detailed description of parameters, see \code{\link{LM.oracle}}.
 }

@@ -32,7 +32,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM = function(Xorg,Yorg,lambda=0.1,Xdim.max=100,R=100,penalty='LASSO',link='binomial',gamma=0,
+GLM = function(Xorg,Yorg,link='binomial',penalty='LASSO',gamma=0,lambda=0.1,Xdim.max=100,R=100,
                phi=1,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()

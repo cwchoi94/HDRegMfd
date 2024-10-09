@@ -8,9 +8,9 @@ LM.oracle.CV(
   Xorg,
   Yorg,
   Yspace,
-  Xdim.max.list,
   proper.indices = NULL,
   cv.type = "AIC",
+  Xdim.max.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
   eta = 0.001,
@@ -30,11 +30,11 @@ LM.oracle.CV(
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
-
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
 \item{cv.type}{a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').}
+
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
 \item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 

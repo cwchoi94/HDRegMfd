@@ -7,10 +7,10 @@
 GLM.oracle.CV(
   Xorg,
   Yorg,
-  Xdim.max.list,
+  link = "binomial",
   proper.indices = NULL,
   cv.type = "AIC",
-  link = "binomial",
+  Xdim.max.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
   eta = 0.001,
@@ -28,13 +28,13 @@ GLM.oracle.CV(
 
 \item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
+\item{link}{a link function, see \code{\link{Check.link}}.}
 
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
 \item{cv.type}{a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').}
 
-\item{link}{a link function, see \code{\link{Check.link}}.}
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
 \item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 

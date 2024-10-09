@@ -9,9 +9,9 @@ GLM.oracle.GCV(
   Yorg,
   Xorgnew,
   Yorgnew,
-  Xdim.max.list,
-  proper.indices = NULL,
   link = "binomial",
+  proper.indices = NULL,
+  Xdim.max.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
   eta = 0.001,
@@ -33,11 +33,11 @@ GLM.oracle.GCV(
 
 \item{Yorgnew}{an \eqn{n'\times m} new responses.}
 
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
+\item{link}{a link function, see \code{\link{Check.link}}.}
 
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{link}{a link function, see \code{\link{Check.link}}.}
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
 \item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 

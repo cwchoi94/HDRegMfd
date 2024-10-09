@@ -7,9 +7,9 @@
 GLM.oracle(
   Xorg,
   Yorg,
-  Xdim.max = 100,
-  proper.indices = NULL,
   link = "binomial",
+  proper.indices = NULL,
+  Xdim.max = 100,
   phi = 1,
   max.iter = 500,
   threshold = 1e-10
@@ -25,11 +25,11 @@ GLM.oracle(
 
 \item{Yorg}{an \eqn{n\times m} matrix of responses.}
 
-\item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
+\item{link}{a link function, see \code{\link{Check.link}}.}
 
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{link}{a link function, see \code{\link{Check.link}}.}
+\item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
 
 \item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 

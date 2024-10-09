@@ -62,7 +62,7 @@ compute_beta = function(X,Y,proper.indices){
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.oracle = function(Xorg,Yorg,Yspace,Xdim.max=100,proper.indices=NULL){
+LM.oracle = function(Xorg,Yorg,Yspace,proper.indices=NULL,Xdim.max=100){
   
   start.time = Sys.time()
   

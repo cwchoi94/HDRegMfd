@@ -48,7 +48,7 @@ split.data.org = function(Xall,Yall,test.indices){
 #' @title Kfold Cross-Validation for High-Dimensional Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' Implements a Kfold cross-validation (Kfold-CV) for high-dimensional Hilbert-Schmidt linear models.
+#' Implements Kfold cross-validation (Kfold-CV) for high-dimensional Hilbert-Schmidt linear models.
 #' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
 #' For a more detailed description of parameters, see \code{\link{LM}}.
 #' 
@@ -73,7 +73,7 @@ split.data.org = function(Xall,Yall,test.indices){
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,lambda.list,Xdim.max.list,R.list,penalty='LASSO',gamma=0,seed=NULL,
+LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,seed=NULL,penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
                     phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()

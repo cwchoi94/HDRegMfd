@@ -30,7 +30,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.CV = function(Xorg,Yorg,lambda.list,Xdim.max.list,R.list,cv.type='AIC',penalty='LASSO',link='binomial',gamma=0,
+GLM.CV = function(Xorg,Yorg,link='binomial',cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
                   phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -49,12 +49,15 @@ GLM.CV = function(Xorg,Yorg,lambda.list,Xdim.max.list,R.list,cv.type='AIC',penal
   # define basic parameters
   n = nrow(Yorg)
   p = Xorg[['p']]
+  if(is.null(lambda.list)){lambda.list=c(0)}
+  if(is.null(R.list)){R.list=c(1000)}
   Ymu = 0
   Yspace = 'Euclid'
   
   # PCA for X
   pca = PCA.manifold.list(Xorg)
   X = predict(pca,Xorg)
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
   # Use GLM_GCV function to obtain the optimal parameters
   result = GLM_CV(X,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,penalty,link,gamma,phi,max.cv.iter,cv.threshold)

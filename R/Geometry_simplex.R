@@ -102,7 +102,7 @@ RieExp.simplex = function(p,u){
 }
 
 
-#' @describeIn RieExp.manifold Method
+#' @describeIn RieLog.manifold Method
 #' @export
 RieLog.simplex = function(p,q){
   p = vec.to.mat(p)

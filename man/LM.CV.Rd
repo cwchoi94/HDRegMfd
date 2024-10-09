@@ -8,12 +8,12 @@ LM.CV(
   Xorg,
   Yorg,
   Yspace,
-  lambda.list,
-  Xdim.max.list,
-  R.list,
   cv.type = "AIC",
   penalty = "LASSO",
   gamma = 0,
+  lambda.list = NULL,
+  Xdim.max.list = NULL,
+  R.list = NULL,
   phi = 1,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
@@ -34,17 +34,17 @@ LM.CV(
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{lambda.list}{a vector of non-negative penalty constants.}
-
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
-
-\item{R.list}{a vector of \eqn{\ell^1}-type constrained bounds.}
-
 \item{cv.type}{a CV method, which must be one of 'AIC', 'BIC', and 'ABIC' (default: 'AIC').}
 
 \item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
 
 \item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
+
+\item{lambda.list}{a vector of non-negative penalty constants.}
+
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
+
+\item{R.list}{a vector of \eqn{\ell^1}-type constrained bounds.}
 
 \item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 

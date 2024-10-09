@@ -80,7 +80,7 @@ RieExp.BayesHilbert = function(p,u){
 }
 
 
-#' @describeIn RieExp.manifold Method
+#' @describeIn RieLog.manifold Method
 #' @export
 RieLog.BayesHilbert = function(p,q){
   p = vec.to.mat(p)
@@ -97,7 +97,7 @@ RieLog.BayesHilbert = function(p,q){
 }
 
 
-#' @describeIn Basis.manifold Method
+#' @describeIn basis.manifold Method
 #' @export
 basis.BayesHilbert = function(p,dim=50){
   ngrid = length(p)

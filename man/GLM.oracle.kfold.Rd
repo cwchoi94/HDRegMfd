@@ -7,11 +7,11 @@
 GLM.oracle.kfold(
   Xorg,
   Yorg,
-  kfold,
-  Xdim.max.list,
-  proper.indices = NULL,
   link = "binomial",
+  proper.indices = NULL,
+  kfold = 5,
   seed = NULL,
+  Xdim.max.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
   eta = 0.001,
@@ -29,15 +29,15 @@ GLM.oracle.kfold(
 
 \item{Yorg}{an \eqn{n\times m} matrix of manifold-valued responses.}
 
-\item{kfold}{the number of kfolds (default: 5).}
-
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
+\item{link}{a link function, see \code{\link{Check.link}}.}
 
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
 
-\item{link}{a link function, see \code{\link{Check.link}}.}
+\item{kfold}{the number of kfolds (default: 5).}
 
 \item{seed}{a random seed for kfolds. When it is not provided, the data will be partitioned in index order.}
+
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 
 \item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 

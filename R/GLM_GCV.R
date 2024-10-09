@@ -5,7 +5,7 @@
 #' @title Generalized Cross-Validation for High-Dimensional generalized Linear Models
 #' 
 #' @description 
-#' Implements a generalized cross-validation (GCV) for high-dimensional generalized linear models.
+#' Implements generalized cross-validation (GCV) for high-dimensional generalized linear models.
 #' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_CV' in 'GLM_CV.cpp'.
 #' For a more detailed description of parameters, see \code{\link{GLM}}.
 #' 
@@ -30,7 +30,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,penalty='LASSO',link='binomial',gamma=0,
+GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,link='binomial',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
                    phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -48,6 +48,8 @@ GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,pe
   # define basic parameters
   n = nrow(Yorg)
   p = Xorg[['p']]
+  if(is.null(lambda.list)){lambda.list=c(0)}
+  if(is.null(R.list)){R.list=c(100)}
   Ymu = 0
   Yspace = 'Euclid'
   
@@ -55,6 +57,7 @@ GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,lambda.list,Xdim.max.list,R.list,pe
   pca = PCA.manifold.list(Xorg)
   X = predict(pca,Xorg)
   Xnew = predict(pca,Xorgnew)
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
   # Use GLM_GCV function to obtain the optimal parameters
   result = GLM_GCV(X,Yorg,Xnew,Yorgnew,lambda.list,Xdim.max.list,R.list,penalty,link,gamma,phi,max.cv.iter,cv.threshold)

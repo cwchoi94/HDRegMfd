@@ -6,56 +6,32 @@
 \name{RieExp.manifold}
 \alias{RieExp.manifold}
 \alias{RieExp.BayesHilbert}
-\alias{RieLog.BayesHilbert}
 \alias{RieExp.Euclid}
-\alias{RieLog.Euclid}
 \alias{RieExp.SPD.AffInv}
-\alias{RieLog.SPD.AffInv}
 \alias{RieExp.SPD.LogEuclid}
-\alias{RieLog.SPD.LogEuclid}
 \alias{RieExp.Wasserstein}
-\alias{RieLog.Wasserstein}
 \alias{RieExp.functional}
-\alias{RieLog.functional}
 \alias{RieExp.simplex}
-\alias{RieLog.simplex}
 \alias{RieExp.sphere}
-\alias{RieLog.sphere}
 \title{Riemannian exponential map on the manifold}
 \usage{
 RieExp.manifold(p, u, space = "Euclid")
 
 RieExp.BayesHilbert(p, u)
 
-RieLog.BayesHilbert(p, q)
-
 RieExp.Euclid(p, u)
-
-RieLog.Euclid(p, q)
 
 RieExp.SPD.AffInv(p, u)
 
-RieLog.SPD.AffInv(p, q)
-
 RieExp.SPD.LogEuclid(p, u)
-
-RieLog.SPD.LogEuclid(p, q)
 
 RieExp.Wasserstein(p, u)
 
-RieLog.Wasserstein(p, q)
-
 RieExp.functional(p, u)
-
-RieLog.functional(p, q)
 
 RieExp.simplex(p, u)
 
-RieLog.simplex(p, q)
-
 RieExp.sphere(p, u)
-
-RieLog.sphere(p, q)
 }
 \arguments{
 \item{p}{an \eqn{m} vector representing the base point in \eqn{\mathcal{M}}.}
@@ -74,34 +50,18 @@ Compute the Riemnnain exponential map on the manifold \eqn{\mathcal{M}}.
 \itemize{
 \item \code{RieExp.BayesHilbert()}: Method
 
-\item \code{RieLog.BayesHilbert()}: Method
-
 \item \code{RieExp.Euclid()}: Method
-
-\item \code{RieLog.Euclid()}: Method
 
 \item \code{RieExp.SPD.AffInv()}: Method
 
-\item \code{RieLog.SPD.AffInv()}: Method
-
 \item \code{RieExp.SPD.LogEuclid()}: Method
-
-\item \code{RieLog.SPD.LogEuclid()}: Method
 
 \item \code{RieExp.Wasserstein()}: Method
 
-\item \code{RieLog.Wasserstein()}: Method
-
 \item \code{RieExp.functional()}: Method
-
-\item \code{RieLog.functional()}: Method
 
 \item \code{RieExp.simplex()}: Method
 
-\item \code{RieLog.simplex()}: Method
-
 \item \code{RieExp.sphere()}: Method
-
-\item \code{RieLog.sphere()}: Method
 
 }}

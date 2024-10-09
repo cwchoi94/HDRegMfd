@@ -7,12 +7,12 @@
 GLM(
   Xorg,
   Yorg,
+  link = "binomial",
+  penalty = "LASSO",
+  gamma = 0,
   lambda = 0.1,
   Xdim.max = 100,
   R = 100,
-  penalty = "LASSO",
-  link = "binomial",
-  gamma = 0,
   phi = 1,
   eta = 0.001,
   max.iter = 500,
@@ -29,17 +29,17 @@ GLM(
 
 \item{Yorg}{an \eqn{n\times m} matrix of responses.}
 
+\item{link}{a link function, see \code{\link{Check.link}}.}
+
+\item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
+
+\item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
+
 \item{lambda}{a non-negative penalty constant (default: 0.1).}
 
 \item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
 
 \item{R}{an \eqn{\ell^1}-type constrained bound (default: 100).}
-
-\item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
-
-\item{link}{a link function, see \code{\link{Check.link}}.}
-
-\item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
 
 \item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 

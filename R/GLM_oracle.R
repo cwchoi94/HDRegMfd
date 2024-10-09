@@ -26,7 +26,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.oracle = function(Xorg,Yorg,Xdim.max=100,proper.indices=NULL,link='binomial',phi=1,max.iter=500,threshold=1e-10){
+GLM.oracle = function(Xorg,Yorg,link='binomial',proper.indices=NULL,Xdim.max=100,phi=1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   

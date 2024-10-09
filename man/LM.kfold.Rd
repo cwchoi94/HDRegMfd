@@ -9,12 +9,12 @@ LM.kfold(
   Yorg,
   Yspace,
   kfold = 5,
-  lambda.list,
-  Xdim.max.list,
-  R.list,
+  seed = NULL,
   penalty = "LASSO",
   gamma = 0,
-  seed = NULL,
+  lambda.list = NULL,
+  Xdim.max.list = NULL,
+  R.list = NULL,
   phi = 1,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
@@ -37,17 +37,17 @@ LM.kfold(
 
 \item{kfold}{the number of kfolds (default: 5).}
 
-\item{lambda.list}{a vector of non-negative penalty constants.}
-
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
-
-\item{R.list}{a vector of \eqn{\ell^1}-type constrained bounds.}
+\item{seed}{a random seed for kfolds. When it is not provided, the data will be partitioned in index order.}
 
 \item{penalty}{the name of a penalty function. This must be one of 'LASSO', 'SCAD', or 'MCP' (default: 'LASSO').}
 
 \item{gamma}{a parameter for SCAD (default: 3.7) or MCP (default: 3).}
 
-\item{seed}{a random seed for kfolds. When it is not provided, the data will be partitioned in index order.}
+\item{lambda.list}{a vector of non-negative penalty constants.}
+
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
+
+\item{R.list}{a vector of \eqn{\ell^1}-type constrained bounds.}
 
 \item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 
@@ -79,7 +79,7 @@ an \code{\link{LM}} object with the following components:
 }
 }
 \description{
-Implements a Kfold cross-validation (Kfold-CV) for high-dimensional Hilbert-Schmidt linear models.
+Implements Kfold cross-validation (Kfold-CV) for high-dimensional Hilbert-Schmidt linear models.
 The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
 For a more detailed description of parameters, see \code{\link{LM}}.
 }

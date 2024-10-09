@@ -43,7 +43,7 @@ get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max,proper.ind
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.type='AIC',max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -65,6 +65,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.ty
   X = predict(pca,Xorg)
   
   Xoracle = lapply(proper.indices,function(j){X[[j]]})
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(Xoracle,ncol)))}
   
   # projection of Yorg and Yorgnew to the tangent space
   Ymu = FrechetMean.manifold(Yorg,Yspace)
@@ -125,7 +126,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.ty
 #' @title Generalized Cross-Validation for Oracle Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' Implements a generalized cross-validation (GCV) for oracle Hilbert-Schmidt linear models.
+#' Implements generalized cross-validation (GCV) for oracle Hilbert-Schmidt linear models.
 #' For a more detailed description of parameters, see \code{\link{LM.oracle}}.
 #' 
 #' @inheritParams LM.GCV
@@ -147,7 +148,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,Xdim.max.list,proper.indices=NULL,cv.ty
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.indices=NULL){
+LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.indices=NULL,Xdim.max.list=NULL){
   
   start.time = Sys.time()
   
@@ -164,6 +165,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.i
   pca = PCA.manifold.list(Xorg)
   X = predict(pca,Xorg)
   Xnew = predict(pca,Xorgnew)
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
   # compute LogY
   Ymu = FrechetMean.manifold(Yorg,Yspace)
@@ -223,7 +225,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.i
 #' @title Kfold Cross-Validation for Oracle Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' Implements a Kfold cross-validation (Kfold-CV) for oracle Hilbert-Schmidt linear models.
+#' Implements Kfold cross-validation (Kfold-CV) for oracle Hilbert-Schmidt linear models.
 #' For a more detailed description of parameters, see \code{\link{LM.oracle}}.
 #' 
 #' @inheritParams LM.kfold
@@ -245,7 +247,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,Xdim.max.list,proper.i
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.oracle.kfold = function(Xorg,Yorg,Yspace,kfold,Xdim.max.list,proper.indices=NULL,seed=NULL){
+LM.oracle.kfold = function(Xorg,Yorg,Yspace,proper.indices=NULL,kfold=5,seed=NULL,Xdim.max.list){
   
   start.time = Sys.time()
   
@@ -258,6 +260,16 @@ LM.oracle.kfold = function(Xorg,Yorg,Yspace,kfold,Xdim.max.list,proper.indices=N
   
   n = nrow(Yall)
   p = Xall[['p']]
+  if(is.null(lambda.list)){lambda.list=c(0)}
+  if(is.null(R.list)){R.list=c(1000)}
+  
+  ## compute Xdim.max.list when it doesn't exist
+  if (is.null(Xdim.max.list)){
+    pca = PCA.manifold.list(Xall)
+    X = predict(pca,Xall)
+    X.oracle = lapply(proper.indices,function(j){X[[j]]})
+    Xdim.max.list = c(max(sapply(X,ncol)))
+  }
   
   proper.indices = get.proper.indices(proper.indices,p)
   

@@ -58,7 +58,7 @@ RieExp.functional = function(p,u){
 }
 
 
-#' @describeIn RieExp.manifold Method
+#' @describeIn RieLog.manifold Method
 #' @export
 RieLog.functional = function(p,q){
   p = vec.to.mat(p)
@@ -83,7 +83,7 @@ basis.functional_ = function(l,ngrid=100,t=NULL){
 }
 
 
-#' @describeIn Basis.manifold Method
+#' @describeIn basis.manifold Method
 #' @export
 basis.functional = function(p,dim=50){
   ngrid = length(p)

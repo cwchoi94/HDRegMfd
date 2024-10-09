@@ -4,7 +4,7 @@
 #' @title Generalized Cross-Validation for High-Dimensional Hilbert-Schmidt Linear Models
 #' 
 #' @description 
-#' Implements a generalized cross-validation (GCV) for high-dimensional Hilbert-Schmidt linear models.
+#' Implements generalized cross-validation (GCV) for high-dimensional Hilbert-Schmidt linear models.
 #' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'LM_CV' in 'LM_CV.cpp'.
 #' For a more detailed description of parameters, see \code{\link{LM}}.
 #' 
@@ -29,7 +29,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.list,penalty='LASSO',gamma=0,
+LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
                   phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
@@ -47,11 +47,14 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,lambda.list,Xdim.max.list,R.l
   # define basic parameters
   n = nrow(Yorg)
   p = Xorg[['p']]
+  if(is.null(lambda.list)){lambda.list=c(0)}
+  if(is.null(R.list)){R.list=c(1000)}
   
   # PCA for X
   pca = PCA.manifold.list(Xorg)
   X = predict(pca,Xorg)
   Xnew = predict(pca,Xorgnew)
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
   # projection of Yorg and Yorgnew to the tangent space
   Ymu = FrechetMean.manifold(Yorg,Yspace)

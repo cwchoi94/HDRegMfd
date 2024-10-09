@@ -10,8 +10,8 @@ LM.oracle.GCV(
   Xorgnew,
   Yorgnew,
   Yspace,
-  Xdim.max.list,
-  proper.indices = NULL
+  proper.indices = NULL,
+  Xdim.max.list = NULL
 )
 }
 \arguments{
@@ -30,9 +30,9 @@ LM.oracle.GCV(
 
 \item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
 
-\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
-
 \item{proper.indices}{an index set \eqn{\mathcal{S}=\{1\le j\le p : \mathfrak{B}_j\neq0\}}.}
+
+\item{Xdim.max.list}{a vector of the maximum dimension to which \eqn{X_j} will be reduced.}
 }
 \value{
 an \code{\link{LM}} object with the following components:
@@ -52,6 +52,6 @@ an \code{\link{LM}} object with the following components:
 }
 }
 \description{
-Implements a generalized cross-validation (GCV) for oracle Hilbert-Schmidt linear models.
+Implements generalized cross-validation (GCV) for oracle Hilbert-Schmidt linear models.
 For a more detailed description of parameters, see \code{\link{LM.oracle}}.
 }

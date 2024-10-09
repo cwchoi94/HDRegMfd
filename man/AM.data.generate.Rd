@@ -23,9 +23,31 @@ AM.data.generate(
 )
 }
 \arguments{
+\item{n}{the number of data points}
+
+\item{Xspaces}{a \eqn{p} vector of the names of the underlying spaces \eqn{\mathcal{M}_j} of \eqn{X_j}.}
+
+\item{Yspace}{the name of the underlying space \eqn{\mathcal{M}_Y} of \eqn{Y}.}
+
+\item{Xdims}{a \eqn{p} vector of the intrinsic dimension of \eqn{\mathcal{M}_j}.}
+
+\item{Ydim}{the intrinsic dimension of \eqn{\mathcal{M}_Y}.}
+
 \item{proper.ind.mat}{a \eqn{s\times 2} index matrix such that \eqn{\mathcal{S}=\{(j,k) : m_{jk}^*\neq0\}}.}
 
 \item{add.mean.norm}{a \eqn{s} vector (or a single integer) of \eqn{\|m_{jk}^*\|_f}, used only for \eqn{(j,k)\in\mathcal{S}}. If an integer is provided, the same value is applied to all \eqn{(j,k)\in\mathcal{S}}.}
+
+\item{Xrho}{a correlation parameter for \eqn{X_j} ranging from -1 to 1, with a default value of 0.5.}
+
+\item{Xsigma}{a common standard deviation parameter for \eqn{X_j}, with a default value of 1.}
+
+\item{error.rho}{a correlation parameter for \eqn{\varepsilon}.}
+
+\item{error.std}{a standard deviation parameter for \eqn{\varepsilon}.}
+
+\item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
+
+\item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 
 \item{seed}{a random seed, which must be greater than 1.}
 
