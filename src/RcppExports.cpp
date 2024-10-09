@@ -11,6 +11,207 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// L2_mat_inner_SBF
+double L2_mat_inner_SBF(arma::cube Yj1, arma::cube Yj2, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace);
+RcppExport SEXP _HDRegMfd_L2_mat_inner_SBF(SEXP Yj1SEXP, SEXP Yj2SEXP, SEXP kde_1d_jSEXP, SEXP weightsSEXP, SEXP YmuSEXP, SEXP YspaceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type Yj1(Yj1SEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type Yj2(Yj2SEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type kde_1d_j(kde_1d_jSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    rcpp_result_gen = Rcpp::wrap(L2_mat_inner_SBF(Yj1, Yj2, kde_1d_j, weights, Ymu, Yspace));
+    return rcpp_result_gen;
+END_RCPP
+}
+// L2_mat_norm_SBF
+double L2_mat_norm_SBF(arma::cube Yj, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace);
+RcppExport SEXP _HDRegMfd_L2_mat_norm_SBF(SEXP YjSEXP, SEXP kde_1d_jSEXP, SEXP weightsSEXP, SEXP YmuSEXP, SEXP YspaceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube >::type Yj(YjSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type kde_1d_j(kde_1d_jSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    rcpp_result_gen = Rcpp::wrap(L2_mat_norm_SBF(Yj, kde_1d_j, weights, Ymu, Yspace));
+    return rcpp_result_gen;
+END_RCPP
+}
+// AM_each
+List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double R, String penalty, double gamma, double phi, double eta, int max_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_each(SEXP SBF_compSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type SBF_comp(SBF_compSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type R(RSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma, phi, eta, max_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_loss_CV_AM
+double get_loss_CV_AM(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma);
+RcppExport SEXP _HDRegMfd_get_loss_CV_AM(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type SBF_comp(SBF_compSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Xnew(XnewSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogYnew(LogYnewSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type R(RSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_loss_CV_AM(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_loss_CV_AM2
+double get_loss_CV_AM2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma);
+RcppExport SEXP _HDRegMfd_get_loss_CV_AM2(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type SBF_comp(SBF_compSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Xnew(XnewSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogYnew(LogYnewSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type R(RSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_loss_CV_AM2(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// AM_CBS_GCV
+List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::mat bandwidths_mat, arma::vec grids, arma::vec weights, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int degree, String Kdenom_method, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_CBS_GCV(SEXP XSEXP, SEXP LogYSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP bandwidths_matSEXP, SEXP gridsSEXP, SEXP weightsSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP degreeSEXP, SEXP Kdenom_methodSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogY(LogYSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Xnew(XnewSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogYnew(LogYnewSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type bandwidths_mat(bandwidths_matSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type grids(gridsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type index_mat(index_matSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    Rcpp::traits::input_parameter< String >::type Kdenom_method(Kdenom_methodSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(AM_CBS_GCV(X, LogY, Xnew, LogYnew, Ymu, Yspace, bandwidths_mat, grids, weights, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, degree, Kdenom_method, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// AM_CBS_kfold
+List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, String Yspace, int kfold, arma::mat bandwidths_mat, arma::vec grids, arma::vec weights, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int degree, String Kdenom_method, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_CBS_kfold(SEXP X_listSEXP, SEXP LogY_listSEXP, SEXP Xnew_listSEXP, SEXP LogYnew_listSEXP, SEXP Ymu_listSEXP, SEXP YspaceSEXP, SEXP kfoldSEXP, SEXP bandwidths_matSEXP, SEXP gridsSEXP, SEXP weightsSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP degreeSEXP, SEXP Kdenom_methodSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type X_list(X_listSEXP);
+    Rcpp::traits::input_parameter< List >::type LogY_list(LogY_listSEXP);
+    Rcpp::traits::input_parameter< List >::type Xnew_list(Xnew_listSEXP);
+    Rcpp::traits::input_parameter< List >::type LogYnew_list(LogYnew_listSEXP);
+    Rcpp::traits::input_parameter< List >::type Ymu_list(Ymu_listSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< int >::type kfold(kfoldSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type bandwidths_mat(bandwidths_matSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type grids(gridsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type index_mat(index_matSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    Rcpp::traits::input_parameter< String >::type Kdenom_method(Kdenom_methodSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(AM_CBS_kfold(X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, Yspace, kfold, bandwidths_mat, grids, weights, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, degree, Kdenom_method, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// AM_CV
+List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_CV(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type SBF_comp(SBF_compSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Xnew(XnewSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogYnew(LogYnewSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type index_mat(index_matSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(AM_CV(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// AM_CV2
+List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_CV2(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type SBF_comp(SBF_compSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Xnew(XnewSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogYnew(LogYnewSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
+    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_list(lambda_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xdim_max_list(Xdim_max_listSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type R_list(R_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type index_mat(index_matSEXP);
+    Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
+    Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(AM_CV2(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // GLM_each
 List GLM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double R, String penalty, String link, double gamma, double phi, double eta, int max_iter, double threshold);
 RcppExport SEXP _HDRegMfd_GLM_each(SEXP XorgSEXP, SEXP YorgSEXP, SEXP lambdaSEXP, SEXP Xdim_maxSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
@@ -159,6 +360,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
     rcpp_result_gen = Rcpp::wrap(GLM_Kfold(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// KDE_
+List KDE_(arma::mat X, arma::vec bandwidths, arma::vec grids, arma::vec weights, int degree, String Kdenom_method, bool is_proj);
+RcppExport SEXP _HDRegMfd_KDE_(SEXP XSEXP, SEXP bandwidthsSEXP, SEXP gridsSEXP, SEXP weightsSEXP, SEXP degreeSEXP, SEXP Kdenom_methodSEXP, SEXP is_projSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bandwidths(bandwidthsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type grids(gridsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    Rcpp::traits::input_parameter< String >::type Kdenom_method(Kdenom_methodSEXP);
+    Rcpp::traits::input_parameter< bool >::type is_proj(is_projSEXP);
+    rcpp_result_gen = Rcpp::wrap(KDE_(X, bandwidths, grids, weights, degree, Kdenom_method, is_proj));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -377,8 +595,142 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// SBF_preprocessing
+List SBF_preprocessing(arma::mat X, arma::mat LogY, arma::vec bandwidths, arma::vec grids, arma::vec weights, int degree, String Kdenom_method);
+RcppExport SEXP _HDRegMfd_SBF_preprocessing(SEXP XSEXP, SEXP LogYSEXP, SEXP bandwidthsSEXP, SEXP gridsSEXP, SEXP weightsSEXP, SEXP degreeSEXP, SEXP Kdenom_methodSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type LogY(LogYSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bandwidths(bandwidthsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type grids(gridsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    Rcpp::traits::input_parameter< String >::type Kdenom_method(Kdenom_methodSEXP);
+    rcpp_result_gen = Rcpp::wrap(SBF_preprocessing(X, LogY, bandwidths, grids, weights, degree, Kdenom_method));
+    return rcpp_result_gen;
+END_RCPP
+}
+// SBF_preprocessing_reduce_dim
+List SBF_preprocessing_reduce_dim(List SBF_comp, double Xdim_max, arma::mat index_mat);
+RcppExport SEXP _HDRegMfd_SBF_preprocessing_reduce_dim(SEXP SBF_compSEXP, SEXP Xdim_maxSEXP, SEXP index_matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type SBF_comp(SBF_compSEXP);
+    Rcpp::traits::input_parameter< double >::type Xdim_max(Xdim_maxSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type index_mat(index_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat));
+    return rcpp_result_gen;
+END_RCPP
+}
+// multi_4d_ind_to_single
+int multi_4d_ind_to_single(int j1, int j2, int k1, int k2, int p, int g);
+RcppExport SEXP _HDRegMfd_multi_4d_ind_to_single(SEXP j1SEXP, SEXP j2SEXP, SEXP k1SEXP, SEXP k2SEXP, SEXP pSEXP, SEXP gSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type j1(j1SEXP);
+    Rcpp::traits::input_parameter< int >::type j2(j2SEXP);
+    Rcpp::traits::input_parameter< int >::type k1(k1SEXP);
+    Rcpp::traits::input_parameter< int >::type k2(k2SEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type g(gSEXP);
+    rcpp_result_gen = Rcpp::wrap(multi_4d_ind_to_single(j1, j2, k1, k2, p, g));
+    return rcpp_result_gen;
+END_RCPP
+}
+// single_ind_to_multi_4d
+IntegerVector single_ind_to_multi_4d(int j3, int p, int g);
+RcppExport SEXP _HDRegMfd_single_ind_to_multi_4d(SEXP j3SEXP, SEXP pSEXP, SEXP gSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type j3(j3SEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type g(gSEXP);
+    rcpp_result_gen = Rcpp::wrap(single_ind_to_multi_4d(j3, p, g));
+    return rcpp_result_gen;
+END_RCPP
+}
+// multi_2d_ind_to_single_range
+IntegerVector multi_2d_ind_to_single_range(int j1, int j2, int p, int g);
+RcppExport SEXP _HDRegMfd_multi_2d_ind_to_single_range(SEXP j1SEXP, SEXP j2SEXP, SEXP pSEXP, SEXP gSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type j1(j1SEXP);
+    Rcpp::traits::input_parameter< int >::type j2(j2SEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type g(gSEXP);
+    rcpp_result_gen = Rcpp::wrap(multi_2d_ind_to_single_range(j1, j2, p, g));
+    return rcpp_result_gen;
+END_RCPP
+}
+// multi_3d_ind_to_single_range
+IntegerVector multi_3d_ind_to_single_range(int j1, int j2, int k1, int p, int g);
+RcppExport SEXP _HDRegMfd_multi_3d_ind_to_single_range(SEXP j1SEXP, SEXP j2SEXP, SEXP k1SEXP, SEXP pSEXP, SEXP gSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type j1(j1SEXP);
+    Rcpp::traits::input_parameter< int >::type j2(j2SEXP);
+    Rcpp::traits::input_parameter< int >::type k1(k1SEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type g(gSEXP);
+    rcpp_result_gen = Rcpp::wrap(multi_3d_ind_to_single_range(j1, j2, k1, p, g));
+    return rcpp_result_gen;
+END_RCPP
+}
+// numerical_integral_1d
+double numerical_integral_1d(arma::vec weights, arma::vec func);
+RcppExport SEXP _HDRegMfd_numerical_integral_1d(SEXP weightsSEXP, SEXP funcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type func(funcSEXP);
+    rcpp_result_gen = Rcpp::wrap(numerical_integral_1d(weights, func));
+    return rcpp_result_gen;
+END_RCPP
+}
+// numerical_integral_3d_to_2d
+arma::mat numerical_integral_3d_to_2d(arma::vec weights, arma::cube func);
+RcppExport SEXP _HDRegMfd_numerical_integral_3d_to_2d(SEXP weightsSEXP, SEXP funcSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type func(funcSEXP);
+    rcpp_result_gen = Rcpp::wrap(numerical_integral_3d_to_2d(weights, func));
+    return rcpp_result_gen;
+END_RCPP
+}
+// numerical_integral_3d
+arma::cube numerical_integral_3d(arma::vec weights, arma::cube func1, arma::cube func2);
+RcppExport SEXP _HDRegMfd_numerical_integral_3d(SEXP weightsSEXP, SEXP func1SEXP, SEXP func2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type func1(func1SEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type func2(func2SEXP);
+    rcpp_result_gen = Rcpp::wrap(numerical_integral_3d(weights, func1, func2));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_HDRegMfd_L2_mat_inner_SBF", (DL_FUNC) &_HDRegMfd_L2_mat_inner_SBF, 6},
+    {"_HDRegMfd_L2_mat_norm_SBF", (DL_FUNC) &_HDRegMfd_L2_mat_norm_SBF, 5},
+    {"_HDRegMfd_AM_each", (DL_FUNC) &_HDRegMfd_AM_each, 11},
+    {"_HDRegMfd_get_loss_CV_AM", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM, 10},
+    {"_HDRegMfd_get_loss_CV_AM2", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM2, 10},
+    {"_HDRegMfd_AM_CBS_GCV", (DL_FUNC) &_HDRegMfd_AM_CBS_GCV, 20},
+    {"_HDRegMfd_AM_CBS_kfold", (DL_FUNC) &_HDRegMfd_AM_CBS_kfold, 21},
+    {"_HDRegMfd_AM_CV", (DL_FUNC) &_HDRegMfd_AM_CV, 14},
+    {"_HDRegMfd_AM_CV2", (DL_FUNC) &_HDRegMfd_AM_CV2, 14},
     {"_HDRegMfd_GLM_each", (DL_FUNC) &_HDRegMfd_GLM_each, 12},
     {"_HDRegMfd_GLM_CV", (DL_FUNC) &_HDRegMfd_GLM_CV, 12},
     {"_HDRegMfd_GLM_GCV", (DL_FUNC) &_HDRegMfd_GLM_GCV, 13},
@@ -388,6 +740,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_HDRegMfd_Psi_1d", (DL_FUNC) &_HDRegMfd_Psi_1d, 2},
     {"_HDRegMfd_Psi_2d", (DL_FUNC) &_HDRegMfd_Psi_2d, 2},
     {"_HDRegMfd_GLM_Kfold", (DL_FUNC) &_HDRegMfd_GLM_Kfold, 14},
+    {"_HDRegMfd_KDE_", (DL_FUNC) &_HDRegMfd_KDE_, 7},
     {"_HDRegMfd_LM_each", (DL_FUNC) &_HDRegMfd_LM_each, 13},
     {"_HDRegMfd_LM_CV", (DL_FUNC) &_HDRegMfd_LM_CV, 13},
     {"_HDRegMfd_LM_GCV", (DL_FUNC) &_HDRegMfd_LM_GCV, 14},
@@ -400,6 +753,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_HDRegMfd_SCAD_sol2", (DL_FUNC) &_HDRegMfd_SCAD_sol2, 6},
     {"_HDRegMfd_MCP_sol", (DL_FUNC) &_HDRegMfd_MCP_sol, 6},
     {"_HDRegMfd_MCP_sol2", (DL_FUNC) &_HDRegMfd_MCP_sol2, 6},
+    {"_HDRegMfd_SBF_preprocessing", (DL_FUNC) &_HDRegMfd_SBF_preprocessing, 7},
+    {"_HDRegMfd_SBF_preprocessing_reduce_dim", (DL_FUNC) &_HDRegMfd_SBF_preprocessing_reduce_dim, 3},
+    {"_HDRegMfd_multi_4d_ind_to_single", (DL_FUNC) &_HDRegMfd_multi_4d_ind_to_single, 6},
+    {"_HDRegMfd_single_ind_to_multi_4d", (DL_FUNC) &_HDRegMfd_single_ind_to_multi_4d, 3},
+    {"_HDRegMfd_multi_2d_ind_to_single_range", (DL_FUNC) &_HDRegMfd_multi_2d_ind_to_single_range, 4},
+    {"_HDRegMfd_multi_3d_ind_to_single_range", (DL_FUNC) &_HDRegMfd_multi_3d_ind_to_single_range, 5},
+    {"_HDRegMfd_numerical_integral_1d", (DL_FUNC) &_HDRegMfd_numerical_integral_1d, 2},
+    {"_HDRegMfd_numerical_integral_3d_to_2d", (DL_FUNC) &_HDRegMfd_numerical_integral_3d_to_2d, 2},
+    {"_HDRegMfd_numerical_integral_3d", (DL_FUNC) &_HDRegMfd_numerical_integral_3d, 3},
     {NULL, NULL, 0}
 };
 
