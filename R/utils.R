@@ -1,5 +1,4 @@
 library(manifold)
-library(fdapace)
 library(MASS)
 library(expm)
 library(pracma)

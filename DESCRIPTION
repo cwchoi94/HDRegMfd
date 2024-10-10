@@ -15,6 +15,8 @@ Imports:
     manifold (>= 0.1.1),
     MASS (>= 7.3.58.4),
     plyr (>= 1.8.9),
+    pracma (>= 2.4.4),
+    Rcpp (>= 1.0.12),
     RcppArmadillo (>= 0.12.8.0.0),
     roxygen2 (>= 7.3.1)
 LinkingTo: Rcpp, RcppArmadillo
