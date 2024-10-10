@@ -101,7 +101,7 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
   
   X.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
   X.vectors = reduce.dimension(X.vectors,Xdim.max,margin=2)
-  proper.ind.mat.all = object[['mhat.norm']][which(object[['mhat.norm']][,'mhat.norm']!=0),]
+  proper.ind.mat.all = object[['mhat.norm']][which(object[['mhat.norm']][,'mhat.norm']!=0),,drop=FALSE]
   proper.ind.mat = proper.ind.mat.all[,2:3]
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))

@@ -140,7 +140,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   
   beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
   beta.vectors = reduce.dimension(beta.vectors,opt.Xdim.max,margin=2)
-  proper.ind.mat.all = object[['mhat.norm']][which(object[['mhat.norm']][,'mhat.norm']!=0),]
+  proper.ind.mat.all = object[['mhat.norm']][which(object[['mhat.norm']][,'mhat.norm']!=0),,drop=FALSE]
   proper.ind.mat = proper.ind.mat.all[,2:3]
   
   runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
