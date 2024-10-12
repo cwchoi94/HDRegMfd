@@ -122,7 +122,8 @@ LM.kfold = function(Xorg,Yorg,Yspace,kfold=5,seed=NULL,penalty='LASSO',gamma=0,l
   result = LM_Kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,
                     lambda.list,Xdim.max.list,R.list,penalty,gamma,phi,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

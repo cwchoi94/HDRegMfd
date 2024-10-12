@@ -87,7 +87,8 @@ GLM.kfold = function(Xorg,Yorg,link='binomial',kfold=5,seed=NULL,penalty='LASSO'
   result = GLM_Kfold(Xorg.list,Y.list,Xnew.list,Ynew.list,kfold,lambda.list,Xdim.max.list,R.list,
                      penalty,link,gamma,phi,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

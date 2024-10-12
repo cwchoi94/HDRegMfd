@@ -204,7 +204,7 @@ arma::mat predict_AM(List object, arma::mat Xnew) {
 
 
 // [[Rcpp::export]]
-double get_loss_CV_AM(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
+double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
 
     // model training
     List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma);
@@ -245,7 +245,7 @@ double get_loss_CV_AM(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::ve
 
 
 // [[Rcpp::export]]
-double get_loss_CV_AM2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
+double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
 
     List tildem = SBF_comp["tildem"];
     List kde_1d = SBF_comp["kde.1d"];

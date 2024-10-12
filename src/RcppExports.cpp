@@ -63,9 +63,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_loss_CV_AM
-double get_loss_CV_AM(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma);
-RcppExport SEXP _HDRegMfd_get_loss_CV_AM(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP) {
+// get_loss_CV_AM_average
+double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma);
+RcppExport SEXP _HDRegMfd_get_loss_CV_AM_average(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -79,13 +79,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
     Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_loss_CV_AM(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma));
+    rcpp_result_gen = Rcpp::wrap(get_loss_CV_AM_average(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma));
     return rcpp_result_gen;
 END_RCPP
 }
-// get_loss_CV_AM2
-double get_loss_CV_AM2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma);
-RcppExport SEXP _HDRegMfd_get_loss_CV_AM2(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP) {
+// get_loss_CV_AM_integral
+double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma);
+RcppExport SEXP _HDRegMfd_get_loss_CV_AM_integral(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -99,7 +99,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type cv_type(cv_typeSEXP);
     Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_loss_CV_AM2(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma));
+    rcpp_result_gen = Rcpp::wrap(get_loss_CV_AM_integral(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -164,9 +164,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// AM_CV
-List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _HDRegMfd_AM_CV(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+// AM_CV_average
+List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_CV_average(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -184,13 +184,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(AM_CV(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(AM_CV_average(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// AM_CV2
-List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int max_cv_iter, double threshold);
-RcppExport SEXP _HDRegMfd_AM_CV2(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+// AM_CV_integral
+List AM_CV_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type, String penalty, double gamma, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_AM_CV_integral(SEXP SBF_compSEXP, SEXP XnewSEXP, SEXP LogYnewSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP index_matSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -208,7 +208,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(AM_CV2(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(AM_CV_integral(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -725,12 +725,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_HDRegMfd_L2_mat_inner_SBF", (DL_FUNC) &_HDRegMfd_L2_mat_inner_SBF, 6},
     {"_HDRegMfd_L2_mat_norm_SBF", (DL_FUNC) &_HDRegMfd_L2_mat_norm_SBF, 5},
     {"_HDRegMfd_AM_each", (DL_FUNC) &_HDRegMfd_AM_each, 11},
-    {"_HDRegMfd_get_loss_CV_AM", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM, 10},
-    {"_HDRegMfd_get_loss_CV_AM2", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM2, 10},
+    {"_HDRegMfd_get_loss_CV_AM_average", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM_average, 10},
+    {"_HDRegMfd_get_loss_CV_AM_integral", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM_integral, 10},
     {"_HDRegMfd_AM_CBS_GCV", (DL_FUNC) &_HDRegMfd_AM_CBS_GCV, 20},
     {"_HDRegMfd_AM_CBS_kfold", (DL_FUNC) &_HDRegMfd_AM_CBS_kfold, 21},
-    {"_HDRegMfd_AM_CV", (DL_FUNC) &_HDRegMfd_AM_CV, 14},
-    {"_HDRegMfd_AM_CV2", (DL_FUNC) &_HDRegMfd_AM_CV2, 14},
+    {"_HDRegMfd_AM_CV_average", (DL_FUNC) &_HDRegMfd_AM_CV_average, 14},
+    {"_HDRegMfd_AM_CV_integral", (DL_FUNC) &_HDRegMfd_AM_CV_integral, 14},
     {"_HDRegMfd_GLM_each", (DL_FUNC) &_HDRegMfd_GLM_each, 12},
     {"_HDRegMfd_GLM_CV", (DL_FUNC) &_HDRegMfd_GLM_CV, 12},
     {"_HDRegMfd_GLM_GCV", (DL_FUNC) &_HDRegMfd_GLM_GCV, 13},

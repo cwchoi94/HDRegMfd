@@ -68,7 +68,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
                     List SBF_comp = SBF_preprocessing(X, LogY, tmp_bandwidths, grids, weights, degree, Kdenom_method);
                     List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, opt_Xdim_max, index_mat);
 
-                    loss0_j(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                    loss0_j(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
                 }
 
                 // find opt_idx with allowing threshold error (for fast computation)
@@ -94,7 +94,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         parameter_list.row(4 * iter + 0) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && arma::all(opt_bandwidths == opt_bandwidths_old)) {
+        if (((iter >= 1) && arma::all(opt_bandwidths == opt_bandwidths_old)) || ((r1 == 1) && (r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -110,7 +110,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
+                loss1(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -129,7 +129,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         parameter_list.row(4 * iter + 1) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_lambda == opt_lambda_old)) {
+        if (((iter >= 1) && (opt_lambda == opt_lambda_old)) || ((r0 == 1) && (r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -146,7 +146,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
                 mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                 List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                loss2(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                loss2(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -165,7 +165,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         parameter_list.row(4 * iter + 2) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) {
+        if (((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) || ((r0 == 1) && (r1 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -181,7 +181,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
+                loss3(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -201,7 +201,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         parameter_list.row(4 * iter + 3) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_R == opt_R_old)) {
+        if (((iter >= 1) && (opt_R == opt_R_old)) || ((r0 == 1) && (r1 == 1) && (r2 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }

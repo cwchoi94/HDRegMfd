@@ -74,7 +74,8 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
   # Use LM_CV function to obtain the optimal parameters
   result = LM_CV(Xoracle,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,'LASSO',0,1,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

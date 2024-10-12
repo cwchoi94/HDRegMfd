@@ -17,9 +17,9 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace,
-           arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
-           String penalty = "LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
+List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace,
+                   arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
+                   String penalty = "LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -54,7 +54,7 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
+                loss1(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -72,7 +72,7 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
         parameter_list.row(3 * iter + 0) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_lambda == opt_lambda_old)) {
+        if (((iter >= 1) && (opt_lambda == opt_lambda_old)) || ((r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -89,7 +89,7 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
                 mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                 List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                loss2(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                loss2(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -107,7 +107,7 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
         parameter_list.row(3 * iter + 1) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) {
+        if (((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) || ((r1 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -123,7 +123,7 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
+                loss3(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -142,7 +142,7 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
         parameter_list.row(3 * iter + 2) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_R == opt_R_old)) {
+        if (((iter >= 1) && (opt_R == opt_R_old)) || ((r1 == 1) && (r2 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -169,9 +169,9 @@ List AM_CV(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Stri
 
 
 // [[Rcpp::export]]
-List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace,
-    arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
-    String penalty = "LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
+List AM_CV_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace,
+                    arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
+                    String penalty = "LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -207,7 +207,7 @@ List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Str
         if (r1 > 1 || iter == 0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_AM2(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
+                loss1(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -225,7 +225,7 @@ List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Str
         parameter_list.row(3 * iter + 0) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_lambda == opt_lambda_old)) {
+        if (((iter >= 1) && (opt_lambda == opt_lambda_old)) || ((r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -241,7 +241,7 @@ List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Str
                 mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                 List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                loss2(i) = get_loss_CV_AM2(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                loss2(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -259,7 +259,7 @@ List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Str
         parameter_list.row(3 * iter + 1) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) {
+        if (((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) || ((r1 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -275,7 +275,7 @@ List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Str
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_AM2(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
+                loss3(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
             }
         }
         else {
@@ -294,7 +294,7 @@ List AM_CV2(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, Str
         parameter_list.row(3 * iter + 2) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_R == opt_R_old)) {
+        if (((iter >= 1) && (opt_R == opt_R_old)) || ((r1 == 1) && (r2 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }

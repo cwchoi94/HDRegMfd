@@ -78,7 +78,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                         List SBF_comp = SBF_preprocessing(X, LogY, tmp_bandwidths, grids, weights, degree, Kdenom_method);
                         List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, opt_Xdim_max, index_mat);
 
-                        loss0_j_mat(idx, i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                        loss0_j_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
                     }
                 }
 
@@ -106,7 +106,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
         parameter_list.row(4 * iter + 0) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && arma::all(opt_bandwidths == opt_bandwidths_old)) {
+        if (((iter >= 1) && arma::all(opt_bandwidths == opt_bandwidths_old)) || ((r1 == 1) && (r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -137,7 +137,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r1; i++) {
                     double lambda = lambda_list(i);
-                    loss1_mat(idx, i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
+                    loss1_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
                 }
             }            
         }
@@ -160,7 +160,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
         parameter_list.row(4 * iter + 1) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_lambda == opt_lambda_old)) {
+        if (((iter >= 1) && (opt_lambda == opt_lambda_old)) || ((r0 == 1) && (r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -182,7 +182,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                     mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                     List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                    loss2_mat(idx, i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                    loss2_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
                 }
             }
         }
@@ -205,7 +205,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
         parameter_list.row(4 * iter + 2) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) {
+        if (((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) || ((r0 == 1) && (r1 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -231,7 +231,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r3; i++) {
                     double R = R_list(i);
-                    loss3_mat(idx, i) = get_loss_CV_AM(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
+                    loss3_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
                 }
             }
         }
@@ -255,7 +255,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
         parameter_list.row(4 * iter + 3) = trans(parameters);
 
         // check convergence
-        if ((iter >= 1) && (opt_R == opt_R_old)) {
+        if (((iter >= 1) && (opt_R == opt_R_old)) || ((r0 == 1) && (r1 == 1) && (r2 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }

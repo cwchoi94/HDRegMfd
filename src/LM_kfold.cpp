@@ -80,7 +80,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
         parameter_list.row(3*iter+0) = trans(parameters);
     
         // check convergence
-        if ((iter>=1) & (opt_lambda==opt_lambda_old)){
+        if (((iter >= 1) && (opt_lambda == opt_lambda_old)) || ((r2 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -119,7 +119,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
         parameter_list.row(3*iter+1) = trans(parameters);
     
         // check convergence
-        if ((iter>=1) & (opt_Xdim_max==opt_Xdim_max_old)){
+        if (((iter >= 1) && (opt_Xdim_max == opt_Xdim_max_old)) || ((r1 == 1) && (r3 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }
@@ -159,7 +159,7 @@ List LM_Kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, Li
         parameter_list.row(3*iter+2) = trans(parameters);
     
         // check convergence
-        if ((iter>=1) & (opt_R==opt_R_old)){
+        if (((iter >= 1) && (opt_R == opt_R_old)) || ((r1 == 1) && (r2 == 1))) {
             loss_list(iter) = loss_iter;
             break;
         }

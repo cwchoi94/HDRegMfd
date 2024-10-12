@@ -60,7 +60,8 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
   result = GLM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,
                   'LASSO',link,1,0,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   
@@ -141,7 +142,8 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,link='binomial',proper.indic
   result = GLM_GCV(Xoracle,Yorg,Xoracle.new,Yorgnew,lambda.list,Xdim.max.list,R.list,
                    'LASSO',link,1,0,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   
@@ -246,7 +248,8 @@ GLM.oracle.kfold = function(Xorg,Yorg,link='binomial',proper.indices=NULL,kfold=
   result = GLM_Kfold(Xoracle.list,Y.list,Xoracle.new.list,Ynew.list,kfold,lambda.list,Xdim.max.list,R.list,
                      'LASSO',link,0,1,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   # apply GLM with the optimal parameters

@@ -152,7 +152,8 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   result = AM_CBS_kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,bandwidths.mat,grids,weights,lambda.list,Xdim.max.list,R.list,index.mat,cv.type,
                         penalty,gamma,degree,Kdenom_method,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c(sapply(1:P,function(i){paste0('h',i)}),'lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

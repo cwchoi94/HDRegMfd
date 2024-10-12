@@ -103,10 +103,11 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   # Use AM_CV function to obtain the optimal parameters
   # not compute AIC or BIC loss
   cv.type = 'NONE' 
-  result = AM_CV(SBF.comp,Xnew,LogYnew,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
-                 cv.type,penalty,gamma,max.cv.iter,cv.threshold)
+  result = AM_CV_average(SBF.comp,Xnew,LogYnew,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
+                         cv.type,penalty,gamma,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

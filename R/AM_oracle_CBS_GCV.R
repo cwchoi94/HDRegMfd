@@ -111,7 +111,8 @@ AM.CBS.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.ind.mat=NULL,degre
   result = AM_CBS_GCV(X,LogY,Xnew,LogYnew,Ymu,Yspace,bandwidths.mat,grids,weights,lambda.list,Xdim.max.list,R.list,index.mat,cv.type,
                       penalty,gamma,degree,Kdenom_method,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c(sapply(1:P,function(i){paste0('h',i)}),'lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

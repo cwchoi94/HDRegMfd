@@ -62,7 +62,8 @@ GLM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,link='binomial',penalty='LASSO',gam
   # Use GLM_GCV function to obtain the optimal parameters
   result = GLM_GCV(X,Yorg,Xnew,Yorgnew,lambda.list,Xdim.max.list,R.list,penalty,link,gamma,phi,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

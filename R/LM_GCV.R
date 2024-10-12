@@ -64,7 +64,8 @@ LM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,penalty='LASSO',gamma=0,lambd
   # Use LM_GCV function to obtain the optimal parameters
   result = LM_GCV(X,LogY,Xnew,LogYnew,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,penalty,gamma,phi,max.cv.iter,cv.threshold)
   
-  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),]
+  parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
+  colnames(parameter.list) = c('lambda','Xdim.max','R')
   loss.list = result$loss.list[-which(sapply(result$loss.list,is.null))]
   
   

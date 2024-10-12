@@ -13,12 +13,12 @@ AM_each <- function(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma, phi, eta, 
     .Call(`_HDRegMfd_AM_each`, SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma, phi, eta, max_iter, threshold)
 }
 
-get_loss_CV_AM <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma) {
-    .Call(`_HDRegMfd_get_loss_CV_AM`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma)
+get_loss_CV_AM_average <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma) {
+    .Call(`_HDRegMfd_get_loss_CV_AM_average`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma)
 }
 
-get_loss_CV_AM2 <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma) {
-    .Call(`_HDRegMfd_get_loss_CV_AM2`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma)
+get_loss_CV_AM_integral <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma) {
+    .Call(`_HDRegMfd_get_loss_CV_AM_integral`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda, R, cv_type, penalty, gamma)
 }
 
 AM_CBS_GCV <- function(X, LogY, Xnew, LogYnew, Ymu, Yspace, bandwidths_mat, grids, weights, lambda_list, Xdim_max_list, R_list, index_mat, cv_type = "AIC", penalty = "LASSO", gamma = 0, degree = 0L, Kdenom_method = "numeric", max_cv_iter = 20L, threshold = 1e-10) {
@@ -29,12 +29,12 @@ AM_CBS_kfold <- function(X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, Y
     .Call(`_HDRegMfd_AM_CBS_kfold`, X_list, LogY_list, Xnew_list, LogYnew_list, Ymu_list, Yspace, kfold, bandwidths_mat, grids, weights, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, degree, Kdenom_method, max_cv_iter, threshold)
 }
 
-AM_CV <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type = "AIC", penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_HDRegMfd_AM_CV`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold)
+AM_CV_average <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type = "AIC", penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_AM_CV_average`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold)
 }
 
-AM_CV2 <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type = "AIC", penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_HDRegMfd_AM_CV2`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold)
+AM_CV_integral <- function(SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type = "AIC", penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_AM_CV_integral`, SBF_comp, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, index_mat, cv_type, penalty, gamma, max_cv_iter, threshold)
 }
 
 GLM_each <- function(Xorg, Yorg, lambda, Xdim_max, R, penalty, link, gamma, phi, eta, max_iter, threshold) {
