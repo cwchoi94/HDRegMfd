@@ -21,7 +21,7 @@ get.min.bandwidths = function(X,degree=0,const=1.001){
   
   h.min.vec = sapply(1:p,function(j){
     x = sort(X[,j])
-    h.min = max(x[r],diff(x,lag=r)/2,1-x[n-r])
+    h.min = max(x[r],diff(x,lag=r)/2,1-x[n+1-r])
     return(h.min)
   })
   

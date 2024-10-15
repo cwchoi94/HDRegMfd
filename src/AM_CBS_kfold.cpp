@@ -106,7 +106,7 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
         parameter_list.row(4 * iter + 0) = trans(parameters);
 
         // check convergence
-        if (((iter >= 1) && arma::all(opt_bandwidths == opt_bandwidths_old)) || ((r1 == 1) && (r2 == 1) && (r3 == 1))) {
+        if (((iter >= 1) && arma::all(opt_bandwidths == opt_bandwidths_old))) {
             loss_list(iter) = loss_iter;
             break;
         }

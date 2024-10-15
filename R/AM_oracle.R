@@ -49,9 +49,6 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   m = ncol(LogY)
   
-  Ysigma = sqrt(mean(dist.manifold(Yorg,Ymu,Yspace)**2))
-  R = Ysigma * R
-  
   # preprocessing for X
   Xdim.max = max(proper.ind.mat[,2])
   

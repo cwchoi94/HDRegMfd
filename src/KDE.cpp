@@ -26,7 +26,7 @@ arma::rowvec power_vec(double u, int r) {
 
 
 
-arma::cube inv_cube(arma::cube x) {
+arma::cube inv_cube(arma::cube x, double tol = 1e-8) {
     // x: (p,r,r) matrix
     // 
     // return matrix-wise inverse, i.e., y[i] = inv(x[i]) for 1<=i<=p
@@ -34,11 +34,12 @@ arma::cube inv_cube(arma::cube x) {
 
     int p = x.n_rows;
     int r = x.n_cols;
+    mat tol_mat = tol * arma::eye(r, r);
 
     cube y(p,r,r);
     for (int i = 0; i < p; i++) {
         mat xi = x.row(i);
-        y.row(i) = inv_sympd(xi);
+        y.row(i) = inv_sympd(xi + tol_mat);
     }
 
     return y;
@@ -110,6 +111,7 @@ double Kh_denom_exact(double v, double h) {
 ////// KDE code
 
 
+ // [[Rcpp::export]]
  List normalized_Kernel(arma::mat X, arma::vec bandwidths, arma::vec grids, arma::vec weights, int degree, String Kdenom_method) {
     // compute the normalized kernel K_h(x,X)
     // 
@@ -153,9 +155,15 @@ double Kh_denom_exact(double v, double h) {
                 Kdenom = Kh_denom_exact(Xj[i], h);
             }
 
-            kvalues_each /= Kdenom;
+            if (Kdenom < 1e-8) {
+                kvalues_each *= 0; // set to zero
+                kvalues.col(i) = kvalues_each;
+            }
+            else {
+                kvalues_each /= Kdenom;
+                kvalues.col(i) = kvalues_each;
+            }
             vec_components.col(i) = vec_components_each;
-            kvalues.col(i) = kvalues_each;
         }
 
         vec_components_all[j] = vec_components;
@@ -214,9 +222,9 @@ double Kh_denom_exact(double v, double h) {
              }
          }
      }
-
+     
      cube kde_1d_inv = inv_cube(kde_1d);
-
+     
 
 
      // kde_2d, proj: (p1,p2,g1,g2,r1,r2) = (p1*p2*g1*g2, r1, r2) cubes, with the identification of indices using functions in utils_SBF 

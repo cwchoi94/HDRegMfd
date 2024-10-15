@@ -363,6 +363,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// normalized_Kernel
+List normalized_Kernel(arma::mat X, arma::vec bandwidths, arma::vec grids, arma::vec weights, int degree, String Kdenom_method);
+RcppExport SEXP _HDRegMfd_normalized_Kernel(SEXP XSEXP, SEXP bandwidthsSEXP, SEXP gridsSEXP, SEXP weightsSEXP, SEXP degreeSEXP, SEXP Kdenom_methodSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bandwidths(bandwidthsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type grids(gridsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    Rcpp::traits::input_parameter< String >::type Kdenom_method(Kdenom_methodSEXP);
+    rcpp_result_gen = Rcpp::wrap(normalized_Kernel(X, bandwidths, grids, weights, degree, Kdenom_method));
+    return rcpp_result_gen;
+END_RCPP
+}
 // KDE_
 List KDE_(arma::mat X, arma::vec bandwidths, arma::vec grids, arma::vec weights, int degree, String Kdenom_method, bool is_proj);
 RcppExport SEXP _HDRegMfd_KDE_(SEXP XSEXP, SEXP bandwidthsSEXP, SEXP gridsSEXP, SEXP weightsSEXP, SEXP degreeSEXP, SEXP Kdenom_methodSEXP, SEXP is_projSEXP) {
@@ -740,6 +756,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_HDRegMfd_Psi_1d", (DL_FUNC) &_HDRegMfd_Psi_1d, 2},
     {"_HDRegMfd_Psi_2d", (DL_FUNC) &_HDRegMfd_Psi_2d, 2},
     {"_HDRegMfd_GLM_Kfold", (DL_FUNC) &_HDRegMfd_GLM_Kfold, 14},
+    {"_HDRegMfd_normalized_Kernel", (DL_FUNC) &_HDRegMfd_normalized_Kernel, 6},
     {"_HDRegMfd_KDE_", (DL_FUNC) &_HDRegMfd_KDE_, 7},
     {"_HDRegMfd_LM_each", (DL_FUNC) &_HDRegMfd_LM_each, 13},
     {"_HDRegMfd_LM_CV", (DL_FUNC) &_HDRegMfd_LM_CV, 13},

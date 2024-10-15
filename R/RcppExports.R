@@ -73,6 +73,10 @@ GLM_Kfold <- function(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, 
     .Call(`_HDRegMfd_GLM_Kfold`, X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
 }
 
+normalized_Kernel <- function(X, bandwidths, grids, weights, degree, Kdenom_method) {
+    .Call(`_HDRegMfd_normalized_Kernel`, X, bandwidths, grids, weights, degree, Kdenom_method)
+}
+
 KDE_ <- function(X, bandwidths, grids, weights, degree, Kdenom_method, is_proj) {
     .Call(`_HDRegMfd_KDE_`, X, bandwidths, grids, weights, degree, Kdenom_method, is_proj)
 }
