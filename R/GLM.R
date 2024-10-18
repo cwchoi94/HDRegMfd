@@ -71,7 +71,8 @@ GLM = function(Xorg,Yorg,link='binomial',penalty='LASSO',gamma=0,lambda=0.1,Xdim
   beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
   proper.indices = which(beta.norm!=0)
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['pca']] = pca
   object[['link']] = link
@@ -81,6 +82,7 @@ GLM = function(Xorg,Yorg,link='binomial',penalty='LASSO',gamma=0,lambda=0.1,Xdim
   object[['beta.tensor']] = beta.tensor
   object[['proper.indices']] = proper.indices
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   class(object) = 'GLM'
   
   return(object)

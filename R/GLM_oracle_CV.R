@@ -70,12 +70,14 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
   
   object = GLM.oracle(Xorg,Yorg,link,proper.indices,opt.Xdim.max,1,max.iter,threshold)
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
   object[['cv.type']] = cv.type
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   
   return(object)
 }
@@ -152,11 +154,13 @@ GLM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,link='binomial',proper.indic
   
   object = GLM.oracle(Xorg,Yorg,link,proper.indices,opt.Xdim.max,1,max.iter,threshold)
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   
   return(object)
 }
@@ -257,11 +261,13 @@ GLM.oracle.kfold = function(Xorg,Yorg,link='binomial',proper.indices=NULL,kfold=
   
   object = GLM.oracle(Xorg,Yorg,link,proper.indices,opt.Xdim.max,1,max.iter,threshold)
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   
   return(object)
 }

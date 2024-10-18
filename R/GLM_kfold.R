@@ -99,11 +99,13 @@ GLM.kfold = function(Xorg,Yorg,link='binomial',kfold=5,seed=NULL,penalty='LASSO'
   
   object = GLM(Xall,Yall,link,penalty,gamma,opt.lambda,opt.Xdim.max,opt.R,phi,eta,max.iter,threshold)
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   
   return(object)
 }

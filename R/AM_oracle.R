@@ -101,7 +101,8 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
   proper.ind.mat.all = object[['mhat.norm']][which(object[['mhat.norm']][,'mhat.norm']!=0),,drop=FALSE]
   proper.ind.mat = proper.ind.mat.all[,2:3,drop=FALSE]
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['P']] = P
   object[['m']] = m
@@ -117,6 +118,7 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
   object[['proper.ind.mat.all']] = proper.ind.mat.all
   object[['proper.ind.mat']] = proper.ind.mat
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   class(object) = 'AM'
   
   return(object)

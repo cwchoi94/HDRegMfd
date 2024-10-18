@@ -138,7 +138,8 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   proper.ind.mat.all = object[['mhat.norm']][which(object[['mhat.norm']][,'mhat.norm']!=0),,drop=FALSE]
   proper.ind.mat = proper.ind.mat.all[,2:3,drop=FALSE]
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object[['P']] = P
   object[['m']] = m
@@ -156,6 +157,7 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   class(object) = 'AM'
   
   return(object)

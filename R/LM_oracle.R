@@ -99,7 +99,8 @@ LM.oracle = function(Xorg,Yorg,Yspace,proper.indices=NULL,Xdim.max=100){
   beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
   proper.indices = which(beta.norm!=0)
   
-  runtime = hms::hms(round(as.numeric(difftime(Sys.time(),start.time,units='secs'))))
+  runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime = hms::hms(round(runtime.second))
   
   object = list()
   
@@ -114,6 +115,7 @@ LM.oracle = function(Xorg,Yorg,Yspace,proper.indices=NULL,Xdim.max=100){
   object[['proper.indices']] = proper.indices
   object[['Xdim.max']] = Xdim.max
   object[['runtime']] = runtime
+  object[['runtime.second']] = runtime.second
   class(object) = 'LM'
   
   return(object)
