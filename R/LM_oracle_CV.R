@@ -39,7 +39,8 @@ get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max,proper.ind
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -147,7 +148,8 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -248,7 +250,8 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.indices=NULL,Xd
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export

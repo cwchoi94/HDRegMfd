@@ -74,7 +74,8 @@ an \code{\link{LM}} object with the following components:
       \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
       \item{parameter.list}{a list of optimal parameters for each CV update.}
       \item{loss.list}{a list of loss for each CV update.}
-      \item{runtime}{the running time.}
+      \item{runtime}{the running time (HH:MM:SS).}
+      \item{runtime.second}{the running time (second).}
       \item{...}{other parameters.}
 }
 }

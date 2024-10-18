@@ -66,7 +66,8 @@ reduce.dimension = function(X,Xdim.max=100,margin=1){
 #'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
 #'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
 #'       \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export

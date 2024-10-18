@@ -22,7 +22,8 @@
 #'       \item{beta.vectors}{a \eqn{p} list of orthonormal bases of \eqn{X_j} obtained by \code{\link{PCA.manifold.list}}. Each basis is an \eqn{L_j^*\times T_j} matrix.}
 #'       \item{beta.tensor}{a \eqn{p} list of estimated Hilbert-Schmidt operators, see \code{\link{make.tensor}}.}
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export

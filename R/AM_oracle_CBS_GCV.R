@@ -28,7 +28,8 @@
 #'       \item{proper.indices.1d}{an estimated index set with a version of sub-vector of \code{col.indices}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export

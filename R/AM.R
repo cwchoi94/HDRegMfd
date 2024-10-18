@@ -31,7 +31,8 @@
 #'       \item{mhat.norm}{a \eqn{p\times 4} matrix of norms of \eqn{\hat m_{jk}}, with columns c('index','j','k','mhat.norm').}
 #'       \item{all.indices}{an index set used in the estimation.}
 #'       \item{proper.ind.mat}{a subset of \code{mhat.norm} with \eqn{\mathcal{S}=\{(j,k): \hat{m_{jk}}\neq0\}}.}
-#'       \item{runtime}{the running time.}
+#'       \item{runtime}{the running time (HH:MM:SS).}
+#'       \item{runtime.second}{the running time (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
