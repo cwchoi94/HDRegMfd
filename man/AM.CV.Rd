@@ -93,8 +93,9 @@ a \code{AM} object with the following compnents:
       \item{proper.ind.mat}{a subset of \code{mhat.norm} with \eqn{\mathcal{S}=\{(j,k): \hat{m_{jk}}\neq0\}}.}
       \item{parameter.list}{a list of optimal parameters for each CV update.}
       \item{loss.list}{a list of loss for each CV update.}
-      \item{runtime}{the running time (HH:MM:SS).}
-      \item{runtime.second}{the running time (second).}
+      \item{runtime}{the CV running time (HH:MM:SS).}
+      \item{runtime.second}{the CV running time (second).}
+      \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
       \item{...}{other parameters.}
 }
 }

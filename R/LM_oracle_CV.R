@@ -39,8 +39,9 @@ get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max,proper.ind
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time (HH:MM:SS).}
-#'       \item{runtime.second}{the running time (second).}
+#'       \item{runtime}{the CV running time (HH:MM:SS).}
+#'       \item{runtime.second}{the CV running time (second).}
+#'       \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -81,6 +82,8 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
   
   
   # apply LM with the optimal parameters
+  opt.start.time = Sys.time()
+  
   opt.Xdim.max = result$opt.Xdim.max
   X = reduce.dimension(X,opt.Xdim.max)
   beta = compute_beta(X,LogY,proper.indices)
@@ -101,6 +104,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
   proper.indices = which(beta.norm!=0)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
   object = list()
@@ -120,6 +124,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
   object[['Xdim.max']] = opt.Xdim.max
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
+  object[['runtime.opt.second']] = runtime.opt.second
   class(object) = 'LM'
   
   return(object)
@@ -148,8 +153,9 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time (HH:MM:SS).}
-#'       \item{runtime.second}{the running time (second).}
+#'       \item{runtime}{the CV running time (HH:MM:SS).}
+#'       \item{runtime.second}{the CV running time (second).}
+#'       \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -187,6 +193,8 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.indices=NULL,Xd
   loss.list = sapply(1:r2,function(i){get.loss.LM.oracle(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max.list[i],proper.indices)})
   
   # compute optimal beta
+  opt.start.time = Sys.time()
+  
   opt.Xdim.max = Xdim.max.list[which.min(loss.list)]
   X = reduce.dimension(X,opt.Xdim.max)
   beta = compute_beta(X,LogY,proper.indices)
@@ -203,6 +211,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.indices=NULL,Xd
   proper.indices = which(beta.norm!=0)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
   object = list()
@@ -221,6 +230,7 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.indices=NULL,Xd
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
+  object[['runtime.opt.second']] = runtime.opt.second
   class(object) = 'LM'
   
   return(object)
@@ -250,8 +260,9 @@ LM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.indices=NULL,Xd
 #'       \item{proper.indices}{an index set an index set \eqn{\mathcal{S}=\{1\le j\le p : {\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time (HH:MM:SS).}
-#'       \item{runtime.second}{the running time (second).}
+#'       \item{runtime}{the CV running time (HH:MM:SS).}
+#'       \item{runtime.second}{the CV running time (second).}
+#'       \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -327,15 +338,19 @@ LM.oracle.kfold = function(Xorg,Yorg,Yspace,proper.indices=NULL,kfold=5,seed=NUL
   opt.Xdim.max = Xdim.max.list[which.min(loss)]
   
   # fit opt model
+  opt.start.time = Sys.time()
+  
   object = LM.oracle(Xall,Yall,Yspace,opt.Xdim.max,proper.indices)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
   object[['Xdim.max.list']] = Xdim.max.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
+  object[['runtime.opt.second']] = runtime.opt.second
   
   return(object)
 }

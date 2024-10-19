@@ -30,8 +30,9 @@
 #'       \item{proper.ind.mat}{a subset of \code{mhat.norm} with \eqn{\mathcal{S}=\{(j,k): \hat{m_{jk}}\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time (HH:MM:SS).}
-#'       \item{runtime.second}{the running time (second).}
+#'       \item{runtime}{the CV running time (HH:MM:SS).}
+#'       \item{runtime.second}{the CV running time (second).}
+#'       \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -119,6 +120,8 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   
   
   # apply the AM function with the optimal parameters
+  opt.start.time = Sys.time()
+  
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
@@ -146,6 +149,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   proper.ind.mat = proper.ind.mat.all[,2:3,drop=FALSE]
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
   object[['P']] = P
@@ -164,6 +168,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
+  object[['runtime.opt.second']] = runtime.opt.second
   class(object) = 'AM'
   
   return(object)

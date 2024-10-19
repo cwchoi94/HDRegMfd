@@ -25,8 +25,9 @@
 #'       \item{proper.indices}{an estimated index set an index set \eqn{\mathcal{S}=\{1\le j\le p : \hat{\mathfrak{B}}_j\neq0\}}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time (HH:MM:SS).}
-#'       \item{runtime.second}{the running time (second).}
+#'       \item{runtime}{the CV running time (HH:MM:SS).}
+#'       \item{runtime.second}{the CV running time (second).}
+#'       \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -94,6 +95,8 @@ GLM.kfold = function(Xorg,Yorg,link='binomial',kfold=5,seed=NULL,penalty='LASSO'
   
   
   # apply LM with the optimal parameters
+  opt.start.time = Sys.time()
+  
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
@@ -101,12 +104,14 @@ GLM.kfold = function(Xorg,Yorg,link='binomial',kfold=5,seed=NULL,penalty='LASSO'
   object = GLM(Xall,Yall,link,penalty,gamma,opt.lambda,opt.Xdim.max,opt.R,phi,eta,max.iter,threshold)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
+  object[['runtime.opt.second']] = runtime.opt.second
   
   return(object)
 }

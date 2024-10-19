@@ -28,8 +28,9 @@
 #'       \item{proper.indices.1d}{an estimated index set with a version of sub-vector of \code{col.indices}.}
 #'       \item{parameter.list}{a list of optimal parameters for each CV update.}
 #'       \item{loss.list}{a list of loss for each CV update.}
-#'       \item{runtime}{the running time (HH:MM:SS).}
-#'       \item{runtime.second}{the running time (second).}
+#'       \item{runtime}{the CV running time (HH:MM:SS).}
+#'       \item{runtime.second}{the CV running time (second).}
+#'       \item{runtime.opt.second}{the running time with the optimal parmaters (second).}
 #'       \item{...}{other parameters.}
 #' }
 #' @export
@@ -166,6 +167,7 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   
   
   # compute LogY and X with the optimal parameters
+  opt.start.time = Sys.time()
   
   # preprocessing for X
   ## PCA
@@ -203,6 +205,7 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   proper.ind.mat = proper.ind.mat.all[,2:3,drop=FALSE]
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
+  runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
   object[['P']] = P
@@ -223,6 +226,7 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
+  object[['runtime.opt.second']] = runtime.opt.second
   class(object) = 'AM'
   
   return(object)
