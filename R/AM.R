@@ -159,6 +159,10 @@ predict.AM = function(object,Xorgnew){
   Xnew = predict(object$transform,Xnew)
   Xnew = Xnew[,all.indices]
   
+  tol = 1e-5
+  Xnew[Xnew<tol] = tol
+  Xnew[Xnew>1-tol] = 1-tol
+  
   # linear interpolation
   mhatnew = lapply(object[['proper.ind.mat.all']][,1],function(j){
     sapply(1:m,function(k){approx(grids,mhat[[j]][,1,k],Xnew[,j])$y})
