@@ -21,7 +21,7 @@ RieLog.BayesHilbert(p, q)
 
 RieLog.Euclid(p, q)
 
-RieLog.SPD.AffInv(p, q, tol = 1e-06)
+RieLog.SPD.AffInv(p, q)
 
 RieLog.SPD.LogEuclid(p, q)
 

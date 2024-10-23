@@ -78,7 +78,7 @@ RieExp.SPD.AffInv = function(p,u){
 
 #' @describeIn RieLog.manifold Method
 #' @export
-RieLog.SPD.AffInv = function(p,q,tol=1e-6){
+RieLog.SPD.AffInv = function(p,q){
   p = vec.to.mat(p)
   q = vec.to.mat(q)
   
