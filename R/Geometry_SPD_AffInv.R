@@ -1,5 +1,18 @@
 
 
+
+make.SPD = function(x,tol=1e-8){
+  
+  # add tol * Id matrix so that x is positive definite
+  n = nrow(x)
+  dim = sqrt(ncol(x))
+  y = x + matrix(rep(tol * as.vector(diag(dim)),n),nrow=n,byrow=TRUE)
+  
+  return(y)
+}
+
+
+
 #' @describeIn inner.manifold Method
 #' @export
 inner.SPD.AffInv = function(u,v,p=NULL){
@@ -38,6 +51,9 @@ dist.SPD.AffInv = function(p,q){
   p = vec.duplicate(p,nrow(q))
   q = vec.duplicate(q,nrow(p))
   
+  p = make.SPD(p)
+  q = make.SPD(q)
+  
   z = manifold::distance(manifold::createM('AffInv'),t(p),t(q))
   return(z)
 }
@@ -52,6 +68,8 @@ RieExp.SPD.AffInv = function(p,u){
   p = vec.duplicate(p,nrow(u))
   u = vec.duplicate(u,nrow(p))
   
+  p = make.SPD(p)
+  
   z = manifold::rieExp(manifold::createM('AffInv'),t(p),t(u))
   z = t(z)
   return(z)
@@ -60,12 +78,15 @@ RieExp.SPD.AffInv = function(p,u){
 
 #' @describeIn RieLog.manifold Method
 #' @export
-RieLog.SPD.AffInv = function(p,q){
+RieLog.SPD.AffInv = function(p,q,tol=1e-6){
   p = vec.to.mat(p)
   q = vec.to.mat(q)
   
   p = vec.duplicate(p,nrow(q))
   q = vec.duplicate(q,nrow(p))
+  
+  p = make.SPD(p)
+  q = make.SPD(q)
   
   z = manifold::rieLog(manifold::createM('AffInv'),t(p),t(q))
   z = t(z)
