@@ -49,7 +49,7 @@ mX.basis = function(j,k,x){
   }else if (i==2){
     z = exp(-k/3) * sin(4*pi*(x-k/2))
   }else if (i==3){
-    z = (2-cos(pi*x)**3) / (1+sqrt(k))
+    z = (2-cos(2*pi*x)**3) / (1+sqrt(k))
   }else if (i==4){
     z = abs(x-1/2)/(1+k**2) 
   }else if (i==5){
