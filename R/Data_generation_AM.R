@@ -51,7 +51,7 @@ mX.basis = function(j,k,x){
   }else if (i==3){
     z = (2-cos(pi*x)**3) / (1+sqrt(k))
   }else if (i==4){
-    z = abs(x-1/2)/(1+k**2) + x**2/(2+k)
+    z = abs(x-1/2)/(1+k**2) 
   }else if (i==5){
     z = sin(2*pi*(k-3/2)*(x**2+1))
   }else if (i==6){
@@ -59,7 +59,7 @@ mX.basis = function(j,k,x){
   }else if (i==7){
     z = 2*k*x**3 / (2 + x**2 + k**2)
   }else if (i==8){
-    z = (cosh(x+k)-1)/(1+sinh(x+k))
+    z = (cosh(x+k)-1)/(1+sinh(x+k)) + x**2/(2+k)
   }else if (i==9){
     z = (1+(x+k/2)**2) / (3+(x+k)**2)
   }else if (i==0){
