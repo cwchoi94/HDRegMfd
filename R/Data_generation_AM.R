@@ -7,11 +7,11 @@ mX.functional = function(j,x,t){
   if (i==1){
     z = log(2+t**2)*x**2
   }else if (i==2){
-    z = 0.5*exp(x*t)
-  }else if (i==3){
-    z = sin(2*pi*(x**2+1)*t)
-  }else if (i==4){
     z = 2*cos(2*pi*x*t)/(2 - sin(2*pi*x*t))
+  }else if (i==3){
+    z = log(2*abs(x-1/2)**3+1) * exp(-sqrt(t))
+  }else if (i==4){
+    z = exp(-sin(2*pi*x)*t) * (abs(x-1/2) * t**2 + 2*sqrt(t))
   }else if (i==5){
     z = sqrt(1+x**3-exp(-2*t))
   }else if (i==6){
@@ -19,7 +19,7 @@ mX.functional = function(j,x,t){
   }else if (i==7){
     z = exp(-2*x-t)
   }else if (i==8){
-    z = log(2*x**3+1) * exp(-sqrt(t))
+    z = sin(2*pi*(x**2+1)*t)
   }else if (i==9){
     z = (x+t**3-2)**2 / 3
   }else if (i==0){
@@ -286,81 +286,4 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
 
 
 
-
-AM.data.generate2 = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.norm=1,Xrho=0.5,Xsigma=1,
-                            error.rho=0.5,error.std=1,ngrid=50,transform='Gaussian',seed=1,c.add.mean=NULL){
-  
-  p = length(Xdims)
-  s = nrow(proper.ind.mat)
-  if(length(add.mean.norm)==1){add.mean.norm = rep(add.mean.norm,s)}
-  
-  # generate Xmu and Ymu
-  Xmu.list = lapply(1:length(Xdims),function(j){Xmu.generate(Xdims[j],Xspaces[j],ngrid)})
-  Ymu = Ymu.generate(Ydim,Yspace,ngrid)
-  
-  # generate c.add.mean for ensuring \|m_{jk}^*\| = add.mean.norm[j']
-  if (is.null(c.add.mean)){
-    set.seed(0)
-    n0 = 100000
-    
-    Xdata.base = covariates.generate(n0,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
-    Xi.base = Xdata.base$Xi.scaled
-    
-    ## transform the normalized score
-    object.transform = Transform.Score(Xi.base,transform,FALSE)
-    index.mat = object.transform$index.mat
-    Xi.base = predict(object.transform,Xi.base)
-    
-    ## compute matrices of additive mean functions
-    all.indices = apply(proper.ind.mat,1,function(x){
-      which(apply(index.mat[,-1],1,function(row){all(x==row)}))
-    })
-    add.mean.each = add.mean.generate(Xi.base,Yspace,Ymu,Ydim,all.indices)
-    add.mean.mean = sapply(add.mean.each,colMeans)
-    add.mean.std = sapply(1:s,function(j){
-      tmp = add.mean.each[[j]] - matrix(add.mean.mean[,j],n0,length(Ymu),byrow=TRUE)
-      sqrt(mean(norm.manifold(tmp,Ymu,Yspace)**2))
-    })
-    c.add.mean = list(mean=add.mean.mean,std=add.mean.std)
-  }
-  
-  # generate X and error
-  set.seed(seed)
-  Xdata = covariates.generate(n,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
-  X = Xdata$X
-  Xi = Xdata$Xi.scaled
-  error = error.generate(n,Yspace,Ymu,Ydim,error.rho,error.std)
-  
-  ## transform the normalized score
-  object.transform = Transform.Score(Xi,transform,FALSE)
-  index.mat = object.transform$index.mat
-  Xi.transform = predict(object.transform,Xi)
-  
-  ## compute matrices of additive mean functions
-  all.indices = apply(proper.ind.mat,1,function(x){
-    which(apply(index.mat[,-1],1,function(row){all(x==row)}))
-  })
-  add.mean.each = add.mean.generate(Xi.transform,Yspace,Ymu,Ydim,all.indices)
-  
-  ## centering and constant adjustment
-  for (j in 1:s){
-    add.mean.each[[j]] = (add.mean.each[[j]] - matrix(c.add.mean$mean[,j],n,length(Ymu),byrow=TRUE)) / c.add.mean$std[j] * add.mean.norm[j]
-  }
-  add.mean = Reduce('+',add.mean.each)
-  
-  # make Y
-  LogY = add.mean + error
-  Exp.add.mean = RieExp.manifold(Ymu,add.mean,Yspace)
-  Y = RieExp.manifold(Ymu,LogY,Yspace)
-  
-  proper.ind.mat.all = cbind(all.indices,proper.ind.mat,add.mean.norm)
-  colnames(proper.ind.mat.all) = c('index','j','k','add.mean.norm')
-  
-  data = list(X=X,Y=Y,Xi=Xi,error=error,Ymu=Ymu,Xmu.list=Xmu.list,c.add.mean=c.add.mean,
-              LogY=LogY,error=error,add.mean=add.mean,add.mean.each=add.mean.each,Exp.add.mean=Exp.add.mean,
-              n=n,p=length(Xdims),Xspaces=Xspaces,Yspace=Yspace,Xdims=Xdims,Ydim=Ydim,
-              proper.ind.mat=proper.ind.mat,proper.ind.mat.all=proper.ind.mat.all,
-              Xrho=Xrho,Xsigma=Xsigma,error.rho=error.rho,error.std=error.std,seed=seed)
-  return(data)
-}
 
