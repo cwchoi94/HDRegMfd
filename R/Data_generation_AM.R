@@ -143,8 +143,8 @@ add.mean.generate = function(Xi,Yspace,Ymu,Ydim,all.indices){
   s = length(all.indices)
   
   add.mean.list = lapply(1:s,function(j){
-    ind = all.indices[j]
-    add.mean.generate.each(j,Xi[,ind],Yspace,Ymu,Ydim)
+    idx = all.indices[j]
+    add.mean.generate.each(j,Xi[,idx],Yspace,Ymu,Ydim)
   })
   
   return(add.mean.list)
@@ -189,7 +189,7 @@ add.mean.generate = function(Xi,Yspace,Ymu,Ydim,all.indices){
 #' }
 #' @export
 AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.norm=1,Xrho=0.5,Xsigma=1,
-                            error.rho=0.5,error.std=1,ngrid=50,transform='Gaussian',seed=1,c.add.mean=NULL){
+                            error.rho=0.5,error.std=1,ngrid=50,transform='Gaussian',normalize=TRUE,seed=1,c.add.mean=NULL){
   
   p = length(Xdims)
   s = nrow(proper.ind.mat)
@@ -220,7 +220,7 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
       }})
     
     ## transform the normalized score
-    object.transform = Transform.Score(Xi.base,transform,FALSE)
+    object.transform = Transform.Score(Xi.base,transform,normalize)
     index.mat = object.transform$index.mat
     Xi.base = predict(object.transform,Xi.base)
     
@@ -252,7 +252,7 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
       Xi[[j]]*(c.add.mean$sd.list[[j]]^(-1/2))
     }})
   
-  object.transform = Transform.Score(Xi,transform,FALSE)
+  object.transform = Transform.Score(Xi,transform,normalize)
   index.mat = object.transform$index.mat
   Xi.transform = predict(object.transform,Xi)
   

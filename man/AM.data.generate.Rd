@@ -18,6 +18,7 @@ AM.data.generate(
   error.std = 1,
   ngrid = 50,
   transform = "Gaussian",
+  normalize = TRUE,
   seed = 1,
   c.add.mean = NULL
 )
@@ -48,6 +49,8 @@ AM.data.generate(
 \item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
 
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
+
+\item{normalize}{a parameter indicating whether to standardize each column of score matrices (default: \code{TRUE}).}
 
 \item{seed}{a random seed, which must be greater than 1.}
 
