@@ -305,15 +305,14 @@ double Kh_denom_exact(double v, double h) {
 
              // adjust constants so that  numerical_integral_3d_to_2d to satisfy: integral of kde_1d_j_inv * kde_2djj2 * u_0 = u_0
              for (int k1 = 0; k1 < g; k1++) {
+                 mat kde_1d_jk = kde_1d.row(j1 * g + k1); // (r1,r1) matrix
                  mat kde_1d_jk_inv = kde_1d_inv.row(j1 * g + k1); // (r1,r1) matrix
                  IntegerVector ind_range = multi_3d_ind_to_single_range(j1, j2, k1, p, g);
                  cube kde_2d_jj2_k = kde_2d.rows(ind_range(0), ind_range(1)); // (g2,r1,r2) cube
 
                  // compute a rotation matrix
                  mat denom_mat = numerical_integral_3d_to_2d(weights, kde_2d_jj2_k); // (r1,r2) matrix
-                 denom_mat = kde_1d_jk_inv * denom_mat; // (r1,r2) matrix
-                 vec denom_vec = denom_mat.col(0);
-                 mat rot_mat = compute_rot_mat(denom_vec, unit_vec);
+                 mat rot_mat = compute_rot_mat(denom_mat.col(0), kde_1d_jk.col(0));
 
                  for (int k2 = 0; k2 < g; k2++) {
                      int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
