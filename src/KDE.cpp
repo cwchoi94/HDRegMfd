@@ -286,18 +286,24 @@ double Kh_denom_exact(double v, double h) {
              }
              else if (j1 < j2) {
                  for (int k1 = 0; k1 < g; k1++) {
+                     mat kde_1d_jk_inv = kde_1d_inv.row(j1 * g + k1); // (r1,r1) matrix
                      for (int k2 = 0; k2 < g; k2++) {
                          mat kvalues_all_jk1 = kvalues_all_j1.row(k1); // (n,r1) matrix
                          mat kvalues_all_jk2 = kvalues_all_j2.row(k2); // (n,r2) matrix
+                         
 
                          // don't have to divide by n
+                         mat kde_2d_jj2_kk2(r, r);
                          int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
                          if (degree == 0) {
-                             kde_2d.row(single_ind) = kvalues_all_jk1 * kvalues_all_jk2.t();
+                             kde_2d_jj2_kk2 = kvalues_all_jk1 * kvalues_all_jk2.t();
                          }
                          else if (degree > 0) {
-                             kde_2d.row(single_ind) = kvalues_all_jk1.t() * kvalues_all_jk2;
+                             kde_2d_jj2_kk2 = kvalues_all_jk1.t() * kvalues_all_jk2;
                          }
+
+                         kde_2d.row(single_ind) = kde_2d_jj2_kk2;
+                         proj.row(single_ind) = kde_1d_jk_inv * kde_2d_jj2_kk2;
                      }
                  }
              }
@@ -309,18 +315,22 @@ double Kh_denom_exact(double v, double h) {
                  mat kde_1d_jk_inv = kde_1d_inv.row(j1 * g + k1); // (r1,r1) matrix
                  IntegerVector ind_range = multi_3d_ind_to_single_range(j1, j2, k1, p, g);
                  cube kde_2d_jj2_k = kde_2d.rows(ind_range(0), ind_range(1)); // (g2,r1,r2) cube
+                 cube proj_jj2_k = proj.rows(ind_range(0), ind_range(1)); // (g2,r1,r2) cube
 
                  // compute a rotation matrix
-                 mat denom_mat = numerical_integral_3d_to_2d(weights, kde_2d_jj2_k); // (r1,r2) matrix
-                 mat rot_mat = compute_rot_mat(denom_mat.col(0), kde_1d_jk.col(0));
+                 mat denom_mat_2d = numerical_integral_3d_to_2d(weights, kde_2d_jj2_k); // (r1,r2) matrix
+                 mat rot_mat_2d = compute_rot_mat(denom_mat_2d.col(0), kde_1d_jk.col(0)); // (r1,r1) matrix
+
+                 mat denom_mat_proj = numerical_integral_3d_to_2d(weights, proj_jj2_k); // (r1,r2) matrix
+                 mat rot_mat_proj = compute_rot_mat(denom_mat_proj.col(0), unit_vec); // (r1,r1) matrix
 
                  for (int k2 = 0; k2 < g; k2++) {
                      int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
                      mat kde_2d_jj2_kk2 = kde_2d.row(single_ind);
-                     kde_2d_jj2_kk2 = rot_mat * kde_2d_jj2_kk2;
+                     mat proj_jj2_kk2 = proj.row(single_ind);
 
-                     kde_2d.row(single_ind) = kde_2d_jj2_kk2;
-                     proj.row(single_ind) = kde_1d_jk_inv * kde_2d_jj2_kk2;
+                     kde_2d.row(single_ind) = rot_mat_2d * kde_2d_jj2_kk2;
+                     proj.row(single_ind) = rot_mat_proj * proj_jj2_kk2;
                  }
              }
          }
