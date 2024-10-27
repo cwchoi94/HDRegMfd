@@ -72,23 +72,30 @@ arma::cube transpose_cube(arma::cube x) {
 arma::mat compute_rot_mat(arma::vec x, arma::vec y) {
 
     double c = norm(y, 2) / norm(x, 2);
+    int p = x.n_elem;
+    mat R(p, p);
 
-    // Normalize x and y
-    x /= norm(x, 2);
-    y /= norm(y, 2);
+    if (p > 1) {
+        // Normalize x and y
+        x /= norm(x, 2);
+        y /= norm(y, 2);
 
-    // Compute cos(theta) and sin(theta)
-    double cos_theta = dot(x, y);
-    double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
+        // Compute cos(theta) and sin(theta)
+        double cos_theta = dot(x, y);
+        double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
 
-    // Calculate u as a unit vector orthogonal to x in the direction of y
-    vec u = y - cos_theta * x;
-    u /= norm(u, 2);
+        // Calculate u as a unit vector orthogonal to x in the direction of y
+        vec u = y - cos_theta * x;
+        u /= norm(u, 2);
 
-    // Define the rotation matrix
-    mat R = arma::eye(x.n_elem, x.n_elem) - x * x.t() - u * u.t();
-    mat rotation_sub = { {cos_theta, -sin_theta}, {sin_theta, cos_theta} };
-    R += join_horiz(x, u) * rotation_sub * join_horiz(x, u).t();
+        // Define the rotation matrix
+        R = arma::eye(p, p) - x * x.t() - u * u.t();
+        mat rotation_sub = { {cos_theta, -sin_theta}, {sin_theta, cos_theta} };
+        R += join_horiz(x, u) * rotation_sub * join_horiz(x, u).t();
+    }
+    else {
+        R = arma::eye(p, p);
+    }    
 
     return c * R;
 }
