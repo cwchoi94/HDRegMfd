@@ -141,7 +141,7 @@ double Kh_denom_exact(double v, double h) {
             mat vec_components_each(g, r);
             mat kvalues_each(g, r);
             for (int k = 0; k < g; k++) {
-                double u = (grids[k] - Xj[i]) / h;
+                double u = (Xj[i] - grids[k]) / h;
                 rowvec u_vec = power_vec(u, r);
 
                 vec_components_each.row(k) = u_vec;
@@ -157,12 +157,11 @@ double Kh_denom_exact(double v, double h) {
 
             if (Kdenom < 1e-8) {
                 kvalues_each *= 0; // set to zero
-                kvalues.col(i) = kvalues_each;
             }
             else {
                 kvalues_each /= Kdenom;
-                kvalues.col(i) = kvalues_each;
             }
+            kvalues.col(i) = kvalues_each;
             vec_components.col(i) = vec_components_each;
         }
 
