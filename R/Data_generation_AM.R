@@ -42,28 +42,29 @@ mX.functional = function(j,x,t){
 
 
 mX.basis = function(j,k,x){
-  k = min(k,6)
+  k.max = 6
+  k = min(k,k.max)
   i = j %% 10
   if (i==1){
     z = exp(-k*x**2)
   }else if (i==2){
     z = exp(-k/3) * sin(4*pi*(x-k/2))
   }else if (i==3){
-    z = (2-cos(2*pi*x)**3) / (1+sqrt(k))
+    z = exp(-k/3) * sin(2*pi*k*x)
   }else if (i==4){
-    z = abs(x-1/2)/(1+k**2) 
+    z = (k-1.5)**2/((1+k)**2) * log(1+ k +3*x)
   }else if (i==5){
     z = sin(2*pi*(k-3/2)*(x**2+1))
   }else if (i==6){
-    z = (k-1.5)**2/((1+k)**2) * log(1+ k +3*x)
+    z = (1+(x+k/2)**2) / (3+(x+k)**2)
   }else if (i==7){
     z = 2*k*x**3 / (2 + x**2 + k**2)
   }else if (i==8){
-    z = (cosh(x+k)-1)/(1+sinh(x+k)) + x**2/(2+k)
+    z = exp(-k/k.max) * (x-k/k.max)**3
   }else if (i==9){
-    z = (1+(x+k/2)**2) / (3+(x+k)**2)
+    z = (2-cos(2*pi*x)**3) / (1+sqrt(k))
   }else if (i==0){
-    z = x**2 * cos(2*pi*(k**2+1)*x) / (k**2 + exp(k*x))
+    z = exp(-k*x/2) * sin(4*pi*(x-k/2))
   }
   
   return(z)
