@@ -92,7 +92,7 @@ get.rule.of.thumbs.bandwidths = function(X,degree=0,const=1.001){
   }else{
     h.vec = h.vec * n**(-1/(2*degree+3))
   }
-  h.vec = pmax(h.vec,h.min)
+  h.vec = pmax(h.vec,h.min+0.01)
   
   return(h.vec)
 }
