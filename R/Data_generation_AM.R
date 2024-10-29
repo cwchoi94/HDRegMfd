@@ -5,13 +5,13 @@
 mX.functional = function(j,x,t){
   i = j %% 10
   if (i==1){
-    z = log(2+t**2)*x**2
-  }else if (i==2){
-    z = 2*cos(2*pi*x*t)/(2 - sin(2*pi*x*t))
-  }else if (i==3){
-    z = log(2*abs(x-1/2)**3+1) * exp(-sqrt(t))
-  }else if (i==4){
     z = exp(-sin(2*pi*x)*t) * (abs(x-1/2) * t**2 + 2*sqrt(t))
+  }else if (i==2){
+    z = log(2*abs(x-1/2)**3+1) * exp(-sqrt(t))
+  }else if (i==3){
+    z = 2*cos(2*pi*x)*(t**3+2*t)
+  }else if (i==4){
+    z = log(1+x**2 + t**2)
   }else if (i==5){
     z = sqrt(1+x**3-exp(-2*t))
   }else if (i==6){
@@ -154,6 +154,72 @@ add.mean.generate = function(Xi,Yspace,Ymu,Ydim,all.indices){
 
 
 
+
+############################################################
+############################################################
+### Generate covariates for AM simulation
+
+
+#' @title Generate a list of manifold-valued covariates for additive regression simulation.
+#' 
+#' @description
+#' Generate a list of manifold-valued covariates.
+#' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is set to \eqn{D_j}.
+#' If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set to 100.
+#' 
+#' @param n the number of data points.
+#' @param Xspaces a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.
+#' @param Xmu.list a \eqn{p} list of the Frechet means of \eqn{X_j}.
+#' @param Xdims a \eqn{p} vector specifying the dimensions of \eqn{X_j}.
+#' @param Xrho a correlation parameter ranging from -1 to 1, with a default value of 0.5.
+#' @param Xsigma a common standard deviation parameter, with a default value of 1.
+#' @param a a parameter such that \eqn{\text{Var}(\xi_{jk})\asymp k^{-2a}}.
+#' 
+#' @return a list of data containing:
+#'    \describe{
+#'       \item{j}{a \eqn{p}-list of generated data, where each \eqn{j}th element is an \eqn{n\times D_j} matrix.}
+#'       \item{Xspaces}{a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}, see \code{\link{Check.manifold}}.}
+#'       \item{p}{the number of \eqn{X_j}.}
+#' }
+AM.covariates.generate = function(n,Xspaces,Xmu.list,Xdims,Xrho=0.5,Xsigma=1,a=1){
+  # compute intrinsic dimension
+  p = length(Xdims)
+  Xdims_ = sapply(1:p,function(i){
+    if(Xspaces[i] %in% c('simplex','sphere')){
+      Xdims[i]-1
+    }else if (Xspaces[i]=='SPD.LogEuclid'){
+      (Xdims[i]+sqrt(Xdims[i]))/2
+    }else{
+      Xdims[i]
+    }})
+  Xdim.max = max(Xdims_)
+  
+  # generate scores
+  V = covariates.generate.real(n,Xdim.max,0,Xsigma)
+  Zeta = lapply(1:p,function(j){covariates.generate.real(n,Xdims_[j],0,Xsigma)})
+  Xi = lapply(1:p,function(j){
+    Xi.each = (Zeta[[j]] + Xrho * V[,1:Xdims_[j],drop=FALSE])/(1+Xrho)
+    if (Xspaces[j]=='Wasserstein'){
+      Xi.each = (2*pnorm(Xi.each) - 1)/sqrt(2)
+    }
+    return(Xi.each)
+  })
+  
+  Xi.scaled = lapply(1:p,function(j){Transform.Xi(Xi[[j]],Xspaces[j],a)})
+  
+  # generate X_j
+  X = lapply(1:p,function(j){covariates.generate.each(Xi.scaled[[j]],Xmu.list[[j]],Xspaces[j])})
+  X[['spaces']] = Xspaces
+  X[['p']] = p
+  
+  Xdata = list(X=X,Xi=Xi,Xi.scaled=Xi.scaled)
+  return(Xdata)
+}
+
+
+
+
+
 ############################################################
 ############################################################
 ### Generate simulation data
@@ -206,12 +272,12 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
     n0 = 100000
     
     ## compute var(xi_{jk})
-    Xdata.base0 = covariates.generate(n0,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
+    Xdata.base0 = AM.covariates.generate(n0,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
     Xi.base0 = Xdata.base0$Xi.scaled
     sd.list = lapply(1:p,function(j){apply(Xi.base0[[j]],2,function(x){mean(x^2)})})
     
     ## generate new Xi and normalize
-    Xdata.base = covariates.generate(n0,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
+    Xdata.base = AM.covariates.generate(n0,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
     Xi.base = Xdata.base$Xi.scaled
     Xi.base = lapply(1:p,function(j){
       if(length(sd.list[[j]])>1){
@@ -240,7 +306,7 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
   
   # generate X and error
   set.seed(seed)
-  Xdata = covariates.generate(n,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
+  Xdata = AM.covariates.generate(n,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)
   X = Xdata$X
   Xi = Xdata$Xi.scaled
   error = error.generate(n,Yspace,Ymu,Ydim,error.rho,error.std)
