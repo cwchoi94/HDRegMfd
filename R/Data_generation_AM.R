@@ -198,7 +198,7 @@ AM.covariates.generate = function(n,Xspaces,Xmu.list,Xdims,Xrho=0.5,Xsigma=1,a=1
   V = covariates.generate.real(n,Xdim.max,0,Xsigma)
   Zeta = lapply(1:p,function(j){covariates.generate.real(n,Xdims_[j],0,Xsigma)})
   Xi = lapply(1:p,function(j){
-    Xi.each = (Zeta[[j]] + Xrho * V[,1:Xdims_[j],drop=FALSE])/(1+Xrho)
+    Xi.each = (Zeta[[j]] + Xrho * V[,1:Xdims_[j],drop=FALSE])/sqrt(1+Xrho**2)
     if (Xspaces[j]=='Wasserstein'){
       Xi.each = (2*pnorm(Xi.each) - 1)/sqrt(2)
     }
