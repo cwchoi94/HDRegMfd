@@ -91,8 +91,6 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     vec mhat_norm(p, fill::zeros);
     double sigma = phi + eta;
 
-    Rcout << 1 << endl;
-
     // ADMM algorithm
     double residual;
     int iter = 0;
@@ -169,7 +167,8 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     }
 
 
-    List result = List::create(Named("mhat") = mhat_final, Named("mhat.norm") = mhat_norm, Named("bandwidths") = bandwidths,
+    List result = List::create(Named("mhat") = mhat_final, Named("mhat.org") = mhat, 
+        Named("mhat.norm") = mhat_norm, Named("bandwidths") = bandwidths,
         Named("A") = A, Named("B") = B, Named("iter") = iter, Named("grids") = grids, 
         Named("lambda") = lambda, Named("R") = R, Named("phi") = phi,
         Named("penalty") = penalty, Named("gamma") = gamma);
@@ -339,43 +338,43 @@ double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, 
 // [[Rcpp::export]]
 double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
 
+    // tildem: (p, g*r, m) cube
+    // kde_1d: p list - (g,r,r) cube
+    // proj: (p1,p2,g1,g2,r1,r2) = (p1*p2, g1*r1, g2*r2) cubes, with the identification of indices using functions in SBF_comp
     cube tildem = SBF_comp["tildem"];
     List kde_1d = SBF_comp["kde.1d"];
     cube proj = SBF_comp["proj"];
     vec weights = SBF_comp["weights"];
 
-    int p = tildem.size();
-    int g = weights.size();
+    int p = tildem.n_rows;
     int n = LogYnew.n_rows;
 
     // model training
     List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma);
     
-    List mhat = model["mhat"];
+    cube mhat = model["mhat.org"];
     
-
     double loss = 0;
     for (int j = 0; j < p; j++) {
-        cube mhat_j = mhat[j];
-        cube kde_1d_j = kde_1d[j];
+        mat mhat_j = mhat.row(j); // (g*r, m) mat
+        cube kde_1d_j = kde_1d[j]; // (g,r,r) cube
 
         // the square norms of hatm_j
-        loss += L2_mat_inner_SBF_cube(mhat_j, mhat_j, kde_1d_j, weights, Ymu, Yspace) / 2;
-
+        loss += L2_mat_inner_SBF(mhat_j, mhat_j, kde_1d_j, weights, Ymu, Yspace) / 2;
+        
         // the inner products of hatm_j and hatm_j2 for j!=j2
         for (int j2 = j + 1; j2 < p; j2++) {
-            cube mhat_j2 = mhat[j2];
+            mat mhat_j2 = mhat.row(j2);
 
-            IntegerVector ind_range = multi_2d_ind_to_single_range(j, j2, p, g);
             mat proj_jj2 = proj.row(p * j + j2);
             mat tmp_mhat_jj2 = numerical_integral_2d(proj_jj2, mhat_j2);
-
-            loss += L2_mat_inner_SBF_cube_mat(mhat_j, tmp_mhat_jj2, kde_1d_j, weights, Ymu, Yspace);
+            
+            loss += L2_mat_inner_SBF(mhat_j, tmp_mhat_jj2, kde_1d_j, weights, Ymu, Yspace);            
         }
-
+        
         // the inner products of hatm_j and tildem_j
-        cube tildem_j = tildem.row(j);
-        loss -= L2_mat_inner_SBF_cube_mat(mhat_j, tildem_j, kde_1d_j, weights, Ymu, Yspace);
+        mat tildem_j = tildem.row(j);
+        loss -= L2_mat_inner_SBF(mhat_j, tildem_j, kde_1d_j, weights, Ymu, Yspace);        
     }
 
     // the average square norm of LogY
