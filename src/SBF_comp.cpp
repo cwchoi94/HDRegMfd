@@ -128,8 +128,8 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
 
      uvec col_indices_uvec = arma::find(index_mat.col(2) <= Xdim_max);
 
-     cube tildem = SBF_comp["tildem"];
      List kde_1d = SBF_comp["kde.1d"];
+     cube tildem = SBF_comp["tildem"];
      cube proj = SBF_comp["proj"];
      vec bandwidths = SBF_comp["bandwidths"];
      vec grids = SBF_comp["grids"];
@@ -166,5 +166,5 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
      }
 
      return List::create(Named("tildem") = tildem_reduced, Named("kde.1d") = kde_1d_reduced, Named("proj") = proj_reduced, Named("bandwidths") = bandwidths_reduced,
-         Named("grids") = grids, Named("weights") = weights);
+         Named("grids") = grids, Named("weights") = weights, Named("r") = r);
  }
