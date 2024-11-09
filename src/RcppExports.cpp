@@ -11,37 +11,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// L2_mat_inner_SBF
-double L2_mat_inner_SBF(arma::cube Yj1, arma::cube Yj2, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace);
-RcppExport SEXP _HDRegMfd_L2_mat_inner_SBF(SEXP Yj1SEXP, SEXP Yj2SEXP, SEXP kde_1d_jSEXP, SEXP weightsSEXP, SEXP YmuSEXP, SEXP YspaceSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::cube >::type Yj1(Yj1SEXP);
-    Rcpp::traits::input_parameter< arma::cube >::type Yj2(Yj2SEXP);
-    Rcpp::traits::input_parameter< arma::cube >::type kde_1d_j(kde_1d_jSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
-    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
-    rcpp_result_gen = Rcpp::wrap(L2_mat_inner_SBF(Yj1, Yj2, kde_1d_j, weights, Ymu, Yspace));
-    return rcpp_result_gen;
-END_RCPP
-}
-// L2_mat_norm_SBF
-double L2_mat_norm_SBF(arma::cube Yj, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace);
-RcppExport SEXP _HDRegMfd_L2_mat_norm_SBF(SEXP YjSEXP, SEXP kde_1d_jSEXP, SEXP weightsSEXP, SEXP YmuSEXP, SEXP YspaceSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::cube >::type Yj(YjSEXP);
-    Rcpp::traits::input_parameter< arma::cube >::type kde_1d_j(kde_1d_jSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type Ymu(YmuSEXP);
-    Rcpp::traits::input_parameter< String >::type Yspace(YspaceSEXP);
-    rcpp_result_gen = Rcpp::wrap(L2_mat_norm_SBF(Yj, kde_1d_j, weights, Ymu, Yspace));
-    return rcpp_result_gen;
-END_RCPP
-}
 // AM_each
 List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double R, String penalty, double gamma, double phi, double eta, int max_iter, double threshold);
 RcppExport SEXP _HDRegMfd_AM_each(SEXP SBF_compSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambdaSEXP, SEXP RSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP etaSEXP, SEXP max_iterSEXP, SEXP thresholdSEXP) {
@@ -750,8 +719,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_HDRegMfd_L2_mat_inner_SBF", (DL_FUNC) &_HDRegMfd_L2_mat_inner_SBF, 6},
-    {"_HDRegMfd_L2_mat_norm_SBF", (DL_FUNC) &_HDRegMfd_L2_mat_norm_SBF, 5},
     {"_HDRegMfd_AM_each", (DL_FUNC) &_HDRegMfd_AM_each, 11},
     {"_HDRegMfd_get_loss_CV_AM_average", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM_average, 10},
     {"_HDRegMfd_get_loss_CV_AM_integral", (DL_FUNC) &_HDRegMfd_get_loss_CV_AM_integral, 10},
