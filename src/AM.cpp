@@ -167,7 +167,7 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     }
 
 
-    List result = List::create(Named("mhat") = mhat, Named("mhat.norm") = mhat_norm, Named("bandwidths") = bandwidths, 
+    List result = List::create(Named("mhat") = mhat_final, Named("mhat.norm") = mhat_norm, Named("bandwidths") = bandwidths,
         Named("A") = A, Named("B") = B, Named("iter") = iter, Named("grids") = grids, 
         Named("lambda") = lambda, Named("R") = R, Named("phi") = phi,
         Named("penalty") = penalty, Named("gamma") = gamma);
