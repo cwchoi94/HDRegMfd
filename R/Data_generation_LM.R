@@ -164,8 +164,6 @@ covariates.generate.each = function(Xi,mu,space='Euclid'){
 #' 
 #' @description
 #' Generate a list of manifold-valued covariates.
-#' If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is set to \eqn{D_j}.
-#' If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set to 100.
 #' 
 #' @param n the number of data points.
 #' @param Xspaces a \eqn{p} vector specifying the underlying spaces of \eqn{X_j}.

@@ -71,31 +71,54 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
          kde_1d_inv_list[j] = kde_1d_inv_j;
      }
 
+     // change the dimension of proj 
+     // (p1,p2,g1,g2,r1,r2) = (p1*p2*g1*g2, r1, r2)  ->  (p1*p2, g1*r1, g2*r2) cube
+     // also multiply weights so that we can compute the integral quickly
+     cube proj_new(p * p, g * r, g * r);
+     for (int j1 = 0; j1 < p; j1++) {
+         for (int j2 = 0; j2 < p; j2++) {
+
+             mat proj_jj2_new(g * r, g * r);
+             for (int k1 = 0; k1 < g; k1++) {
+                 for (int k2 = 0; k2 < g; k2++) {
+                     int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
+                     mat projg_jj2_kk2 = proj.row(single_ind); // (r1,r2) mat
+                     proj_jj2_new.submat(r * k1, r * k2, r * (k1 + 1) - 1, r * (k2 + 1) - 1) = weights[k2] * projg_jj2_kk2;
+                 }
+             }
+
+             int ind_new = p * j1 + j2;
+             proj_new.row(ind_new) = proj_jj2_new;
+         }
+     }
+
+
      // compute a tildem list
-     List tildem(p);
+     // p list - (g,r,m) -> (p,g*r,m) cube
+     cube tildem(p, g * r, m);
      for (int j = 0; j < p; j++) {
-         cube kvalues_all_j = kvalues_all[j]; // (g,,n,r) cube
+         cube kvalues_all_j = kvalues_all[j]; // (g,n,r) cube
          cube kde_1d_inv_j = kde_1d_inv_list[j];   // (g,r,r) cube
 
-         cube tildem_j(g, r, m);
+         mat tildem_j(g * r, m);
          for (int k = 0; k < g; k++) {
              mat kde_1d_inv_jk = kde_1d_inv_j.row(k);
              mat kvalues_all_jk = kvalues_all_j.row(k);
 
              if (degree == 0) {
-                 tildem_j.row(k) = kde_1d_inv_jk * kvalues_all_jk * LogY / n;
+                 tildem_j.rows(r * k, r * (k + 1) - 1) = kde_1d_inv_jk * kvalues_all_jk * LogY / n;
              }
              else if (degree > 0) {
-                 tildem_j.row(k) = kde_1d_inv_jk * kvalues_all_jk.t() * LogY / n;
+                 tildem_j.rows(r * k, r * (k + 1) - 1) = kde_1d_inv_jk * kvalues_all_jk.t() * LogY / n;
              }
 
          }
 
-         tildem[j] = tildem_j;
+         tildem.row(j) = tildem_j;
      }
 
-     return List::create(Named("tildem") = tildem, Named("kde.1d") = kde_1d_list, Named("proj") = proj, Named("bandwidths") = bandwidths,
-         Named("grids") = grids, Named("weights") = weights);
+     return List::create(Named("tildem") = tildem, Named("kde.1d") = kde_1d_list, Named("proj") = proj_new, Named("bandwidths") = bandwidths,
+         Named("grids") = grids, Named("weights") = weights, Named("r") = r);
  }
 
 
@@ -105,37 +128,40 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
 
      uvec col_indices_uvec = arma::find(index_mat.col(2) <= Xdim_max);
 
-     List tildem = SBF_comp["tildem"];
+     cube tildem = SBF_comp["tildem"];
      List kde_1d = SBF_comp["kde.1d"];
      cube proj = SBF_comp["proj"];
      vec bandwidths = SBF_comp["bandwidths"];
      vec grids = SBF_comp["grids"];
      vec weights = SBF_comp["weights"];
+     int r = SBF_comp["r"];
 
      int P = kde_1d.size();
      int p = col_indices_uvec.size();
      int g = weights.size();
-     int r = proj.n_cols;
+     int m = tildem.n_slices;
+
 
      vec bandwidths_reduced = bandwidths.elem(col_indices_uvec);
-     List tildem_reduced(p);
      List kde_1d_reduced(p);
-     cube proj_reduced(p * p * g * g, r, r);
+     cube tildem_reduced(p, g * r, m);
+     cube proj_reduced(p * p, g * r, g * r);
      for (int i = 0; i < p; i++) {
          int j = col_indices_uvec(i);
-         cube tildem_j = tildem[j];
-         cube kde_1d_j = kde_1d[j];
 
-         tildem_reduced[i] = tildem_j;
+         // kde_1d_j
+         cube kde_1d_j = kde_1d[j];
          kde_1d_reduced[i] = kde_1d_j;
 
+         // tildem_j
+         mat tildem_j = tildem.row(j);
+         tildem_reduced.row(i) = tildem_j;
+
+         // proj_jj2
          for (int i2 = 0; i2 < p; i2++) {
              int j2 = col_indices_uvec(i2);
-             IntegerVector ind_range = multi_2d_ind_to_single_range(j, j2, P, g);
-             IntegerVector ind_range_reduced = multi_2d_ind_to_single_range(i, i2, p, g);
-
-             cube proj_jj2 = proj.rows(ind_range(0), ind_range(1));
-             proj_reduced.rows(ind_range_reduced(0), ind_range_reduced(1)) = proj_jj2;
+             mat proj_jj2 = proj.row(P * j + j2);
+             proj_reduced.row(p * i + i2) = proj_jj2;
          }
      }
 

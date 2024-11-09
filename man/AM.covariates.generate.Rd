@@ -38,7 +38,5 @@ a list of data containing:
 }
 }
 \description{
-Generate a list of manifold-valued covariates.
-If the underlying space of \eqn{X_j} is finite-dimensional, the dimension of \eqn{X_j} is set to \eqn{D_j}.
-If the underlying space of \eqn{X_j} is inifite-dimensional, the dimension of \eqn{X_j} is set to 100.
+Generate a list of manifold-valued covariates for additive regression simulation.
 }

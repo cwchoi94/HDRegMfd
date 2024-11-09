@@ -89,7 +89,7 @@ IntegerVector multi_3d_ind_to_single_range(int j1, int j2, int k1, int p, int g)
 
 // [[Rcpp::export]]
 double numerical_integral_1d(arma::vec weights, arma::vec func) {
-    // grids, func: g vectors
+    // weights, func: g vectors
     // compute 'func' on 'grids'
 
     return arma::dot(weights, func);
@@ -99,7 +99,7 @@ double numerical_integral_1d(arma::vec weights, arma::vec func) {
 
 // [[Rcpp::export]]
 arma::mat numerical_integral_3d_to_2d(arma::vec weights, arma::cube func) {
-    // grids: g vector
+    // weights: g vector
     // func: (g,r,r') matrix
     // 
     // return:
@@ -121,7 +121,7 @@ arma::mat numerical_integral_3d_to_2d(arma::vec weights, arma::cube func) {
 
 // [[Rcpp::export]]
 arma::cube numerical_integral_3d(arma::vec weights, arma::cube func1, arma::cube func2) {
-    // grids: g2 vector
+    // weights: g2 vector
     // func1: (g1,g2,r1,r2) = (g1*g2,r1,r2) cube
     // func2: (g2,r2,r3) cube
     // 
@@ -152,6 +152,19 @@ arma::cube numerical_integral_3d(arma::vec weights, arma::cube func1, arma::cube
 
 
 
+
+// [[Rcpp::export]]
+arma::mat numerical_integral_2d(arma::mat func1, arma::mat func2) {
+    // func1: (g1*r1, g2*r2) mat
+    // func2: (g2*r2, p3) mat
+    // 
+    // return:
+    // - compute the integral: (g1*r1, p3) mat
+
+    mat integral = func1 * func2;
+
+    return integral;
+}
 
 
 
