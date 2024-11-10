@@ -14,6 +14,32 @@ using namespace arma;
 
 
 
+arma::mat Reduced_X_mat(arma::mat X, arma::mat index_mat, int Xdim_max) {
+    // find indices of (j,k) with k <= Xdim_max
+    uvec col_indices_uvec = arma::find(index_mat.col(2) <= Xdim_max);
+
+    // compute the reduced X with the above row_indices
+    mat X_reduced = X.cols(col_indices_uvec);
+
+    return X_reduced;
+}
+
+
+List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
+
+    int kfold = X_list.size();
+
+    List X_list_reduced(kfold);
+    for (int i = 0; i < kfold; i++) {
+        mat X = X_list[i];
+        mat X_reduced = Reduced_X_mat(X, index_mat, Xdim_max);
+        X_list_reduced[i] = X_reduced;
+    }
+
+    return X_list_reduced;
+}
+
+
 arma::cube sqrt_mat_cube(arma::cube x, double tol = 1e-8) {
     // x: (p,r,r) matrix
     // 
@@ -32,7 +58,6 @@ arma::cube sqrt_mat_cube(arma::cube x, double tol = 1e-8) {
 
     return y;
 }
-
 
 
 
