@@ -22,11 +22,11 @@ arma::cube clone_cube(const arma::cube& original) {
 }
 
 
-double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace) {
+double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_sq_j, arma::vec weights, arma::vec Ymu, String Yspace) {
     // Yj1, Yj2: (g*r,m) mats
 
-    int g = kde_1d_j.n_rows;
-    int r = kde_1d_j.n_slices;
+    int g = kde_1d_sq_j.n_rows;
+    int r = kde_1d_sq_j.n_slices;
     int m = Yj1.n_cols;
 
     double z = 0;
@@ -37,10 +37,11 @@ double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_j, arma:
             Y_jk1 = Y_jk1.t(); // (r,m) matrix
             Y_jk2 = Y_jk2.t(); // (r,m) matrix
         }
-        mat kde_1d_jk = kde_1d_j.row(k); // (r,r) matrix        
-        mat Y_jk1_ = kde_1d_jk * Y_jk1; // (r,m) matrix
+        mat kde_1d_sq_jk = kde_1d_sq_j.row(k); // (r,r) matrix        
+        mat Y_jk1_ = kde_1d_sq_jk * Y_jk1; // (r,m) matrix
+        mat Y_jk2_ = kde_1d_sq_jk * Y_jk2; // (r,m) matrix
 
-        vec z_k = inner(Y_jk1_, Y_jk2, Ymu, Yspace);
+        vec z_k = inner(Y_jk1_, Y_jk2_, Ymu, Yspace);
 
         z += weights[k] * sum(z_k);
     }
@@ -49,8 +50,8 @@ double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_j, arma:
 }
 
 
-double L2_mat_norm_SBF(arma::mat Yj, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace) {
-    double z = L2_mat_inner_SBF(Yj, Yj, kde_1d_j, weights, Ymu, Yspace);
+double L2_mat_norm_SBF(arma::mat Yj, arma::cube kde_1d_sq_j, arma::vec weights, arma::vec Ymu, String Yspace) {
+    double z = L2_mat_inner_SBF(Yj, Yj, kde_1d_sq_j, weights, Ymu, Yspace);
     return sqrt(z);
 }
 
@@ -67,17 +68,17 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
 
     // p = the number of (j,k) with k <= Xdim_max
     // tildem: (p, g*r, m) cube
-    // kde_1d: p list - (g,r,r) cube
+    // kde_1d_sq: p list - (g,r,r) cube
     // proj: (p1,p2,g1,g2,r1,r2) = (p1*p2, g1*r1, g2*r2) cubes, with the identification of indices using functions in SBF_comp
 
     cube tildem = SBF_comp["tildem"];
-    List kde_1d = SBF_comp["kde.1d"];
+    List kde_1d_sq = SBF_comp["kde.1d.sq"];
     cube proj = SBF_comp["proj"];
     vec bandwidths = SBF_comp["bandwidths"];
     vec grids = SBF_comp["grids"];
     vec weights = SBF_comp["weights"];
 
-    int p = kde_1d.size();
+    int p = kde_1d_sq.size();
     int g = weights.size();
     int r = SBF_comp["r"];
     int m = tildem.n_slices;
@@ -102,7 +103,7 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
         // mhat update
         for (int j = 0; j < p; j++) {
             mat tmp_hatmj(g * r, m, fill::zeros);
-            cube kde_1d_j = kde_1d[j];
+            cube kde_1d_sq_j = kde_1d_sq[j];
 
             for (int j2 = 0; j2 < p; j2++) {
                 mat proj_jj2 = proj.row(p * j + j2);
@@ -119,18 +120,18 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
             }
 
             // compute components
-            double norm_hatmj = L2_mat_norm_SBF(tmp_hatmj, kde_1d_j, weights, Ymu, Yspace);
+            double norm_hatmj = L2_mat_norm_SBF(tmp_hatmj, kde_1d_sq_j, weights, Ymu, Yspace);
             double nuj = B + eta * (sum(mhat_norm) - mhat_norm(j) + A - R);
 
             // mhat_j update
             mat mhat_j = mhat.row(j);
             mhat_j = hatmj_update(tmp_hatmj, sigma, norm_hatmj, penalty, lambda, nuj, gamma, mhat_j, mhat_norm(j));
             mhat.row(j) = mhat_j;
-            mhat_norm(j) = L2_mat_norm_SBF(mhat_j, kde_1d_j, weights, Ymu, Yspace);
+            mhat_norm(j) = L2_mat_norm_SBF(mhat_j, kde_1d_sq_j, weights, Ymu, Yspace);
 
             // compute the L2 norm between mhat_j and mhat_j_old
             mat mhat_j_old = mhat_old.row(j);
-            double residual_j = L2_mat_norm_SBF(mhat_j - mhat_j_old, kde_1d_j, weights, Ymu, Yspace);
+            double residual_j = L2_mat_norm_SBF(mhat_j - mhat_j_old, kde_1d_sq_j, weights, Ymu, Yspace);
             residual += residual_j;
         }
 
@@ -231,66 +232,6 @@ arma::mat predict_AM(List object, arma::mat Xnew) {
 
 
 //////////////////////////////////////////////////////////
-///////////////// cross validation utils
-
-
-double L2_mat_inner_SBF_cube(arma::cube Yj1, arma::cube Yj2, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace) {
-    // Yj1, Yj2: (g,r,m) cubes
-
-    int g = kde_1d_j.n_rows;
-    int m = Yj1.n_slices;
-
-    double z = 0;
-    for (int k = 0; k < g; k++) {
-        mat Y_jk1 = Yj1.row(k);
-        mat Y_jk2 = Yj2.row(k);
-        if (m == 1) {
-            Y_jk1 = Y_jk1.t(); // (r,m) matrix
-            Y_jk2 = Y_jk2.t(); // (r,m) matrix
-        }
-        mat kde_1d_jk = kde_1d_j.row(k); // (r,r) matrix        
-        mat Y_jk1_ = kde_1d_jk * Y_jk1; // (r,m) matrix
-
-        vec z_k = inner(Y_jk1_, Y_jk2, Ymu, Yspace);
-
-        z += weights[k] * sum(z_k);
-    }
-
-    return z;
-}
-
-
-
-double L2_mat_inner_SBF_cube_mat(arma::cube Yj1, arma::mat Yj2, arma::cube kde_1d_j, arma::vec weights, arma::vec Ymu, String Yspace) {
-    // Yj1: (g,r,m) cube
-    // Yj2: (g*r,m) mat
-
-    int g = kde_1d_j.n_rows;
-    int r = kde_1d_j.n_slices;
-    int m = Yj1.n_slices;
-
-    double z = 0;
-    for (int k = 0; k < g; k++) {
-        mat Y_jk1 = Yj1.row(k);
-        mat Y_jk2 = Yj2.rows(r * k, r * (k + 1) - 1);
-        if (m == 1) {
-            Y_jk1 = Y_jk1.t(); // (r,m) matrix
-            Y_jk2 = Y_jk2.t(); // (r,m) matrix
-        }
-        mat kde_1d_jk = kde_1d_j.row(k); // (r,r) matrix        
-        mat Y_jk1_ = kde_1d_jk * Y_jk1; // (r,m) matrix
-
-        vec z_k = inner(Y_jk1_, Y_jk2, Ymu, Yspace);
-
-        z += weights[k] * sum(z_k);
-    }
-
-    return z;
-}
-
-
-
-//////////////////////////////////////////////////////////
 ///////////////// cross validation 
 
 
@@ -342,7 +283,7 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
     // kde_1d: p list - (g,r,r) cube
     // proj: (p1,p2,g1,g2,r1,r2) = (p1*p2, g1*r1, g2*r2) cubes, with the identification of indices using functions in SBF_comp
     cube tildem = SBF_comp["tildem"];
-    List kde_1d = SBF_comp["kde.1d"];
+    List kde_1d_sq = SBF_comp["kde.1d.sq"];
     cube proj = SBF_comp["proj"];
     vec weights = SBF_comp["weights"];
 
@@ -357,10 +298,10 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
     double loss = 0;
     for (int j = 0; j < p; j++) {
         mat mhat_j = mhat.row(j); // (g*r, m) mat
-        cube kde_1d_j = kde_1d[j]; // (g,r,r) cube
+        cube kde_1d_sq_j = kde_1d_sq[j]; // (g,r,r) cube
 
         // the square norms of hatm_j
-        loss += L2_mat_inner_SBF(mhat_j, mhat_j, kde_1d_j, weights, Ymu, Yspace) / 2;
+        loss += L2_mat_inner_SBF(mhat_j, mhat_j, kde_1d_sq_j, weights, Ymu, Yspace) / 2;
         
         // the inner products of hatm_j and hatm_j2 for j!=j2
         for (int j2 = j + 1; j2 < p; j2++) {
@@ -369,12 +310,12 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
             mat proj_jj2 = proj.row(p * j + j2);
             mat tmp_mhat_jj2 = numerical_integral_2d(proj_jj2, mhat_j2);
             
-            loss += L2_mat_inner_SBF(mhat_j, tmp_mhat_jj2, kde_1d_j, weights, Ymu, Yspace);            
+            loss += L2_mat_inner_SBF(mhat_j, tmp_mhat_jj2, kde_1d_sq_j, weights, Ymu, Yspace);
         }
         
         // the inner products of hatm_j and tildem_j
         mat tildem_j = tildem.row(j);
-        loss -= L2_mat_inner_SBF(mhat_j, tildem_j, kde_1d_j, weights, Ymu, Yspace);        
+        loss -= L2_mat_inner_SBF(mhat_j, tildem_j, kde_1d_sq_j, weights, Ymu, Yspace);
     }
 
     // the average square norm of LogY

@@ -14,29 +14,23 @@ using namespace arma;
 
 
 
-arma::mat Reduced_X_mat(arma::mat X, arma::mat index_mat, int Xdim_max) {
-    // find indices of (j,k) with k <= Xdim_max
-    uvec col_indices_uvec = arma::find(index_mat.col(2) <= Xdim_max);
+arma::cube sqrt_mat_cube(arma::cube x, double tol = 1e-8) {
+    // x: (p,r,r) matrix
+    // 
+    // return matrix-wise inverse, i.e., y[i] = inv(x[i]) for 1<=i<=p
+    // y: (p,r,r) matrix
 
-    // compute the reduced X with the above row_indices
-    mat X_reduced = X.cols(col_indices_uvec);
+    int p = x.n_rows;
+    int r = x.n_cols;
+    mat tol_mat = tol * arma::eye(r, r);
 
-    return X_reduced;
-}
-
-
-List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
-
-    int kfold = X_list.size();
-
-    List X_list_reduced(kfold);
-    for (int i = 0; i < kfold; i++) {
-        mat X = X_list[i];
-        mat X_reduced = Reduced_X_mat(X, index_mat, Xdim_max);
-        X_list_reduced[i] = X_reduced;
+    cube y(p, r, r);
+    for (int i = 0; i < p; i++) {
+        mat xi = x.row(i);
+        y.row(i) = arma::sqrtmat_sympd(xi + tol_mat);
     }
 
-    return X_list_reduced;
+    return y;
 }
 
 
@@ -61,13 +55,18 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
 
      // make kde_1d and kde_1d_inv lists
      List kde_1d_list(p);
+     List kde_1d_sq_list(p);
      List kde_1d_inv_list(p);
      for (int j = 0; j < p; j++) {
          int ind1 = g * j;
          int ind2 = g * (j + 1) - 1;
+
          cube kde_1d_j = kde_1d.rows(ind1, ind2);
+         cube kde_1d_sq_j = sqrt_mat_cube(kde_1d_j);
          cube kde_1d_inv_j = kde_1d_inv.rows(ind1, ind2);
+
          kde_1d_list[j] = kde_1d_j;
+         kde_1d_sq_list[j] = kde_1d_sq_j;
          kde_1d_inv_list[j] = kde_1d_inv_j;
      }
 
@@ -117,7 +116,8 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
          tildem.row(j) = tildem_j;
      }
 
-     return List::create(Named("tildem") = tildem, Named("kde.1d") = kde_1d_list, Named("proj") = proj_new, Named("bandwidths") = bandwidths,
+     return List::create(Named("kde.1d") = kde_1d_list, Named("kde.1d.sq") = kde_1d_sq_list, 
+         Named("tildem") = tildem, Named("proj") = proj_new, Named("bandwidths") = bandwidths,
          Named("grids") = grids, Named("weights") = weights, Named("r") = r);
  }
 
@@ -129,6 +129,7 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
      uvec col_indices_uvec = arma::find(index_mat.col(2) <= Xdim_max);
 
      List kde_1d = SBF_comp["kde.1d"];
+     List kde_1d_sq = SBF_comp["kde.1d.sq"];
      cube tildem = SBF_comp["tildem"];
      cube proj = SBF_comp["proj"];
      vec bandwidths = SBF_comp["bandwidths"];
@@ -144,6 +145,7 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
 
      vec bandwidths_reduced = bandwidths.elem(col_indices_uvec);
      List kde_1d_reduced(p);
+     List kde_1d_sq_reduced(p);
      cube tildem_reduced(p, g * r, m);
      cube proj_reduced(p * p, g * r, g * r);
      for (int i = 0; i < p; i++) {
@@ -151,7 +153,10 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
 
          // kde_1d_j
          cube kde_1d_j = kde_1d[j];
+         cube kde_1d_sq_j = kde_1d_sq[j];
+
          kde_1d_reduced[i] = kde_1d_j;
+         kde_1d_sq_reduced[i] = kde_1d_j;
 
          // tildem_j
          mat tildem_j = tildem.row(j);
@@ -165,6 +170,7 @@ List Reduced_X_list(List X_list, arma::mat index_mat, int Xdim_max) {
          }
      }
 
-     return List::create(Named("tildem") = tildem_reduced, Named("kde.1d") = kde_1d_reduced, Named("proj") = proj_reduced, Named("bandwidths") = bandwidths_reduced,
+     return List::create(Named("kde.1d") = kde_1d_reduced, Named("kde.1d.sq") = kde_1d_sq_reduced, 
+         Named("tildem") = tildem_reduced, Named("proj") = proj_reduced, Named("bandwidths") = bandwidths_reduced,
          Named("grids") = grids, Named("weights") = weights, Named("r") = r);
  }
