@@ -7,20 +7,21 @@ mX.functional = function(j,x,t){
   if (i==1){
     z = exp(-sin(2*pi*x)*t) * (abs(x-1/2) * t**2 + 2*sqrt(t))
   }else if (i==2){
-    z = log(2*abs(x-1/2)**3+1) * exp(-sqrt(t))
+    z = (abs(x-1/2)**2+1) * exp(-t)
   }else if (i==3){
-    z = 2*cos(2*pi*x)*(t**3+2*t)
+    z = cos(2*pi*x) * t**2
   }else if (i==4){
-    z = log(1+x**2 + t**2)
+    z = (x+t**3-2)**2 
   }else if (i==5){
-    z = sqrt(1+x**3-exp(-2*t))
-  }else if (i==6){
     z = 2*(x-t**2)/(3-exp(x*t))
+  }else if (i==6){
+    z = log(1+x**2 + t**2)
   }else if (i==7){
     z = exp(-2*x-t)
   }else if (i==8){
     z = sin(2*pi*(x**2+1)*t)
   }else if (i==9){
+    z = log(2*abs(x-1/2)**3+1) * exp(-sqrt(t))
     z = (x+t**3-2)**2 / 3
   }else if (i==0){
     z = exp(-x)*cos(2*pi*(x+t))
@@ -46,21 +47,21 @@ mX.basis = function(j,k,x){
   k = min(k,k.max)
   i = j %% 10
   if (i==1){
-    z = exp(-k*x**2)
+    z = exp(-k**2*x**2)
   }else if (i==2){
-    z = exp(-k/3) * sin(4*pi*(x-k/2))
+    z = (2-k) * sin(4*pi*x)
   }else if (i==3){
-    z = exp(-k/3) * sin(2*pi*k*x)
+    z = (1 + k * abs(x-1/2))
   }else if (i==4){
-    z = (k-1.5)**2/((1+k)**2) * log(1+ k +3*x)
+    z = exp(-k*x/6) * (1+x**2)
   }else if (i==5){
-    z = sin(2*pi*(k-3/2)*(x**2+1))
+    z = k*x**3 / (1 + x**2 + k**2)
   }else if (i==6){
-    z = (1+(x+k/2)**2) / (3+(x+k)**2)
+    z = log(1+x**2) * cos(2*pi*k*x)
   }else if (i==7){
-    z = 2*k*x**3 / (2 + x**2 + k**2)
+    z = (1+(x+k/2)**2) / (3+(x+k)**2)
   }else if (i==8){
-    z = exp(-k/k.max) * (x-k/k.max)**3
+    z = exp(-k) * (x-k)**3
   }else if (i==9){
     z = (2-cos(2*pi*x)**3) / (1+sqrt(k))
   }else if (i==0){
@@ -104,13 +105,20 @@ add.mean.generate.each = function(j,Xi.each,Yspace,Ymu,Ydim=1){
   
   if (Yspace %in% c('functional','BayesHilbert','Wasserstein')){
     t.all = seq(0,1,length.out=length(Ymu))
-    add.mean = sapply(t.all,function(t){mX.functional(j,Xi.each,t)})
+    add.mean = sapply(t.all,function(t){mX.functional2(j,Xi.each,t)})
     if (Yspace=='BayesHilbert'){
       add.mean = clr(inv.clr.BayesHilbert(add.mean))
     }
+  }else if (Yspace %in% c('SPD.LogEuclid','SPD.AffInv')){
+    Ybasis = basis.manifold(Ymu,Ydim,Yspace)
+    m = sqrt(Ydim)
+    basis.const = do.call(c,sapply(1:m,function(j){seq(0,m-j)})) / m
+    
+    add.mean.tmp = sapply(1:length(basis.const),function(l){mX.basis2(j,basis.const[l],Xi.each)})
+    add.mean = add.mean.tmp %*% Ybasis
   }else{
     Ybasis = basis.manifold(Ymu,Ydim,Yspace)
-    add.mean.tmp = sapply(1:nrow(Ybasis),function(l){mX.basis(j,l,Xi.each) * b.ftn(1,l)}) # see 'b.ftn' in Data_generation_LM.R
+    add.mean.tmp = sapply(1:nrow(Ybasis),function(l){mX.basis2(j,l,Xi.each) * c.ftn(l)})
     add.mean = add.mean.tmp %*% Ybasis
   }
   return(add.mean)
