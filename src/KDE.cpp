@@ -68,45 +68,6 @@ arma::cube transpose_cube(arma::cube x) {
 
 
 
-
-arma::mat compute_rot_mat(arma::vec x, arma::vec y) {
-
-    double c = 0;
-    int p = x.n_elem;
-    mat R(p, p);
-
-    if (norm(x, 2) != 0) {
-        c = norm(y, 2) / norm(x, 2);
-
-        if (p > 1) {
-            // Normalize x and y
-            x /= norm(x, 2);
-            y /= norm(y, 2);
-
-            // Compute cos(theta) and sin(theta)
-            double cos_theta = dot(x, y);
-            double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
-
-            // Calculate u as a unit vector orthogonal to x in the direction of y
-            vec u = y - cos_theta * x;
-            u /= norm(u, 2);
-
-            // Define the rotation matrix
-            R = arma::eye(p, p) - x * x.t() - u * u.t();
-            mat rotation_sub = { {cos_theta, -sin_theta}, {sin_theta, cos_theta} };
-            R += join_horiz(x, u) * rotation_sub * join_horiz(x, u).t();
-        }
-        else {
-            R = arma::eye(p, p);
-        }
-    }
-
-    return c * R;
-}
-
-
-
-
 // kernel functions
 
 double K0(double x) {
@@ -216,14 +177,10 @@ double Kh_denom_exact(double v, double h) {
 
  // [[Rcpp::export]]
  List KDE_(arma::mat X, arma::vec bandwidths, arma::vec grids, arma::vec weights, int degree, String Kdenom_method, bool is_proj) {
-     
-     int n = X.n_rows;
+
      int p = X.n_cols;
      int g = grids.size();
      int r = degree + 1;
-
-     vec unit_vec(r);
-     unit_vec(0) = 1;
 
      // compute normalized kernel values and vectorized components: p list - (g,n,r) cube
      List object = normalized_Kernel(X, bandwidths, grids, weights, degree, Kdenom_method);
@@ -286,7 +243,7 @@ double Kh_denom_exact(double v, double h) {
                  cube kde_2d_tmp = kde_2d.rows(ind_range_inv(0), ind_range_inv(1));
                  kde_2d.rows(ind_range(0), ind_range(1)) = transpose_cube(kde_2d_tmp);
              }
-             if (j1 == j2) {
+             else if (j1 == j2) {
                  continue;
              }
              else if (j1 < j2) {
@@ -294,14 +251,14 @@ double Kh_denom_exact(double v, double h) {
                      for (int k2 = 0; k2 < g; k2++) {
                          mat kvalues_all_jk1 = kvalues_all_j1.row(k1); // (n,r1) matrix
                          mat kvalues_all_jk2 = kvalues_all_j2.row(k2); // (n,r2) matrix
-                         
+
                          // don't have to divide by n
                          int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
                          if (degree == 0) {
-                             kde_2d.row(single_ind) = kvalues_all_jk1 * kvalues_all_jk2.t() / n;
+                             kde_2d.row(single_ind) = kvalues_all_jk1 * kvalues_all_jk2.t();
                          }
                          else if (degree > 0) {
-                             kde_2d.row(single_ind) = kvalues_all_jk1.t() * kvalues_all_jk2 / n;
+                             kde_2d.row(single_ind) = kvalues_all_jk1.t() * kvalues_all_jk2;
                          }
                      }
                  }
@@ -310,41 +267,28 @@ double Kh_denom_exact(double v, double h) {
 
              // adjust constants so that  numerical_integral_3d_to_2d to satisfy: integral of kde_1d_j_inv * kde_2djj2 * u_0 = u_0
              for (int k1 = 0; k1 < g; k1++) {
-                 mat kde_1d_jk = kde_1d.row(j1 * g + k1); // (r1,r1) matrix
                  mat kde_1d_jk_inv = kde_1d_inv.row(j1 * g + k1); // (r1,r1) matrix
                  IntegerVector ind_range = multi_3d_ind_to_single_range(j1, j2, k1, p, g);
                  cube kde_2d_jj2_k = kde_2d.rows(ind_range(0), ind_range(1)); // (g2,r1,r2) cube
 
-                 // compute a rotation matrx for kde_2d
-                 mat denom_mat_2d = numerical_integral_3d_to_2d(weights, kde_2d_jj2_k); // (r1,r2) matrix
-                 denom_mat_2d = kde_1d_jk_inv * denom_mat_2d; // (r1,r2) matrix
-                 mat rot_mat_2d = compute_rot_mat(denom_mat_2d.col(0), unit_vec);
+                 mat denom_mat = numerical_integral_3d_to_2d(weights, kde_2d_jj2_k); // (r1,r2) matrix
+                 denom_mat = kde_1d_jk_inv * denom_mat; // (r1,r2) matrix
+                 double denom = denom_mat(0, 0);
+
+                 if (denom < 1e-8) {
+                     kde_2d_jj2_k *= 0; // set to zero
+                 }
+                 else {
+                     kde_2d_jj2_k /= denom;
+                 }
+
+                 kde_2d.rows(ind_range(0), ind_range(1)) = kde_2d_jj2_k;
 
                  for (int k2 = 0; k2 < g; k2++) {
                      int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
                      mat kde_2d_jj2_kk2 = kde_2d.row(single_ind);
-                     kde_2d_jj2_kk2 = rot_mat_2d * kde_2d_jj2_kk2;
-
-                     kde_2d.row(single_ind) = kde_2d_jj2_kk2;
-                     proj.row(single_ind) = kde_1d_jk_inv * kde_2d_jj2_kk2;
+                     proj.row(single_ind) = kde_1d_jk_inv * kde_2d_jj2_kk2; 
                  }
-
-                 if (is_proj) {
-                     cube proj_jj2_k = proj.rows(ind_range(0), ind_range(1));
-
-                     // compute a rotation matrx for kde_2d
-                     mat denom_mat_proj = numerical_integral_3d_to_2d(weights, proj_jj2_k); // (r1,r2) matrix
-                     mat rot_mat_proj = compute_rot_mat(denom_mat_proj.col(0), unit_vec);
-
-                     for (int k2 = 0; k2 < g; k2++) {
-                         int single_ind = multi_4d_ind_to_single(j1, j2, k1, k2, p, g);
-                         mat proj_jj2_kk2 = proj.row(single_ind);
-
-                         proj.row(single_ind) = rot_mat_proj * proj_jj2_kk2;
-                     }
-
-                 }
-
              }
          }
      }
