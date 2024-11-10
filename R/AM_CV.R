@@ -36,7 +36,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=c(100),bandwidths.list=NULL,
+AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,bandwidths.list=NULL,
                  max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,loss.type='integral',SBF.comp=NULL){
   
   start.time = Sys.time()
@@ -76,7 +76,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   pca = PCA.manifold.list(Xorg)
   X_ = predict(pca,Xorg)
   
-  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X_,ncol)))}
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(min(max(sapply(X_,ncol)),ceiling(n**(1/3))))}
   Xdim.max.max = max(Xdim.max.list)
   X = reduce.dimension(X_,Xdim.max.max)
   Xdims = sapply(X,ncol)

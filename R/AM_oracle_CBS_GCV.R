@@ -76,7 +76,7 @@ AM.CBS.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.ind.mat=NULL,degre
   X_ = predict(pca,Xorg)
   Xnew_ = predict(pca,Xorgnew)
   
-  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X_,ncol)))}
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(min(max(sapply(X_,ncol)),ceiling(n**(1/3))))}
   Xdim.max.max = max(Xdim.max.list)
   X = reduce.dimension(X_,Xdim.max.max)
   Xnew = reduce.dimension(Xnew_,Xdim.max.max)

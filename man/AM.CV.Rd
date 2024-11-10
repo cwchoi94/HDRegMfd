@@ -14,7 +14,7 @@ AM.CV(
   gamma = 0,
   lambda.list = NULL,
   Xdim.max.list = NULL,
-  R.list = c(100),
+  R.list = NULL,
   bandwidths.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-06,

@@ -76,7 +76,7 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   ## compute Xdim.max.max
   pca = PCA.manifold.list(Xall)
   X_ = predict(pca,Xall)
-  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X_,ncol)))}
+  if(is.null(Xdim.max.list)){Xdim.max.list = c(min(max(sapply(X_,ncol)),ceiling(n**(1/3))))}
   Xdim.max.max = max(Xdim.max.list)
   
   # data split and preprocessing

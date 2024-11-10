@@ -187,6 +187,21 @@ SBF.preprocessing = function(X,LogY,bandwidths,degree=0,ngrid=51,Kdenom_method='
 }
 
 
+SBF.preprocessing2 = function(X,LogY,bandwidths,degree=0,ngrid=51,Kdenom_method='numeric'){
+  
+  if (ngrid<=1){ngrid = 2}
+  grids = seq(0,1,length.out=ngrid)
+  
+  weights = rep(1/(ngrid-1),ngrid)
+  weights[1] <- weights[ngrid] <- 1/(2*(ngrid-1))
+  
+  SBF.comp = SBF_preprocessing2(X,LogY,bandwidths,grids,weights,degree,Kdenom_method)
+  class(SBF.comp) = 'SBF.comp'
+  
+  return(SBF.comp)
+}
+
+
 
 
 
