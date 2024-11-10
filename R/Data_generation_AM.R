@@ -21,7 +21,6 @@ mX.functional = function(j,x,t){
   }else if (i==8){
     z = sin(2*pi*(x**2+1)*t)
   }else if (i==9){
-    z = log(2*abs(x-1/2)**3+1) * exp(-sqrt(t))
     z = (x+t**3-2)**2 / 3
   }else if (i==0){
     z = exp(-x)*cos(2*pi*(x+t))
@@ -105,7 +104,7 @@ add.mean.generate.each = function(j,Xi.each,Yspace,Ymu,Ydim=1){
   
   if (Yspace %in% c('functional','BayesHilbert','Wasserstein')){
     t.all = seq(0,1,length.out=length(Ymu))
-    add.mean = sapply(t.all,function(t){mX.functional2(j,Xi.each,t)})
+    add.mean = sapply(t.all,function(t){mX.functional(j,Xi.each,t)})
     if (Yspace=='BayesHilbert'){
       add.mean = clr(inv.clr.BayesHilbert(add.mean))
     }
@@ -114,11 +113,11 @@ add.mean.generate.each = function(j,Xi.each,Yspace,Ymu,Ydim=1){
     m = sqrt(Ydim)
     basis.const = do.call(c,sapply(1:m,function(j){seq(0,m-j)})) / m
     
-    add.mean.tmp = sapply(1:length(basis.const),function(l){mX.basis2(j,basis.const[l],Xi.each)})
+    add.mean.tmp = sapply(1:length(basis.const),function(l){mX.basis(j,basis.const[l],Xi.each)})
     add.mean = add.mean.tmp %*% Ybasis
   }else{
     Ybasis = basis.manifold(Ymu,Ydim,Yspace)
-    add.mean.tmp = sapply(1:nrow(Ybasis),function(l){mX.basis2(j,l,Xi.each) * c.ftn(l)})
+    add.mean.tmp = sapply(1:nrow(Ybasis),function(l){mX.basis(j,l,Xi.each) * c.ftn(l)})
     add.mean = add.mean.tmp %*% Ybasis
   }
   return(add.mean)
