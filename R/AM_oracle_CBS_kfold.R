@@ -35,7 +35,7 @@
 #' }
 #' @export
 AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.01,h.count=10,kfold=5,seed=NULL,penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
-                        max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6){
+                        max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6){
   
   start.time = Sys.time()
   
@@ -76,7 +76,20 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   ## compute Xdim.max.max
   pca = PCA.manifold.list(Xall)
   X_ = predict(pca,Xall)
-  if(is.null(Xdim.max.list)){Xdim.max.list = c(min(max(sapply(X_,ncol)),ceiling(n**(1/3))))}
+  if(is.null(Xdim.max.list)){
+    tmp.indices = sapply(1:p,function(j){
+      alpha.Xdim.max = 0.025
+      values = pca[[j]]$values
+      indices = which(values/sum(values) < alpha.Xdim.max)
+      if (length(indices)>1){
+        ind = indices[1]
+      }else{
+        ind = length(values)
+      }
+      return(ind)
+    })
+    Xdim.max.list = c(max(tmp.indices))
+  }
   Xdim.max.max = max(Xdim.max.list)
   
   # data split and preprocessing

@@ -12,7 +12,7 @@ AM.oracle(
   degree = 0,
   bandwidths.list = NULL,
   transform = "Gaussian",
-  normalize = FALSE,
+  normalize = TRUE,
   ngrid = 51,
   Kdenom_method = "numeric",
   phi = 1,

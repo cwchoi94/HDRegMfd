@@ -14,6 +14,7 @@
 #' @param R.list a vector of \eqn{\ell^1}-type constrained bounds, multiplied by \eqn{\hat\sigma_Y} (default: c(100)).
 #' @param max.cv.iter a maximum number of CV iterations (default: 20).
 #' @param cv.threshold a convergence threshold for the CV (default: 1e-6).
+#' @param alpha.Xdim.max a constant for rule-of-thumbs \code{Xdim.max} selection.
 #' @param loss.type the type of loss function. Options are 'average' or 'integral' (default).
 #'
 #' @return a \code{AM} object with the following compnents:
@@ -37,7 +38,8 @@
 #' }
 #' @export
 AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,bandwidths.list=NULL,
-                 max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,loss.type='integral',SBF.comp=NULL){
+                 max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',
+                 phi=1,eta=1e-3,max.iter=200,threshold=1e-6,loss.type='integral',SBF.comp=NULL){
   
   start.time = Sys.time()
   
@@ -76,7 +78,19 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   pca = PCA.manifold.list(Xorg)
   X_ = predict(pca,Xorg)
   
-  if(is.null(Xdim.max.list)){Xdim.max.list = c(min(max(sapply(X_,ncol)),ceiling(n**(1/3))))}
+  if(is.null(Xdim.max.list)){
+    tmp.indices = sapply(1:p,function(j){
+      values = pca[[j]]$values
+      indices = which(values/sum(values) < alpha.Xdim.max)
+      if (length(indices)>1){
+        ind = indices[1]
+      }else{
+        ind = length(values)
+      }
+      return(ind)
+    })
+    Xdim.max.list = c(max(tmp.indices))
+  }
   Xdim.max.max = max(Xdim.max.list)
   X = reduce.dimension(X_,Xdim.max.max)
   Xdims = sapply(X,ncol)

@@ -37,7 +37,7 @@
 #' }
 #' @export
 AM = function(Xorg,Yorg,Yspace,degree=0,penalty='LASSO',gamma=0,lambda=0.1,Xdim.max=100,R=100,bandwidths.list=NULL,
-              transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,SBF.comp=NULL){
+              transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,SBF.comp=NULL){
   
   start.time = Sys.time()
   

@@ -22,7 +22,7 @@ AM.CBS.kfold(
   max.cv.iter = 20,
   cv.threshold = 1e-06,
   transform = "Gaussian",
-  normalize = FALSE,
+  normalize = TRUE,
   ngrid = 51,
   Kdenom_method = "numeric",
   phi = 1,

@@ -187,22 +187,6 @@ SBF.preprocessing = function(X,LogY,bandwidths,degree=0,ngrid=51,Kdenom_method='
 }
 
 
-SBF.preprocessing2 = function(X,LogY,bandwidths,degree=0,ngrid=51,Kdenom_method='numeric'){
-  
-  if (ngrid<=1){ngrid = 2}
-  grids = seq(0,1,length.out=ngrid)
-  
-  weights = rep(1/(ngrid-1),ngrid)
-  weights[1] <- weights[ngrid] <- 1/(2*(ngrid-1))
-  
-  SBF.comp = SBF_preprocessing2(X,LogY,bandwidths,grids,weights,degree,Kdenom_method)
-  class(SBF.comp) = 'SBF.comp'
-  
-  return(SBF.comp)
-}
-
-
-
 
 
 
@@ -212,7 +196,7 @@ SBF.preprocessing2 = function(X,LogY,bandwidths,degree=0,ngrid=51,Kdenom_method=
 
 
 # for fast computation in simulation
-compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric'){
+compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,alpha.Xdim.max=0.025,transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric'){
   
   start.time = Sys.time()
   
@@ -236,7 +220,19 @@ compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,transfo
   pca = PCA.manifold.list(Xorg)
   X_ = predict(pca,Xorg)
   
-  if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X_,ncol)))}
+  if(is.null(Xdim.max.list)){
+    tmp.indices = sapply(1:p,function(j){
+      values = pca[[j]]$values
+      indices = which(values/sum(values) < alpha.Xdim.max)
+      if (length(indices)>1){
+        ind = indices[1]
+      }else{
+        ind = length(values)
+      }
+      return(ind)
+    })
+    Xdim.max.list = c(max(tmp.indices))
+  }
   Xdim.max.max = max(Xdim.max.list)
   X = reduce.dimension(X_,Xdim.max.max)
   Xdims = sapply(X,ncol)

@@ -16,7 +16,7 @@ AM(
   R = 100,
   bandwidths.list = NULL,
   transform = "Gaussian",
-  normalize = FALSE,
+  normalize = TRUE,
   ngrid = 51,
   Kdenom_method = "numeric",
   phi = 1,

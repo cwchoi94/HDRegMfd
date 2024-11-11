@@ -30,7 +30,7 @@
 #' }
 #' @export
 AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.list=NULL,
-                     transform='Gaussian',normalize=FALSE,ngrid=51,Kdenom_method='numeric',phi=1,max.iter=200,threshold=1e-6,SBF.comp=NULL){
+                     transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',phi=1,max.iter=200,threshold=1e-6,SBF.comp=NULL){
   
   start.time = Sys.time()
   
