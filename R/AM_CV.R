@@ -14,7 +14,7 @@
 #' @param R.list a vector of \eqn{\ell^1}-type constrained bounds, multiplied by \eqn{\hat\sigma_Y} (default: c(100)).
 #' @param max.cv.iter a maximum number of CV iterations (default: 20).
 #' @param cv.threshold a convergence threshold for the CV (default: 1e-6).
-#' @param alpha.Xdim.max a constant for rule-of-thumbs \code{Xdim.max} selection.
+#' @param alpha.Xdim.max a constant for rule-of-thumbs \code{Xdim.max} selection, only used when \code{Xdim.max.list=NULL}.
 #' @param loss.type the type of loss function. Options are 'average' or 'integral' (default).
 #'
 #' @return a \code{AM} object with the following compnents:
@@ -81,9 +81,9 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   if(is.null(Xdim.max.list)){
     tmp.indices = sapply(1:p,function(j){
       values = pca[[j]]$values
-      indices = which(values/sum(values) < alpha.Xdim.max)
-      if (length(indices)>1){
-        ind = indices[1]
+      indices = which(values/sum(values) >= alpha.Xdim.max)
+      if (length(indices)>=1){
+        ind = length(indices)
       }else{
         ind = length(values)
       }

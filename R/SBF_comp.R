@@ -223,9 +223,9 @@ compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,alpha.X
   if(is.null(Xdim.max.list)){
     tmp.indices = sapply(1:p,function(j){
       values = pca[[j]]$values
-      indices = which(values/sum(values) < alpha.Xdim.max)
-      if (length(indices)>1){
-        ind = indices[1]
+      indices = which(values/sum(values) >= alpha.Xdim.max)
+      if (length(indices)>=1){
+        ind = length(indices)
       }else{
         ind = length(values)
       }

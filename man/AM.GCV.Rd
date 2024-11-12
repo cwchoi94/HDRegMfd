@@ -59,7 +59,7 @@ AM.GCV(
 
 \item{cv.threshold}{a convergence threshold for the CV (default: 1e-6).}
 
-\item{alpha.Xdim.max}{a constant for rule-of-thumbs \code{Xdim.max} selection.}
+\item{alpha.Xdim.max}{a constant for rule-of-thumbs \code{Xdim.max} selection, only used when \code{Xdim.max.list=NULL}.}
 
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 

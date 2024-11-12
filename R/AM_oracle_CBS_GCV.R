@@ -78,11 +78,10 @@ AM.CBS.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.ind.mat=NULL,degre
   
   if(is.null(Xdim.max.list)){
     tmp.indices = sapply(1:p,function(j){
-      alpha.Xdim.max = 0.025
       values = pca[[j]]$values
-      indices = which(values/sum(values) < alpha.Xdim.max)
-      if (length(indices)>1){
-        ind = indices[1]
+      indices = which(values/sum(values) >= alpha.Xdim.max)
+      if (length(indices)>=1){
+        ind = length(indices)
       }else{
         ind = length(values)
       }
