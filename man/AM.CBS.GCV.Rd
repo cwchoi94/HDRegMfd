@@ -21,6 +21,7 @@ AM.CBS.GCV(
   R.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-06,
+  alpha.Xdim.max = 0.025,
   transform = "Gaussian",
   normalize = TRUE,
   ngrid = 51,
@@ -66,6 +67,8 @@ AM.CBS.GCV(
 \item{max.cv.iter}{a maximum number of CV iterations (default: 20).}
 
 \item{cv.threshold}{a convergence threshold for the CV (default: 1e-6).}
+
+\item{alpha.Xdim.max}{a constant for rule-of-thumbs \code{Xdim.max} selection, only used when \code{Xdim.max.list=NULL}.}
 
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 

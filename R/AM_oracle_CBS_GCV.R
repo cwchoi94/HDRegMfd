@@ -34,8 +34,10 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-AM.CBS.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.01,h.count=10,penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
-                      max.cv.iter=20,cv.threshold=1e-6,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6){
+AM.CBS.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.01,h.count=10,
+                      penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
+                      max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',
+                      phi=1,eta=1e-3,max.iter=200,threshold=1e-6){
   
   start.time = Sys.time()
   
