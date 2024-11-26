@@ -13,7 +13,7 @@ mX.functional = function(j,x,t){
   }else if (i==4){
     z = (x+t**3-2)**2 
   }else if (i==5){
-    z = 2*(x-t**2)/(3-exp(x*t))
+    z = (x-t**2)/(3-exp(x*t))
   }else if (i==6){
     z = log(1+x**2 + t**2)
   }else if (i==7){

@@ -26,6 +26,7 @@ AM.CBS.kfold(
   normalize = TRUE,
   ngrid = 51,
   Kdenom_method = "numeric",
+  cv.const = 2,
   phi = 1,
   eta = 0.001,
   max.iter = 200,
@@ -77,6 +78,8 @@ AM.CBS.kfold(
 \item{ngrid}{the number of grid points for evaluating the KDE (default: 51).}
 
 \item{Kdenom_method}{a method used for the denominator in the normalized kernel calculation.}
+
+\item{cv.const}{a constant for AIC or BIC penalty term (default: 2).}
 
 \item{phi}{a parameter for computing the ADMM-based algorithm for the majorized objective function (default: 1).}
 

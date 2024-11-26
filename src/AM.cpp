@@ -236,7 +236,7 @@ arma::mat predict_AM(List object, arma::mat Xnew) {
 
 
 // [[Rcpp::export]]
-double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
+double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma, double cv_const) {
 
     // model training
     List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma);
@@ -259,12 +259,12 @@ double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, 
     vec nh = n * bandwidths;
 
     if (cv_type == "AIC" || cv_type == "ABIC") {
-        vec nh_tmp = 2.0 / nh;
+        vec nh_tmp = cv_const / nh;
         aic = sum(nh_tmp.elem(find(mhat_norm != 0)));
         //aic = 2.0 * sum(mhat_norm != 0) / n;
     }
     if (cv_type == "BIC" || cv_type == "ABIC") {
-        vec nh_tmp = log(nh) / nh;
+        vec nh_tmp = cv_const * log(nh) / (2 * nh);
         bic = sum(nh_tmp.elem(find(mhat_norm != 0)));
         //bic = sum(mhat_norm != 0) * log(n) / n;
     }
@@ -277,7 +277,7 @@ double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, 
 
 
 // [[Rcpp::export]]
-double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma) {
+double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma, double cv_const) {
 
     // tildem: (p, g*r, m) cube
     // kde_1d: p list - (g,r,r) cube
@@ -332,12 +332,12 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
     vec nh = n * bandwidths;
 
     if (cv_type == "AIC" || cv_type == "ABIC") {
-        vec nh_tmp = 2.0 / nh;
+        vec nh_tmp = cv_const / nh;
         aic = sum(nh_tmp.elem(find(mhat_norm != 0)));
         //aic = 2.0 * sum(mhat_norm != 0) / n;
     }
     if (cv_type == "BIC" || cv_type == "ABIC") {
-        vec nh_tmp = log(nh) / nh;
+        vec nh_tmp = cv_const * log(nh) / (2 * nh);
         bic = sum(nh_tmp.elem(find(mhat_norm != 0)));
         //bic = sum(mhat_norm != 0) * log(n) / n;
     }

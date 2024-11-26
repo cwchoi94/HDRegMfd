@@ -20,7 +20,7 @@ using namespace arma;
 // [[Rcpp::export]]
 List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, arma::mat bandwidths_mat, arma::vec grids, arma::vec weights,
                 arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
-                String penalty = "LASSO", double gamma = 0, int degree = 0, String Kdenom_method = "numeric", int max_cv_iter = 20, double threshold = 1e-10) {
+                String penalty = "LASSO", double gamma = 0, int degree = 0, String Kdenom_method = "numeric", double cv_const = 2.0, int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -68,7 +68,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
                     List SBF_comp = SBF_preprocessing(X, LogY, tmp_bandwidths, grids, weights, degree, Kdenom_method);
                     List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, opt_Xdim_max, index_mat);
 
-                    loss0_j(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                    loss0_j(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const);
                 }
 
                 // find opt_idx with allowing threshold error (for fast computation)
@@ -110,7 +110,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma);
+                loss1(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma, cv_const);
             }
         }
         else {
@@ -146,7 +146,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
                 mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                 List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                loss2(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma);
+                loss2(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const);
             }
         }
         else {
@@ -181,7 +181,7 @@ List AM_CBS_GCV(arma::mat X, arma::mat LogY, arma::mat Xnew, arma::mat LogYnew, 
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma);
+                loss3(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma, cv_const);
             }
         }
         else {
