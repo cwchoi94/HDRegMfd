@@ -157,7 +157,7 @@ predict.AM = function(object,Xorgnew){
   Xnew_ = predict.PCA.manifold.list(object$pca,Xorgnew)
   Xnew = reduce.dimension(Xnew_,object$Xdim.max)
   Xnew = predict(object$transform,Xnew)
-  Xnew = Xnew[,all.indices]
+  Xnew = Xnew[,all.indices,drop=FALSE]
   
   tol = 1e-5
   Xnew[Xnew<tol] = tol
