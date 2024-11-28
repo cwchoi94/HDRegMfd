@@ -76,7 +76,7 @@ GLM.CV = function(Xorg,Yorg,link='binomial',cv.type='AIC',penalty='LASSO',gamma=
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = GLM_each(X,Yorg,opt.lambda,opt.Xdim.max,opt.R,penalty,link,gamma,phi,eta,cv.const,max.iter,threshold)
+  object = GLM_each(X,Yorg,opt.lambda,opt.Xdim.max,opt.R,penalty,link,gamma,phi,eta,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims
