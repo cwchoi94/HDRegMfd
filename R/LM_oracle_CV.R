@@ -45,7 +45,7 @@ get.loss.LM.oracle = function(X,LogY,Xnew,LogYnew,Ymu,Yspace,Xdim.max,proper.ind
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,cv.const=2,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -74,7 +74,7 @@ LM.oracle.CV = function(Xorg,Yorg,Yspace,proper.indices=NULL,cv.type='AIC',Xdim.
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # Use LM_CV function to obtain the optimal parameters
-  result = LM_CV(Xoracle,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,'LASSO',0,1,max.cv.iter,cv.threshold)
+  result = LM_CV(Xoracle,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,'LASSO',0,1,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max','R')

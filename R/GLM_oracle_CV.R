@@ -31,7 +31,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,cv.const=2,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -59,7 +59,7 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
   
   # Use GLM_GCV function to obtain the optimal parameters
   result = GLM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,
-                  'LASSO',link,1,0,max.cv.iter,cv.threshold)
+                  'LASSO',link,1,0,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max','R')
