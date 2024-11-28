@@ -18,6 +18,7 @@ LM.CV(
   max.cv.iter = 20,
   cv.threshold = 1e-10,
   eta = 0.001,
+  cv.const = 2,
   max.iter = 500,
   threshold = 1e-10
 )
@@ -53,6 +54,8 @@ LM.CV(
 \item{cv.threshold}{a convergence threshold for the CV (default 1e-10).}
 
 \item{eta}{a parameter for computing the ADMM-based algorithm for the proximal norm square (default: 1e-3).}
+
+\item{cv.const}{a constant for AIC or BIC penalty term (default: 2).}
 
 \item{max.iter}{a maximum number of iterations (default: 500).}
 

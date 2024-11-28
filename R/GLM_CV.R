@@ -33,7 +33,7 @@
 #' }
 #' @export
 GLM.CV = function(Xorg,Yorg,link='binomial',cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
-                  phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+                  phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,cv.const=2,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -62,7 +62,7 @@ GLM.CV = function(Xorg,Yorg,link='binomial',cv.type='AIC',penalty='LASSO',gamma=
   if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
   # Use GLM_GCV function to obtain the optimal parameters
-  result = GLM_CV(X,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,penalty,link,gamma,phi,max.cv.iter,cv.threshold)
+  result = GLM_CV(X,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,penalty,link,gamma,phi,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max','R')
@@ -76,7 +76,7 @@ GLM.CV = function(Xorg,Yorg,link='binomial',cv.type='AIC',penalty='LASSO',gamma=
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = GLM_each(X,Yorg,opt.lambda,opt.Xdim.max,opt.R,penalty,link,gamma,phi,eta,max.iter,threshold)
+  object = GLM_each(X,Yorg,opt.lambda,opt.Xdim.max,opt.R,penalty,link,gamma,phi,eta,cv.const,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims

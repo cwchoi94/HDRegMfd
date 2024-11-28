@@ -33,8 +33,8 @@ GLM_each <- function(Xorg, Yorg, lambda, Xdim_max, R, penalty, link, gamma, phi,
     .Call(`_HDRegMfd_GLM_each`, Xorg, Yorg, lambda, Xdim_max, R, penalty, link, gamma, phi, eta, max_iter, threshold)
 }
 
-GLM_CV <- function(X, Y, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", link = "binomial", gamma = 0, phi = 1, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_HDRegMfd_GLM_CV`, X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, gamma, phi, max_cv_iter, threshold)
+GLM_CV <- function(X, Y, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", link = "binomial", gamma = 0, phi = 1, cv_const = 2.0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_GLM_CV`, X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, gamma, phi, cv_const, max_cv_iter, threshold)
 }
 
 GLM_GCV <- function(X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", link = "binomial", gamma = 0, phi = 1, max_cv_iter = 20L, threshold = 1e-10) {
@@ -77,8 +77,8 @@ LM_each <- function(Xorg, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma
     .Call(`_HDRegMfd_LM_each`, Xorg, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma, phi, eta, max_iter, threshold)
 }
 
-LM_CV <- function(X, LogY, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", gamma = 0, phi = 1, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_HDRegMfd_LM_CV`, X, LogY, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, cv_type, penalty, gamma, phi, max_cv_iter, threshold)
+LM_CV <- function(X, LogY, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, cv_type = "AIC", penalty = "LASSO", gamma = 0, phi = 1, cv_const = 2.0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_LM_CV`, X, LogY, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, cv_type, penalty, gamma, phi, cv_const, max_cv_iter, threshold)
 }
 
 LM_GCV <- function(X, LogY, Xnew, LogYnew, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", gamma = 0, phi = 1, max_cv_iter = 20L, threshold = 1e-10) {

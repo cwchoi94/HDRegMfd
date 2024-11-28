@@ -15,7 +15,6 @@
 #' @param max.cv.iter a maximum number of CV iterations (default: 20).
 #' @param cv.threshold a convergence threshold for the CV (default: 1e-6).
 #' @param alpha.Xdim.max a constant for rule-of-thumbs \code{Xdim.max} selection, only used when \code{Xdim.max.list=NULL}.
-#' @param cv.const a constant for AIC or BIC penalty term (default: 2).
 #' @param loss.type the type of loss function. Options are 'average' or 'integral' (default).
 #'
 #' @return a \code{AM} object with the following compnents:

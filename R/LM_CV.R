@@ -14,6 +14,7 @@
 #' @param lambda.list a vector of non-negative penalty constants.
 #' @param Xdim.max.list a vector of the maximum dimension to which \eqn{X_j} will be reduced.
 #' @param R.list a vector of \eqn{\ell^1}-type constrained bounds.
+#' @param cv.const a constant for AIC or BIC penalty term (default: 2).
 #' @param max.cv.iter a maximum number of CV iterations (default 20).
 #' @param cv.threshold a convergence threshold for the CV (default 1e-10).
 #'
@@ -36,7 +37,7 @@
 #' }
 #' @export
 LM.CV = function(Xorg,Yorg,Yspace,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
-                 phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,max.iter=500,threshold=1e-10){
+                 phi=1,max.cv.iter=20,cv.threshold=1e-10,eta=1e-3,cv.const=2,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -66,7 +67,7 @@ LM.CV = function(Xorg,Yorg,Yspace,cv.type='AIC',penalty='LASSO',gamma=0,lambda.l
   LogY = RieLog.manifold(Ymu,Yorg,Yspace)
   
   # Use LM_CV function to obtain the optimal parameters
-  result = LM_CV(X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,penalty,gamma,phi,max.cv.iter,cv.threshold)
+  result = LM_CV(X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,cv.type,penalty,gamma,phi,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max','R')

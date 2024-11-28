@@ -210,8 +210,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // GLM_CV
-List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, String link, double gamma, double phi, int max_cv_iter, double threshold);
-RcppExport SEXP _HDRegMfd_GLM_CV(SEXP XSEXP, SEXP YSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+List GLM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, String link, double gamma, double phi, double cv_const, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_GLM_CV(SEXP XSEXP, SEXP YSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP linkSEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP cv_constSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -225,9 +225,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type link(linkSEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type cv_const(cv_constSEXP);
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(GLM_CV(X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, gamma, phi, max_cv_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(GLM_CV(X, Y, lambda_list, Xdim_max_list, R_list, cv_type, penalty, link, gamma, phi, cv_const, max_cv_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -395,8 +396,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // LM_CV
-List LM_CV(List X, arma::mat LogY, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, double gamma, double phi, int max_cv_iter, double threshold);
-RcppExport SEXP _HDRegMfd_LM_CV(SEXP XSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
+List LM_CV(List X, arma::mat LogY, arma::vec Ymu, String Yspace, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, String cv_type, String penalty, double gamma, double phi, double cv_const, int max_cv_iter, double threshold);
+RcppExport SEXP _HDRegMfd_LM_CV(SEXP XSEXP, SEXP LogYSEXP, SEXP YmuSEXP, SEXP YspaceSEXP, SEXP lambda_listSEXP, SEXP Xdim_max_listSEXP, SEXP R_listSEXP, SEXP cv_typeSEXP, SEXP penaltySEXP, SEXP gammaSEXP, SEXP phiSEXP, SEXP cv_constSEXP, SEXP max_cv_iterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -411,9 +412,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type penalty(penaltySEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< double >::type cv_const(cv_constSEXP);
     Rcpp::traits::input_parameter< int >::type max_cv_iter(max_cv_iterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(LM_CV(X, LogY, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, cv_type, penalty, gamma, phi, max_cv_iter, threshold));
+    rcpp_result_gen = Rcpp::wrap(LM_CV(X, LogY, Ymu, Yspace, lambda_list, Xdim_max_list, R_list, cv_type, penalty, gamma, phi, cv_const, max_cv_iter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -733,7 +735,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_HDRegMfd_AM_CV_average", (DL_FUNC) &_HDRegMfd_AM_CV_average, 15},
     {"_HDRegMfd_AM_CV_integral", (DL_FUNC) &_HDRegMfd_AM_CV_integral, 15},
     {"_HDRegMfd_GLM_each", (DL_FUNC) &_HDRegMfd_GLM_each, 12},
-    {"_HDRegMfd_GLM_CV", (DL_FUNC) &_HDRegMfd_GLM_CV, 12},
+    {"_HDRegMfd_GLM_CV", (DL_FUNC) &_HDRegMfd_GLM_CV, 13},
     {"_HDRegMfd_GLM_GCV", (DL_FUNC) &_HDRegMfd_GLM_GCV, 13},
     {"_HDRegMfd_Link", (DL_FUNC) &_HDRegMfd_Link, 2},
     {"_HDRegMfd_Inv_Link", (DL_FUNC) &_HDRegMfd_Inv_Link, 2},
@@ -744,7 +746,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_HDRegMfd_normalized_Kernel", (DL_FUNC) &_HDRegMfd_normalized_Kernel, 6},
     {"_HDRegMfd_KDE_", (DL_FUNC) &_HDRegMfd_KDE_, 7},
     {"_HDRegMfd_LM_each", (DL_FUNC) &_HDRegMfd_LM_each, 13},
-    {"_HDRegMfd_LM_CV", (DL_FUNC) &_HDRegMfd_LM_CV, 13},
+    {"_HDRegMfd_LM_CV", (DL_FUNC) &_HDRegMfd_LM_CV, 14},
     {"_HDRegMfd_LM_GCV", (DL_FUNC) &_HDRegMfd_LM_GCV, 14},
     {"_HDRegMfd_LM_Kfold", (DL_FUNC) &_HDRegMfd_LM_Kfold, 15},
     {"_HDRegMfd_PCA_list", (DL_FUNC) &_HDRegMfd_PCA_list, 2},

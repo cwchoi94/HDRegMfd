@@ -149,7 +149,7 @@ double get_loss_LM(List X, arma::mat LogY, List Xnew_, arma::mat LogYnew, arma::
 
 
 
-double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double gamma, double phi) {
+double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, double lambda, int Xdim_max, double R, String cv_type, String penalty, double gamma, double phi, double cv_const) {
 
     // model training
     List model = LM_each(X_, LogY, Ymu, Yspace, lambda, Xdim_max, R, penalty, gamma, phi);
@@ -176,10 +176,10 @@ double get_loss_CV_LM(List X_, arma::mat LogY, arma::vec Ymu, String Yspace, dou
     vec Xdims = model["Xdims"];
 
     if (cv_type == "AIC" || cv_type == "ABIC") {
-        aic = 2.0 * sum(Xdims.elem(find(beta_norm != 0))) / n;
+        aic = cv_const * sum(Xdims.elem(find(beta_norm != 0))) / n;
     }
     if (cv_type == "BIC" || cv_type == "ABIC") {
-        bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;
+        bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) * cv_const / (2 * n);
     }
 
     loss = loss + aic + bic;

@@ -171,7 +171,7 @@ double get_loss_GLM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lamb
 
 
 
-double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double R, String cv_type, String penalty, String link, double gamma, double phi) {
+double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double R, String cv_type, String penalty, String link, double gamma, double phi, double cv_const) {
 
     // model training
     List model = GLM_each(X_, Y, lambda, Xdim_max, R, penalty, link, gamma, phi);
@@ -198,10 +198,10 @@ double get_loss_CV_GLM(List X_, arma::mat Y, double lambda, int Xdim_max, double
     vec Xdims = model["Xdims"];
 
     if (cv_type == "AIC" || cv_type == "ABIC") {
-        aic = 2.0 * sum(Xdims.elem(find(beta_norm != 0))) / n;
+        aic = cv_const * sum(Xdims.elem(find(beta_norm != 0))) / n;
     }
     if (cv_type == "BIC" || cv_type == "ABIC") {
-        bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) / n;
+        bic = sum(Xdims.elem(find(beta_norm != 0))) * log(n) * cv_const / (2 * n);
     }
 
     loss = loss + aic + bic;
