@@ -28,7 +28,6 @@ double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_sq_j, ar
 
     int g = kde_1d_sq_j.n_rows;
     int r = kde_1d_sq_j.n_slices;
-    int m = Yj1.n_cols;
 
     double z = 0;
     for (int k = 0; k < g; k++) {
