@@ -103,8 +103,8 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   
   # define some functions for SBF
   # kde.1d: p list - (g,r,r) cube
-  # projection: (p1,p2,g1,g2,r1,r2) = (p1*p2*g1*g2,r1,r2) cube
-  # tildem: p list - (g,r,m) cube
+  # proj: (p1,p2,g1,g2,r1,r2) = (p1*p2,g1*r1,g2*r2) cube
+  # tildem: (p,g*r,m) cube
   if (is.null(SBF.comp)){
     if (is.null(bandwidths.list)){
       bandwidths = get.rule.of.thumbs.bandwidths(X,degree)

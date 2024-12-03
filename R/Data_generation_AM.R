@@ -84,6 +84,19 @@ mX.basis = function(j,k,x){
 
 
 
+
+
+
+c.ftn = function(l){
+  if (l<=5){
+    z = 1
+  }else{
+    z = (l-2)^(-2)
+  }
+  return(z)
+}
+
+
 ######################################################
 ######################################################
 ### Generate additive mean functions
@@ -122,6 +135,8 @@ add.mean.generate.each = function(j,Xi.each,Yspace,Ymu,Ydim=1){
   }
   return(add.mean)
 }
+
+
 
 
 #' @title Generate a list of Hilbert-SChmidt operators
@@ -302,6 +317,7 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
     })
     add.mean.each = add.mean.generate(Xi.base,Yspace,Ymu,Ydim,all.indices)
     add.mean.mean = sapply(add.mean.each,colMeans)
+    if(is.null(dim(add.mean.mean))){add.mean.mean = matrix(add.mean.mean,nrow=1)}
     add.mean.std = sapply(1:s,function(j){
       tmp = add.mean.each[[j]] - matrix(add.mean.mean[,j],n0,length(Ymu),byrow=TRUE)
       sqrt(mean(norm.manifold(tmp,Ymu,Yspace)**2))

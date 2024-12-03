@@ -24,6 +24,7 @@ arma::cube clone_cube(const arma::cube& original) {
 
 double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_sq_j, arma::vec weights, arma::vec Ymu, String Yspace) {
     // Yj1, Yj2: (g*r,m) mats
+    // kde_1d_sq_j: (g,r,r) mat
 
     int g = kde_1d_sq_j.n_rows;
     int r = kde_1d_sq_j.n_slices;
@@ -33,11 +34,8 @@ double L2_mat_inner_SBF(arma::mat Yj1, arma::mat Yj2, arma::cube kde_1d_sq_j, ar
     for (int k = 0; k < g; k++) {
         mat Y_jk1 = Yj1.rows(r * k, r * (k + 1) - 1);
         mat Y_jk2 = Yj2.rows(r * k, r * (k + 1) - 1);
-        if (m == 1) {
-            Y_jk1 = Y_jk1.t(); // (r,m) matrix
-            Y_jk2 = Y_jk2.t(); // (r,m) matrix
-        }
-        mat kde_1d_sq_jk = kde_1d_sq_j.row(k); // (r,r) matrix        
+
+        mat kde_1d_sq_jk = kde_1d_sq_j.row(k); // (r,r) matrix      
         mat Y_jk1_ = kde_1d_sq_jk * Y_jk1; // (r,m) matrix
         mat Y_jk2_ = kde_1d_sq_jk * Y_jk2; // (r,m) matrix
 
@@ -95,6 +93,10 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     // ADMM algorithm
     double residual;
     int iter = 0;
+    mat tmp_hatm_jj2(g * r, m, fill::zeros);
+    mat mhat_j(g * r, m, fill::zeros);
+    mat mhat_j2(g * r, m, fill::zeros);
+    mat mhat_j_old(g * r, m, fill::zeros);
     while (iter < max_iter) {
         iter = iter + 1;
         residual = 0;
@@ -109,28 +111,56 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
                 mat proj_jj2 = proj.row(p * j + j2);
 
                 if (j2 == j) {
-                    mat tmp_hatm_jj2 = tildem.row(j);
+                    if (m == 1) {
+                        mat tmp_tmp_hatm_jj2 = tildem.row(j);
+                        tmp_hatm_jj2 = tmp_tmp_hatm_jj2.t();
+                    }
+                    else {
+                        tmp_hatm_jj2 = tildem.row(j);
+                    }
+
                     tmp_hatmj += tmp_hatm_jj2;
                 }
                 else if (mhat_norm(j2) != 0) {
-                    mat mhat_j2 = mhat.row(j2);
-                    mat tmp_hatm_jj2 = numerical_integral_2d(proj_jj2, mhat_j2);
+                    if (m == 1) {
+                        mat tmp_mhat_j2 = mhat.row(j2);
+                        mhat_j2 = tmp_mhat_j2.t();
+                    }
+                    else {
+                        mhat_j2 = mhat.row(j2);
+                    }
+                    tmp_hatm_jj2 = numerical_integral_2d(proj_jj2, mhat_j2);
                     tmp_hatmj -= tmp_hatm_jj2;
                 }
             }
+
 
             // compute components
             double norm_hatmj = L2_mat_norm_SBF(tmp_hatmj, kde_1d_sq_j, weights, Ymu, Yspace);
             double nuj = B + eta * (sum(mhat_norm) - mhat_norm(j) + A - R);
 
+
             // mhat_j update
-            mat mhat_j = mhat.row(j);
+            if (m == 1) {
+                mat tmp_mhat_j = mhat.row(j);
+                mhat_j = tmp_mhat_j.t();
+            }
+            else {
+                mhat_j = mhat.row(j);
+            }
             mhat_j = hatmj_update(tmp_hatmj, sigma, norm_hatmj, penalty, lambda, nuj, gamma, mhat_j, mhat_norm(j));
             mhat.row(j) = mhat_j;
             mhat_norm(j) = L2_mat_norm_SBF(mhat_j, kde_1d_sq_j, weights, Ymu, Yspace);
 
+
             // compute the L2 norm between mhat_j and mhat_j_old
-            mat mhat_j_old = mhat_old.row(j);
+            if (m == 1) {
+                mat tmp_mhat_j_old = mhat_old.row(j);
+                mhat_j_old = tmp_mhat_j_old.t();
+            }
+            else {
+                mhat_j_old = mhat_old.row(j);
+            }
             double residual_j = L2_mat_norm_SBF(mhat_j - mhat_j_old, kde_1d_sq_j, weights, Ymu, Yspace);
             residual += residual_j;
         }
@@ -156,7 +186,13 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     // (p, g*r, m) cube -> p list - (g,r,m) cube
     List mhat_final(p);
     for (int j = 0; j < p; j++) {
-        mat mhat_j = mhat.row(j);
+        if (m == 1) {
+            mat tmp_mhat_j = mhat.row(j);
+            mhat_j = tmp_mhat_j.t();
+        }
+        else {
+            mhat_j = mhat.row(j);
+        }
 
         cube mhat_final_j(g, r, m, fill::zeros);
         for (int k = 0; k < g; k++) {
@@ -288,16 +324,28 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
     vec weights = SBF_comp["weights"];
 
     int p = tildem.n_rows;
+    int g = weights.size();
+    int r = SBF_comp["r"];
     int n = LogYnew.n_rows;
+    int m = LogYnew.n_cols;
 
     // model training
     List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma);
     
     cube mhat = model["mhat.org"];
     
+    mat mhat_j(g * r, m, fill::zeros);
+    mat mhat_j2(g * r, m, fill::zeros);
+    mat tildem_j(g * r, m, fill::zeros);
     double loss = 0;
     for (int j = 0; j < p; j++) {
-        mat mhat_j = mhat.row(j); // (g*r, m) mat
+        if (m == 1) {
+            mat tmp_mhat_j = mhat.row(j);
+            mhat_j = tmp_mhat_j.t();
+        }
+        else {
+            mhat_j = mhat.row(j); // (g*r, m) mat
+        }
         cube kde_1d_sq_j = kde_1d_sq[j]; // (g,r,r) cube
 
         // the square norms of hatm_j
@@ -305,7 +353,13 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
         
         // the inner products of hatm_j and hatm_j2 for j!=j2
         for (int j2 = j + 1; j2 < p; j2++) {
-            mat mhat_j2 = mhat.row(j2);
+            if (m == 1) {
+                mat tmp_mhat_j2 = mhat.row(j2);
+                mhat_j2 = tmp_mhat_j2.t();
+            }
+            else {
+                mhat_j2 = mhat.row(j2); // (g*r, m) mat
+            }
 
             mat proj_jj2 = proj.row(p * j + j2);
             mat tmp_mhat_jj2 = numerical_integral_2d(proj_jj2, mhat_j2);
@@ -314,7 +368,13 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
         }
         
         // the inner products of hatm_j and tildem_j
-        mat tildem_j = tildem.row(j);
+        if (m == 1) {
+            mat tmp_tildem_j = tildem.row(j);
+            tildem_j = tmp_tildem_j.t();
+        }
+        else {
+            tildem_j = tildem.row(j); // (g*r, m) mat
+        }
         loss -= L2_mat_inner_SBF(mhat_j, tildem_j, kde_1d_sq_j, weights, Ymu, Yspace);
     }
 
