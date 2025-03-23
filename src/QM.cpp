@@ -105,8 +105,9 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
             // compute loss_inner_old and loss_1d_inner_old
             mat res_inner_old = Yorg - repelem(beta0_inner_old, n, 1) - X * beta_inner_old;
             mat loss_mat_inner_old = sQRloss(res_inner_old, tau, h, kernel); // (n,m) mat
-            double penalty_term_inner_old = Penalty_ftn(beta_norm_inner_old, lambda_vec, "LASSO", 0);
-            double loss_inner_old = mean(mean(loss_mat_inner_old, 0)) + penalty_term_inner_old;
+            double loss_inner_old = mean(mean(loss_mat_inner_old, 0));
+            //double penalty_term_inner_old = Penalty_ftn(beta_norm_inner_old, lambda_vec, "LASSO", 0);
+            //double loss_inner_old = mean(mean(loss_mat_inner_old, 0)) + penalty_term_inner_old;
 
             mat loss_1d_inner_old = - 1.0 *  sQRloss_diff(res_inner_old, tau, h, kernel); // (n,m) mat, loss(Y - Xbeta) -> it needs to multiply -1
             mat X_loss_1d_inner_old = trans(X) * loss_1d_inner_old / n; // (P,m) mat
@@ -137,14 +138,29 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
                     beta_norm_inner(j) = L2_norm_real(betaj_inner);
                 }
 
-                // compute loss_inner
+                // compute loss_inner1 
                 mat res_inner = Yorg - repelem(beta0_inner, n, 1) - X * beta_inner;
                 mat loss_mat_inner = sQRloss(res_inner, tau, h, kernel); // (n,m) mat
                 double penalty_term_inner = Penalty_ftn(beta_norm_inner, lambda_vec, "LASSO", 0);
-                double loss_inner = mean(mean(loss_mat_inner, 0)) + penalty_term_inner;
-                
+                double loss_inner1 = mean(mean(loss_mat_inner, 0)) + penalty_term_inner;
 
-                if ((loss_inner > loss_inner_old) && (phi < 0.99 / phi0)) {
+                // compute loss_inner2
+                mat loss_1d_inner_old_trans = trans(mean(loss_1d_inner_old, 0)); // (m,1) mat
+                mat X_loss_1d_inner_old_trans = trans(X_loss_1d_inner_old); // (m,P) mat
+                mat loss_1d_beta0_inner_product_mat = loss_1d_inner_old_trans * (beta0_inner - beta0_inner_old);
+                mat X_loss_1d_beta_inner_product_mat = X_loss_1d_inner_old_trans * (beta_inner - beta_inner_old);
+
+                double loss_1d_beta0_inner_product = mean(mean(loss_1d_beta0_inner_product_mat, 0));
+                double X_loss_1d_beta_inner_product = mean(mean(X_loss_1d_beta_inner_product_mat, 0));
+                double loss_1d_beta_inner_product = loss_1d_beta0_inner_product + X_loss_1d_beta_inner_product;
+
+                double L2_beta_norm = L2_norm_real(beta_inner - beta_inner_old);
+                double L2_beta0_norm = L2_norm_real(beta0_inner - beta0_inner_old);
+                double L2_beta_norm_sq = pow(L2_beta_norm, 2) + pow(L2_beta0_norm, 2);
+
+                double loss_inner2 = loss_inner_old + loss_1d_beta_inner_product + phi * L2_beta_norm_sq / 2.0 + penalty_term_inner;
+
+                if ((loss_inner1 > loss_inner2) && (phi < 0.99 / phi0)) {
                     phi = c_phi * phi;
                 }
                 else {
