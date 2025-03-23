@@ -144,7 +144,7 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
                 double loss_inner = mean(mean(loss_mat_inner, 0)) + penalty_term_inner;
                 
 
-                if (loss_inner > loss_inner_old) {
+                if ((loss_inner > loss_inner_old) || (phi < 0.99 / phi0)) {
                     phi = c_phi * phi;
                 }
                 else {
