@@ -107,6 +107,7 @@ List QM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfol
         opt_Xdim_max = Xdim_max_list(opt_idx);
         loss_min = loss2_mat.col(opt_idx);
         loss_iter[1] = loss2;
+        loss_list[iter] = loss_iter;
     
         // parameter update
         parameters = { opt_lambda, opt_Xdim_max };

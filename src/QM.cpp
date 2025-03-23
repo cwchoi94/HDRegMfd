@@ -96,6 +96,7 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
         while (iter_inner < max_iter) {
             iter_inner = iter_inner + 1;
             phi = max(phi0, phi / c_phi);
+            phi = min(phi, 1.0 / phi0);
 
             mat beta_inner_old = beta_inner;
             mat beta0_inner_old = beta0_inner;

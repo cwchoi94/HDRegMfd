@@ -86,6 +86,7 @@ List QM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, 
         opt_Xdim_max = Xdim_max_list(opt_idx);
         loss_min = loss2(opt_idx);
         loss_iter[1] = loss2;        
+        loss_list[iter] = loss_iter;
 
         // parameter update
         parameters = { opt_lambda, opt_Xdim_max };

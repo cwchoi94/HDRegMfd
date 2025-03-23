@@ -84,7 +84,8 @@ List QM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_lis
         opt_idx = get_min_idx(loss2, threshold, 1);
         opt_Xdim_max = Xdim_max_list(opt_idx);
         loss_min = loss2(opt_idx);
-        loss_iter[1] = loss2;        
+        loss_iter[1] = loss2;
+        loss_list[iter] = loss_iter;
 
         // parameter update
         parameters = { opt_lambda, opt_Xdim_max };
