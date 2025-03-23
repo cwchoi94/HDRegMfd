@@ -167,7 +167,7 @@ QM.data.generate = function(n,Xspaces,Xdims,tau=0.5,proper.indices=NULL,beta.nor
   
   # generate same beta for each simulation
   set.seed(0)
-  n0 = 100000
+  n0 = 10000
   beta = tensor.beta.generate(Xspaces,Yspace,Xmu.list,Ymu,Xdims,Ydim,proper.indices,1)
   beta.oracle = lapply(proper.indices,function(j){beta[[j]]})
   
