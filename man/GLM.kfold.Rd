@@ -84,6 +84,6 @@ an \code{\link{GLM}} object with the following components:
 }
 \description{
 Implements Kfold cross-validation (Kfold-CV) for high-dimensional generalized linear models.
-The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_CV' in 'GLM_CV.cpp'.
+The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_kfold' in 'GLM_kfold.cpp'.
 For a more detailed description of parameters, see \code{\link{GLM}}.
 }

@@ -5,7 +5,7 @@
 #' 
 #' @description 
 #' Implements Kfold cross-validation (Kfold-CV) for high-dimensional generalized linear models.
-#' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_CV' in 'GLM_CV.cpp'.
+#' The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_kfold' in 'GLM_kfold.cpp'.
 #' For a more detailed description of parameters, see \code{\link{GLM}}.
 #' 
 #' @inheritParams LM.kfold
@@ -85,7 +85,7 @@ GLM.kfold = function(Xorg,Yorg,link='binomial',kfold=5,seed=NULL,penalty='LASSO'
     Ynew.list[[i]] = RieLog.manifold(Ymu,data.split$Ynew,Yspace)
   }
   
-  # Use LM_kfold function defined in cpp
+  # Use GLM_kfold function defined in cpp
   result = GLM_Kfold(Xorg.list,Y.list,Xnew.list,Ynew.list,kfold,lambda.list,Xdim.max.list,R.list,
                      penalty,link,gamma,phi,max.cv.iter,cv.threshold)
   

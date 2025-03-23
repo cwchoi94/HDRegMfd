@@ -13,7 +13,7 @@ library(RcppArmadillo)
 # Check a penalty function.
 Check.penalty = function(penalty){
   if (!(penalty %in% c('LASSO','SCAD','MCP'))){
-    stop("The 'penalty' must be one of 'LASSO','SCAD','MCP'")
+    stop("The 'penalty' must be one of 'LASSO','SCAD' or 'MCP'.")
   }
 }
 
@@ -21,6 +21,13 @@ Check.penalty = function(penalty){
 Check.link = function(link){
   if (!(link %in% c('binomial','poisson','exponential'))){
     stop("The 'link' should be one of 'binomial','poisson' or 'exponential'. If you use an 'identity' or 'normal' link, please use the 'LM' function.")
+  }
+}
+
+# check a kernel function for QM
+Check.kernel.QM = function(kernel){
+  if (!(kernel %in% c('Gaussian','Uniform','Epanechnikov','Triangular'))){
+    stop("The 'kernel' must be one of 'Gaussian','Uniform','Epanechnikov' or 'Triangular'.")
   }
 }
 

@@ -61,7 +61,7 @@ GLM.CV = function(Xorg,Yorg,link='binomial',cv.type='AIC',penalty='LASSO',gamma=
   X = predict(pca,Xorg)
   if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(X,ncol)))}
   
-  # Use GLM_GCV function to obtain the optimal parameters
+  # Use GLM_CV function to obtain the optimal parameters
   result = GLM_CV(X,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,penalty,link,gamma,phi,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]

@@ -18,7 +18,7 @@ using namespace arma;
 
 // [[Rcpp::export]]
 List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, 
-              String penalty="LASSO", String link="binomial", double phi = 1, double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
+              String penalty="LASSO", String link="binomial", double gamma = 0, double phi = 1, int max_cv_iter = 20, double threshold = 1e-10) {
   
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -57,7 +57,7 @@ List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfo
                 mat Ynew = Ynew_list[idx];
                 for (int i = 0; i < r1; i++) {
                     double lambda = lambda_list(i);
-                    loss1_mat(idx, i) = get_loss_GLM(X, Y, Xnew, Ynew, lambda, opt_Xdim_max, opt_R, penalty, link, phi, gamma);
+                    loss1_mat(idx, i) = get_loss_GLM(X, Y, Xnew, Ynew, lambda, opt_Xdim_max, opt_R, penalty, link, gamma, phi);
                 }
             }
         }
@@ -95,7 +95,7 @@ List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfo
                 mat Ynew = Ynew_list[idx];
                 for (int i = 0; i < r2; i++) {
                     double Xdim_max = Xdim_max_list(i);
-                    loss2_mat(idx, i) = get_loss_GLM(X, Y, Xnew, Ynew, opt_lambda, Xdim_max, opt_R, penalty, link, phi, gamma);
+                    loss2_mat(idx, i) = get_loss_GLM(X, Y, Xnew, Ynew, opt_lambda, Xdim_max, opt_R, penalty, link, gamma, phi);
                 }
             }
         }
@@ -133,7 +133,7 @@ List GLM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfo
                 mat Ynew = Ynew_list[idx];
                 for (int i = 0; i < r3; i++) {
                     double R = R_list(i);
-                    loss3_mat(idx, i) = get_loss_GLM(X, Y, Xnew, Ynew, opt_lambda, opt_Xdim_max, R, penalty, link, phi, gamma);
+                    loss3_mat(idx, i) = get_loss_GLM(X, Y, Xnew, Ynew, opt_lambda, opt_Xdim_max, R, penalty, link, gamma, phi);
                 }
             }
         }

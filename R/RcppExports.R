@@ -61,8 +61,8 @@ Psi_2d <- function(u, link) {
     .Call(`_HDRegMfd_Psi_2d`, u, link)
 }
 
-GLM_Kfold <- function(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", link = "binomial", phi = 1, gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
-    .Call(`_HDRegMfd_GLM_Kfold`, X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, phi, gamma, max_cv_iter, threshold)
+GLM_Kfold <- function(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty = "LASSO", link = "binomial", gamma = 0, phi = 1, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_GLM_Kfold`, X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, R_list, penalty, link, gamma, phi, max_cv_iter, threshold)
 }
 
 normalized_Kernel <- function(X, bandwidths, grids, weights, degree, Kdenom_method) {
@@ -97,6 +97,14 @@ predict_PCA_list <- function(pca, Xnew) {
     .Call(`_HDRegMfd_predict_PCA_list`, pca, Xnew)
 }
 
+Penalty_ftn <- function(u, lambda_vec, penalty, gamma) {
+    .Call(`_HDRegMfd_Penalty_ftn`, u, lambda_vec, penalty, gamma)
+}
+
+Penalty_diff_ftn <- function(u, lambda_vec, penalty, gamma) {
+    .Call(`_HDRegMfd_Penalty_diff_ftn`, u, lambda_vec, penalty, gamma)
+}
+
 LASSO_sol <- function(xy, xx, normxy, lambda, kappa, gamma) {
     .Call(`_HDRegMfd_LASSO_sol`, xy, xx, normxy, lambda, kappa, gamma)
 }
@@ -119,6 +127,30 @@ MCP_sol <- function(xy, xx, normxy, lambda, kappa, gamma) {
 
 MCP_sol2 <- function(xy, xx, normxy, lambda, kappa, gamma) {
     .Call(`_HDRegMfd_MCP_sol2`, xy, xx, normxy, lambda, kappa, gamma)
+}
+
+QM_each <- function(Xorg, Yorg, lambda, Xdim_max, tau, h, kernel, penalty, gamma, phi0, c_phi, max_iter, threshold) {
+    .Call(`_HDRegMfd_QM_each`, Xorg, Yorg, lambda, Xdim_max, tau, h, kernel, penalty, gamma, phi0, c_phi, max_iter, threshold)
+}
+
+QM_CV <- function(X, Y, lambda_list, Xdim_max_list, cv_type = "AIC", tau = 0.5, h = -1.0, kernel = "Gaussian", penalty = "LASSO", gamma = 0, cv_const = 2.0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_QM_CV`, X, Y, lambda_list, Xdim_max_list, cv_type, tau, h, kernel, penalty, gamma, cv_const, max_cv_iter, threshold)
+}
+
+QM_GCV <- function(X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, tau = 0.5, h = -1.0, kernel = "Gaussian", penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_QM_GCV`, X, Y, Xnew, Ynew, lambda_list, Xdim_max_list, tau, h, kernel, penalty, gamma, max_cv_iter, threshold)
+}
+
+sQRloss <- function(u, tau, h, kernel) {
+    .Call(`_HDRegMfd_sQRloss`, u, tau, h, kernel)
+}
+
+sQRloss_diff <- function(u, tau, h, kernel) {
+    .Call(`_HDRegMfd_sQRloss_diff`, u, tau, h, kernel)
+}
+
+QM_Kfold <- function(X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, tau = 0.5, h = -1.0, kernel = "Gaussian", penalty = "LASSO", gamma = 0, max_cv_iter = 20L, threshold = 1e-10) {
+    .Call(`_HDRegMfd_QM_Kfold`, X_list, Y_list, Xnew_list, Ynew_list, kfold, lambda_list, Xdim_max_list, tau, h, kernel, penalty, gamma, max_cv_iter, threshold)
 }
 
 SBF_preprocessing <- function(X, LogY, bandwidths, grids, weights, degree, Kdenom_method) {

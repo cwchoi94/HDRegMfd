@@ -2,7 +2,7 @@
 % Please edit documentation in R/GLM_oracle_CV.R
 \name{GLM.oracle.GCV}
 \alias{GLM.oracle.GCV}
-\title{Generalized Cross-Validation for Oracle Hilbert-Schmidt Linear Models}
+\title{Generalized Cross-Validation for Oracle generalized Linear Models}
 \usage{
 GLM.oracle.GCV(
   Xorg,

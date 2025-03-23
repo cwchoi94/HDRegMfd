@@ -244,8 +244,8 @@ compute.SBF.comp = function(Xorg,Yorg,Yspace,degree=0,Xdim.max.list=NULL,alpha.X
   
   # define some functions for SBF from the SBF.preprocessing function
   # kde.1d: p list - (g,r,r) cube
-  # proj: (p1,p2,g1,g2,r1,r2) = (p1*p2*g1*g2,r1,r2) cube
-  # tildem: p list - (g,r,m) cube
+  # proj: (p1,p2,g1,g2,r1,r2) = (p1*p2,g1*r1,g2*r2) cube
+  # tildem: (p,g*r,m) cube
   bandwidths = get.rule.of.thumbs.bandwidths(X,degree)
   
   SBF.comp = SBF.preprocessing(X,LogY,bandwidths,degree,ngrid,Kdenom_method)

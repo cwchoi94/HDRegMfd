@@ -84,6 +84,6 @@ an \code{\link{GLM}} object with the following components:
 }
 \description{
 Implements generalized cross-validation (GCV) for high-dimensional generalized linear models.
-The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_CV' in 'GLM_CV.cpp'.
+The CV process is based on the coordinate-wise variable selection and is implemented using a function 'GLM_GCV' in 'GLM_GCV.cpp'.
 For a more detailed description of parameters, see \code{\link{GLM}}.
 }

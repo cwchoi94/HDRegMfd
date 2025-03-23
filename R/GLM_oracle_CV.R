@@ -37,6 +37,7 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
   
   # check validility of inputs
   Check.link(link)
+  Check.cv.type(cv.type)
   
   # define basic parameters
   n = nrow(Yorg)
@@ -57,7 +58,7 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
   if(is.null(Xdim.max.list)){Xdim.max.list = c(max(sapply(Xoracle,ncol)))}
   
   
-  # Use GLM_GCV function to obtain the optimal parameters
+  # Use GLM_CV function to obtain the optimal parameters
   result = GLM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,R.list,cv.type,
                   'LASSO',link,1,0,cv.const,max.cv.iter,cv.threshold)
   
@@ -90,7 +91,7 @@ GLM.oracle.CV = function(Xorg,Yorg,link='binomial',proper.indices=NULL,cv.type='
 
 
 
-#' @title Generalized Cross-Validation for Oracle Hilbert-Schmidt Linear Models
+#' @title Generalized Cross-Validation for Oracle generalized Linear Models
 #' 
 #' @description 
 #' Implements a generalized cross-validation (GCV) for oracle generalized linear models.
