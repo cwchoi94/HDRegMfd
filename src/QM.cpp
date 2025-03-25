@@ -77,11 +77,11 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
     vec lambda_vec = lambda_Xdim_sqrt;
 
     double phi = phi0;
+    double phi_max = 0.1 / threshold;
     int iter = 0;
     int iter_inner = 0;
     vec iter_inner_vec(max_iter);
     while (iter<max_iter){
-        iter = iter+1;
         beta_old = beta;
         beta0_old = beta0;
         lambda_vec = Penalty_diff_ftn(beta_norm, lambda_Xdim_sqrt, penalty, gamma);
@@ -96,7 +96,7 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
         while (iter_inner < max_iter) {
             iter_inner = iter_inner + 1;
             phi = max(phi0, phi / c_phi);
-            phi = min(phi, 1.0 / phi0);
+            phi = min(phi, phi_max);
 
             mat beta_inner_old = beta_inner;
             mat beta0_inner_old = beta0_inner;
@@ -160,7 +160,7 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
 
                 double loss_inner2 = loss_inner_old + loss_1d_beta_inner_product + phi * L2_beta_norm_sq / 2.0 + penalty_term_inner;
 
-                if ((loss_inner1 > loss_inner2) && (phi < 0.99 / phi0)) {
+                if ((loss_inner1 > loss_inner2) && (phi < phi_max / 1.01)) {
                     phi = c_phi * phi;
                 }
                 else {
@@ -172,6 +172,8 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
             if (abs(residual_inner) < threshold) {
                 break;
             }
+
+            iter = iter + 1;
         }
 
         // beta and beta0 update
