@@ -77,7 +77,7 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
     vec lambda_vec = lambda_Xdim_sqrt;
 
     double phi = phi0;
-    double phi_max = 0.1 / threshold;
+    double phi_max = 0.01 / threshold;
     int iter = 0;
     int iter_inner = 0;
     vec iter_inner_vec(max_iter);
@@ -138,13 +138,13 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
                     beta_norm_inner(j) = L2_norm_real(betaj_inner);
                 }
 
-                // compute loss_inner1 
+                // compute loss_inner1 (org loss)
                 mat res_inner = Yorg - repelem(beta0_inner, n, 1) - X * beta_inner;
                 mat loss_mat_inner = sQRloss(res_inner, tau, h, kernel); // (n,m) mat
                 double penalty_term_inner = Penalty_ftn(beta_norm_inner, lambda_vec, "LASSO", 0);
                 double loss_inner1 = mean(mean(loss_mat_inner, 0)) + penalty_term_inner;
 
-                // compute loss_inner2
+                // compute loss_inner2 (LLA loss)
                 mat loss_1d_inner_old_trans = trans(mean(loss_1d_inner_old, 0)); // (m,1) mat
                 mat X_loss_1d_inner_old_trans = trans(X_loss_1d_inner_old); // (m,P) mat
                 mat loss_1d_beta0_inner_product_mat = loss_1d_inner_old_trans * (beta0_inner - beta0_inner_old);
