@@ -172,8 +172,6 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
             if (abs(residual_inner) < threshold) {
                 break;
             }
-
-            iter = iter + 1;
         }
 
         // beta and beta0 update
@@ -187,6 +185,8 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
         if (abs(residual)<threshold){
             break;
         }
+
+        iter = iter + 1;
     }
   
     // X: normalized -> restore the actual beta
