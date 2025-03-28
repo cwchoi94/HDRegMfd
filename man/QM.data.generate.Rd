@@ -15,7 +15,7 @@ QM.data.generate(
   Xrho = 0.5,
   Xsigma = 1,
   error.std = 1,
-  error.var.type = "homogeneous",
+  error.var.type = "homoscedastic",
   error.type = "normal",
   df = 3,
   ngrid = 100,
@@ -44,13 +44,17 @@ QM.data.generate(
 
 \item{error.std}{a standard deviation parameter for \eqn{\varepsilon}.}
 
+\item{error.var.type}{a type of error distribution, one of 'homoscedastic' or 'heteroscedastic'.}
+
+\item{error.type}{a distribution of \eqn{\varepsilon}, one of 'normal', 't' and 'Cauchy'.}
+
+\item{df}{degrees of freedom (only used for error.type=='t')}
+
 \item{ngrid}{the number of grids. This is only used for infinite-dimensional spaces, see \code{\link{Check.manifold}}: "functional", "BayesHilbert" and "Wasserstein" spaces.}
 
 \item{seed}{a random seed, which must be greater than 1.}
 
 \item{c.beta}{a \eqn{p} vector of pre-computed parameters to ensure that \eqn{\mathbb{E}\| \mathfrak{B_j}(Log_{\mu_j}X_j) \|^2 = (\text{beta.norm[j]})^2}, only computed if not provided.}
-
-\item{Ydim}{the intrinsic dimension of \eqn{Y}, typically 1.}
 }
 \value{
 a list of data containing:

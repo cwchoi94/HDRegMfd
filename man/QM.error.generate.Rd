@@ -9,7 +9,7 @@ QM.error.generate(
   Xdata,
   tau = 0.5,
   error.std = 1,
-  error.var.type = "homogeneous",
+  error.var.type = "homoscedastic",
   error.type = "normal",
   df = 3
 )
@@ -23,7 +23,7 @@ QM.error.generate(
 
 \item{error.std}{a standard deviation parameter for \eqn{\varepsilon}.}
 
-\item{error.var.type}{a type of error distribution, one of 'homogeneous' or 'heterogeneous'.}
+\item{error.var.type}{a type of error distribution, one of 'homoscedastic' or 'heteroscedastic'.}
 
 \item{error.type}{a distribution of \eqn{\varepsilon}, one of 'normal', 't' and 'Cauchy'.}
 

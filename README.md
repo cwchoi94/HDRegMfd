@@ -21,11 +21,13 @@ You can install this package from GitHub.
 ## Usage
 
 This package consists of three high-dimensional regression models: LM,
-GLM and AM.
+GLM, QM and AM.
 
 ### LM
 
 ### GLM
+
+### QM
 
 ### AM
 
