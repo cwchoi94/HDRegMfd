@@ -39,7 +39,7 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
 
     // Compute a basic h if h<0 (default)
     if (h < 0.0) {
-        h = max(0.05, tau * (1.0 - tau) * pow(log(sum(Xdims)) / n, 1.0 / 4.0));
+        h = max(0.05, pow(tau * (1.0 - tau), 1.0 / 2.0) * pow(log(sum(Xdims)) / n, 1.0 / 4.0));
     }
 
     // compute indices
