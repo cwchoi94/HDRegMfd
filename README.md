@@ -20,12 +20,26 @@ You can install this package from GitHub.
 
 ## Usage
 
-This package consists of three high-dimensional regression models: LM,
+This package consists of four high-dimensional regression models: LM,
 GLM, QM and AM.
 
 ### LM
 
+The folder “LM_code” provides source codes for the simulation and real
+data applications in the following paper:
+
+Choi, C. and Park, B. U. (2025+) High-dimensional Hilbert-Schmidt linear
+regression with Hilbert manifold variables. The Annals of Statistics.
+Accepted.
+
 ### GLM
+
+The folder “GLM_code” provides source codes for the simulation and real
+data applications in the following paper:
+
+Choi, C. and Park, B. U. (2025) High-dimensional generalized linear
+models for Hilbert manifold variables. Electronic Journal of Statistics.
+19(2), 3979-4053.
 
 ### QM
 
