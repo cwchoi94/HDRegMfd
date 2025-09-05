@@ -29,7 +29,7 @@ The folder “LM_code” provides source codes for the simulation and real
 data applications in the following paper:
 
 Choi, C. and Park, B. U. (2025+) High-dimensional Hilbert-Schmidt linear
-regression with Hilbert manifold variables. The Annals of Statistics.
+regression with Hilbert manifold variables. *The Annals of Statistics*.
 Accepted.
 
 ### GLM
@@ -38,8 +38,8 @@ The folder “GLM_code” provides source codes for the simulation and real
 data applications in the following paper:
 
 Choi, C. and Park, B. U. (2025) High-dimensional generalized linear
-models for Hilbert manifold variables. Electronic Journal of Statistics.
-19(2), 3979-4053.
+models for Hilbert manifold variables. *Electronic Journal of
+Statistics*. 19(2), 3979-4053.
 
 ### QM
 
