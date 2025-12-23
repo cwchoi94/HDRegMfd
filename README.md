@@ -28,7 +28,7 @@ GLM, QM and AM.
 The folder “LM_code” provides source codes for the simulation and real
 data applications in the following paper:
 
-Choi, C. and Park, B. U. (2025+) High-dimensional Hilbert-Schmidt linear
+Choi, C. and Park, B. U. (2025) High-dimensional Hilbert-Schmidt linear
 regression with Hilbert manifold variables. *The Annals of Statistics*.
 53(6), 2673-2701.
 \[[Link](https://projecteuclid.org/journals/annals-of-statistics/volume-53/issue-6/High-dimensional-HilbertSchmidt-linear-regression-with-Hilbert-manifold-variables/10.1214/25-AOS2559.short)\]
