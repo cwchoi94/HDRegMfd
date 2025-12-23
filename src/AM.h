@@ -9,7 +9,7 @@ using namespace arma;
 
 
 List AM_each(List kernel_list, vec Ymu, String Yspace, double lambda, double R=100, String penalty="LASSO", double gamma=0, 
-             double phi = 1, double eta=1e-3, int max_iter=500, double threshold=1e-10);
+             double phi = 1, double eta=1e-3, int max_iter=200, double threshold=1e-6);
 
 
 double get_loss_CV_AM_average(List SBF_comp, mat Xnew, mat LogYnew, vec Ymu, String Yspace, double lambda, double R = 100, String cv_type = "AIC", String penalty = "LASSO", double gamma = 0, double cv_const = 2.0);

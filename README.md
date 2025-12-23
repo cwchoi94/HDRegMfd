@@ -30,7 +30,8 @@ data applications in the following paper:
 
 Choi, C. and Park, B. U. (2025+) High-dimensional Hilbert-Schmidt linear
 regression with Hilbert manifold variables. *The Annals of Statistics*.
-Accepted.
+53(6), 2673-2701.
+\[[Link](https://projecteuclid.org/journals/annals-of-statistics/volume-53/issue-6/High-dimensional-HilbertSchmidt-linear-regression-with-Hilbert-manifold-variables/10.1214/25-AOS2559.short)\]
 
 ### GLM
 
@@ -40,6 +41,7 @@ data applications in the following paper:
 Choi, C. and Park, B. U. (2025) High-dimensional generalized linear
 models for Hilbert manifold variables. *Electronic Journal of
 Statistics*. 19(2), 3979-4053.
+\[[Link](https://projecteuclid.org/journals/electronic-journal-of-statistics/volume-19/issue-2/High-dimensional-generalized-linear-models-for-Hilbert-manifold-covariates/10.1214/25-EJS2431.full)\]
 
 ### QM
 
