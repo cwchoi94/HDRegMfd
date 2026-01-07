@@ -16,6 +16,7 @@
 #' @param tau the quantile of Y given X (default: 0.5).
 #' @param h the bandwidth for smoothing a check function.
 #' @param kernel the kernel function for smoothing a check function.
+#' @param c.h the constant multiplied by \eqn{h}. It is used only when \code{h==NULL}.
 #' @param phi0 the initial \eqn{phi} for updating \eqn{\hat{\beta}}.
 #' @param c.phi the multiplying constant for \eqn{\phi}.
 #'
@@ -40,7 +41,7 @@
 #' }
 #' @export
 QM = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',penalty='LASSO',gamma=0,lambda=0.1,Xdim.max=100,
-              phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+              c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -68,12 +69,10 @@ QM = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',penalty='LASSO',gamma=0
   Xdims_cumul = c(0,cumsum(Xdims))
   
   # compute the default value of h
-  if (is.null(h)){
-    h = max(0.05,tau * (1-tau) * (log(sum(Xdims)) / n)^(1/4))
-  }
+  if (is.null(h)){h = c(-1.0)}
   
   # apply QM_each function in cpp
-  object = QM_each(X,Yorg,lambda,Xdim.max,tau,h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
+  object = QM_each(X,Yorg,lambda,Xdim.max,tau,h,c.h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
   
   # compute other parameters
   beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
@@ -89,7 +88,6 @@ QM = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',penalty='LASSO',gamma=0
   object[['pca']] = pca
   object[['tau']] = tau
   object[['kernel']] = kernel
-  object[['h']] = h
   object[['beta.each']] = beta.each
   object[['beta.norm']] = beta.norm
   object[['beta.vectors']] = beta.vectors

@@ -34,7 +34,7 @@
 #' }
 #' @export
 QM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,tau=0.5,h=NULL,kernel='Gaussian',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,
-                  max.cv.iter=20,cv.threshold=1e-10,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+                  max.cv.iter=20,cv.threshold=1e-10,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -66,7 +66,7 @@ QM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,tau=0.5,h=NULL,kernel='Gaussian',pen
   if (is.null(h)){h = c(-1.0)}
   
   # Use QM_GCV function to obtain the optimal parameters
-  result = QM_GCV(X,Yorg,Xnew,Yorgnew,lambda.list,Xdim.max.list,tau,h,kernel,penalty,gamma,max.cv.iter,cv.threshold)
+  result = QM_GCV(X,Yorg,Xnew,Yorgnew,lambda.list,Xdim.max.list,tau,h,c.h,kernel,penalty,gamma,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max')
@@ -79,7 +79,7 @@ QM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,tau=0.5,h=NULL,kernel='Gaussian',pen
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM_each(X,Yorg,opt.lambda,opt.Xdim.max,tau,h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
+  object = QM_each(X,Yorg,opt.lambda,opt.Xdim.max,tau,h,c.h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims
@@ -99,7 +99,6 @@ QM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,tau=0.5,h=NULL,kernel='Gaussian',pen
   object[['pca']] = pca
   object[['tau']] = tau
   object[['kernel']] = kernel
-  object[['h']] = object$h
   object[['beta.each']] = beta.each
   object[['beta.norm']] = beta.norm
   object[['beta.vectors']] = beta.vectors

@@ -33,7 +33,7 @@
 #' }
 #' @export
 QM.kfold = function(Xorg,Yorg,kfold=5,seed=NULL,tau=0.5,h=NULL,kernel='Gaussian',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,
-                    max.cv.iter=20,cv.threshold=1e-10,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+                    max.cv.iter=20,cv.threshold=1e-10,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -91,7 +91,7 @@ QM.kfold = function(Xorg,Yorg,kfold=5,seed=NULL,tau=0.5,h=NULL,kernel='Gaussian'
   
   # Use QM_kfold function defined in cpp
   result = QM_Kfold(Xorg.list,Y.list,Xnew.list,Ynew.list,kfold,lambda.list,Xdim.max.list,
-                    tau,h,kernel,penalty,gamma,max.cv.iter,cv.threshold)
+                    tau,h,c.h,kernel,penalty,gamma,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max')
@@ -104,7 +104,7 @@ QM.kfold = function(Xorg,Yorg,kfold=5,seed=NULL,tau=0.5,h=NULL,kernel='Gaussian'
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM(Xall,Yall,tau,h,kernel,penalty,gamma,opt.lambda,opt.Xdim.max,phi0,c.phi,max.iter,threshold)
+  object = QM(Xall,Yall,tau,h,kernel,penalty,gamma,opt.lambda,opt.Xdim.max,c.h,phi0,c.phi,max.iter,threshold)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))

@@ -34,7 +34,7 @@
 #' }
 #' @export
 QM.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,
-                 max.cv.iter=20,cv.threshold=1e-10,cv.const=2,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+                 max.cv.iter=20,cv.threshold=1e-10,cv.const=2,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -67,7 +67,7 @@ QM.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',cv.type='AIC',penalt
   if (is.null(h)){h = c(-1.0)}
   
   # Use QM_CV function to obtain the optimal parameters
-  result = QM_CV(X,Yorg,lambda.list,Xdim.max.list,cv.type,tau,h,kernel,penalty,gamma,cv.const,max.cv.iter,cv.threshold)
+  result = QM_CV(X,Yorg,lambda.list,Xdim.max.list,cv.type,tau,h,c.h,kernel,penalty,gamma,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max')
@@ -80,7 +80,7 @@ QM.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',cv.type='AIC',penalt
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM_each(X,Yorg,opt.lambda,opt.Xdim.max,tau,h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
+  object = QM_each(X,Yorg,opt.lambda,opt.Xdim.max,tau,h,c.h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims
@@ -100,7 +100,6 @@ QM.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',cv.type='AIC',penalt
   object[['pca']] = pca
   object[['tau']] = tau
   object[['kernel']] = kernel
-  object[['h']] = object$h
   object[['beta.each']] = beta.each
   object[['beta.norm']] = beta.norm
   object[['beta.vectors']] = beta.vectors

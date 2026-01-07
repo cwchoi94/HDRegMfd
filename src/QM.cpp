@@ -16,7 +16,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau, double h, String kernel, String penalty, double gamma, double phi0, double c_phi, int max_iter, double threshold){
+List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau, double h, double c_h, String kernel, String penalty, double gamma, double phi0, double c_phi, int max_iter, double threshold){
 
     int p = Xorg.size();
     int n = Yorg.n_rows;
@@ -39,7 +39,12 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
 
     // Compute a basic h if h<0 (default)
     if (h < 0.0) {
-        h = max(0.05, pow(tau * (1.0 - tau), 1.0 / 2.0) * pow(log(sum(Xdims)) / n, 1.0 / 4.0));
+        if (c_h == 1.0) {
+            h = max(0.05, pow(tau * (1.0 - tau), 1.0 / 2.0) * pow(log(sum(Xdims)) / n, 1.0 / 4.0));
+        }
+        else {
+            h = c_h * pow(tau * (1.0 - tau), 1.0 / 2.0) * pow(log(sum(Xdims)) / n, 1.0 / 4.0);
+        }        
     }
 
     // compute indices
@@ -206,10 +211,10 @@ List QM_each(List Xorg, arma::mat Yorg, double lambda, int Xdim_max, double tau,
 
 
 
-double get_loss_QM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lambda, int Xdim_max, double tau, double h, String kernel, String penalty, double gamma) {
+double get_loss_QM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lambda, int Xdim_max, double tau, double h, double c_h, String kernel, String penalty, double gamma) {
 
     // model training
-    List model = QM_each(X, Y, lambda, Xdim_max, tau, h, kernel, penalty, gamma);
+    List model = QM_each(X, Y, lambda, Xdim_max, tau, h, c_h, kernel, penalty, gamma);
     mat beta = model["beta"];
     vec beta0 = model["beta0"];
     double h_ = model["h"];
@@ -231,10 +236,10 @@ double get_loss_QM(List X, arma::mat Y, List Xnew_, arma::mat Ynew, double lambd
 
 
 
-double get_loss_CV_QM(List X_, arma::mat Y, double lambda, int Xdim_max, String cv_type, double tau, double h, String kernel, String penalty, double gamma, double cv_const) {
+double get_loss_CV_QM(List X_, arma::mat Y, double lambda, int Xdim_max, String cv_type, double tau, double h, double c_h, String kernel, String penalty, double gamma, double cv_const) {
 
     // model training
-    List model = QM_each(X_, Y, lambda, Xdim_max, tau, h, kernel, penalty, gamma);
+    List model = QM_each(X_, Y, lambda, Xdim_max, tau, h, c_h, kernel, penalty, gamma);
     mat beta = model["beta"];
     vec beta0 = model["beta0"];
     double h_ = model["h"];

@@ -20,5 +20,5 @@ Imports:
     RcppArmadillo (>= 15.0.2.2),
     roxygen2 (>= 7.3.3)
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 License: MIT + file LICENSE

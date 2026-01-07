@@ -14,6 +14,7 @@ QM(
   gamma = 0,
   lambda = 0.1,
   Xdim.max = 100,
+  c.h = 1,
   phi0 = 1e-04,
   c.phi = 1.1,
   max.iter = 500,
@@ -43,6 +44,8 @@ QM(
 \item{lambda}{a non-negative penalty constant (default: 0.1).}
 
 \item{Xdim.max}{the maximum dimension to which \eqn{X_j} will be reduced (default: 100).}
+
+\item{c.h}{the constant multiplied by \eqn{h}. It is used only when \code{h==NULL}.}
 
 \item{phi0}{the initial \eqn{phi} for updating \eqn{\hat{\beta}}.}
 

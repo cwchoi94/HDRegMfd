@@ -30,7 +30,7 @@
 #'       \item{...}{other parameters.}
 #' }
 #' @export
-QM.oracle = function(Xorg,Yorg,proper.indices=NULL,tau=0.5,h=NULL,kernel='Gaussian',Xdim.max=100,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+QM.oracle = function(Xorg,Yorg,proper.indices=NULL,tau=0.5,h=NULL,kernel='Gaussian',Xdim.max=100,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -57,12 +57,10 @@ QM.oracle = function(Xorg,Yorg,proper.indices=NULL,tau=0.5,h=NULL,kernel='Gaussi
   Xdims_cumul.oracle = c(0,cumsum(Xdims.oracle))
   
   # compute the default value of h
-  if (is.null(h)){
-    h = max(0.05,tau * (1-tau) * (log(sum(Xdims)) / n)^(1/4))
-  }
+  if (is.null(h)){h = c(-1.0)}
   
   # apply GLM_each function in cpp
-  object = QM_each(Xoracle,Yorg,0,Xdim.max,tau,h,kernel,'LASSO',0,phi0,c.phi,max.iter,threshold)
+  object = QM_each(Xoracle,Yorg,0,Xdim.max,tau,h,c.h,kernel,'LASSO',0,phi0,c.phi,max.iter,threshold)
   
   # compute oracle estimator
   beta.oracle = object$beta
@@ -87,7 +85,6 @@ QM.oracle = function(Xorg,Yorg,proper.indices=NULL,tau=0.5,h=NULL,kernel='Gaussi
   object[['pca']] = pca
   object[['tau']] = tau
   object[['kernel']] = kernel
-  object[['h']] = h
   object[['beta.each']] = beta.each
   object[['beta.norm']] = beta.norm
   object[['beta.vectors']] = beta.vectors

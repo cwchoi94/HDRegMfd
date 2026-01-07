@@ -34,7 +34,7 @@
 #' }
 #' @export
 QM.oracle.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',proper.indices=NULL,cv.type='AIC',Xdim.max.list=NULL,
-                        max.cv.iter=20,cv.threshold=1e-10,cv.const=2,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+                        max.cv.iter=20,cv.threshold=1e-10,cv.const=2,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -65,7 +65,7 @@ QM.oracle.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',proper.indice
   
   
   # Use QM_CV function to obtain the optimal parameters
-  result = QM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,cv.type,tau,h,kernel,
+  result = QM_CV(Xoracle,Yorg,lambda.list,Xdim.max.list,cv.type,tau,h,c.h,kernel,
                   'LASSO',0,cv.const,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
@@ -78,7 +78,7 @@ QM.oracle.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',proper.indice
   
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM.oracle(Xorg,Yorg,proper.indices,tau,h,kernel,opt.Xdim.max,phi0,c.phi,max.iter,threshold)
+  object = QM.oracle(Xorg,Yorg,proper.indices,tau,h,kernel,opt.Xdim.max,c.h,phi0,c.phi,max.iter,threshold)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
@@ -128,7 +128,7 @@ QM.oracle.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',proper.indice
 #' }
 #' @export
 QM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,proper.indices=NULL,tau=0.5,h=NULL,kernel='Gaussian',Xdim.max.list=NULL,
-                         max.cv.iter=20,cv.threshold=1e-10,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+                         max.cv.iter=20,cv.threshold=1e-10,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -160,7 +160,7 @@ QM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,proper.indices=NULL,tau=0.5,h
   
   # Use QM_GCV function to obtain the optimal parameters
   result = QM_GCV(Xoracle,Yorg,Xoracle.new,Yorgnew,lambda.list,Xdim.max.list,
-                  tau,h,kernel,'LASSO',0,max.cv.iter,cv.threshold)
+                  tau,h,c.h,kernel,'LASSO',0,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max')
@@ -172,7 +172,7 @@ QM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,proper.indices=NULL,tau=0.5,h
   
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM.oracle(Xorg,Yorg,proper.indices,tau,h,kernel,opt.Xdim.max,phi0,c.phi,max.iter,threshold)
+  object = QM.oracle(Xorg,Yorg,proper.indices,tau,h,kernel,opt.Xdim.max,c.h,phi0,c.phi,max.iter,threshold)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
@@ -222,7 +222,7 @@ QM.oracle.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,proper.indices=NULL,tau=0.5,h
 #' }
 #' @export
 QM.oracle.kfold = function(Xorg,Yorg,proper.indices=NULL,kfold=5,seed=NULL,tau=0.5,h=NULL,kernel='Gaussian',Xdim.max.list=NULL,
-                           max.cv.iter=20,cv.threshold=1e-10,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
+                           max.cv.iter=20,cv.threshold=1e-10,c.h=1.0,phi0=1e-4,c.phi=1.1,max.iter=500,threshold=1e-10){
   
   start.time = Sys.time()
   
@@ -279,7 +279,7 @@ QM.oracle.kfold = function(Xorg,Yorg,proper.indices=NULL,kfold=5,seed=NULL,tau=0
   
   # Use QM_kfold function defined in cpp
   result = QM_Kfold(Xoracle.list,Y.list,Xoracle.new.list,Ynew.list,kfold,lambda.list,Xdim.max.list,
-                    tau,h,kernel,'LASSO',0,max.cv.iter,cv.threshold)
+                    tau,h,c.h,kernel,'LASSO',0,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max')
@@ -290,7 +290,7 @@ QM.oracle.kfold = function(Xorg,Yorg,proper.indices=NULL,kfold=5,seed=NULL,tau=0
   
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM.oracle(Xorg,Yorg,proper.indices,tau,h,kernel,opt.Xdim.max,phi0,c.phi,max.iter,threshold)
+  object = QM.oracle(Xorg,Yorg,proper.indices,tau,h,kernel,opt.Xdim.max,c.h,phi0,c.phi,max.iter,threshold)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))

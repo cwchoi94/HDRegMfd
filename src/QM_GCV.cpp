@@ -16,7 +16,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List QM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_list, arma::vec Xdim_max_list, double tau = 0.5, double h = -1.0,
+List QM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_list, arma::vec Xdim_max_list, double tau = 0.5, double h = -1.0, double c_h = 1.0,
             String kernel = "Gaussian", String penalty = "LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
@@ -44,7 +44,7 @@ List QM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_lis
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_QM(X, Y, Xnew, Ynew, lambda, opt_Xdim_max, tau, h, kernel, penalty, gamma);
+                loss1(i) = get_loss_QM(X, Y, Xnew, Ynew, lambda, opt_Xdim_max, tau, h, c_h, kernel, penalty, gamma);
             }
         }
         else {
@@ -73,7 +73,7 @@ List QM_GCV(List X, arma::mat Y, List Xnew, arma::mat Ynew, arma::vec lambda_lis
         if (r2 > 1) {
             for (int i = 0; i < r2; i++) {
                 double Xdim_max = Xdim_max_list(i);
-                loss2(i) = get_loss_QM(X, Y, Xnew, Ynew, opt_lambda, Xdim_max, tau, h, kernel, penalty, gamma);
+                loss2(i) = get_loss_QM(X, Y, Xnew, Ynew, opt_lambda, Xdim_max, tau, h, c_h, kernel, penalty, gamma);
             }
         }
         else {

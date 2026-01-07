@@ -17,7 +17,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List QM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, double tau = 0.5, double h = -1.0,
+List QM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfold, arma::vec lambda_list, arma::vec Xdim_max_list, double tau = 0.5, double h = -1.0, double c_h = 1.0,
               String kernel = "Gaussian", String penalty="LASSO", double gamma = 0, int max_cv_iter = 20, double threshold = 1e-10) {
   
     int r1 = lambda_list.size();
@@ -52,7 +52,7 @@ List QM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfol
                 mat Ynew = Ynew_list[idx];
                 for (int i = 0; i < r1; i++) {
                     double lambda = lambda_list(i);
-                    loss1_mat(idx, i) = get_loss_QM(X, Y, Xnew, Ynew, lambda, opt_Xdim_max, tau, h, kernel, penalty, gamma);
+                    loss1_mat(idx, i) = get_loss_QM(X, Y, Xnew, Ynew, lambda, opt_Xdim_max, tau, h, c_h, kernel, penalty, gamma);
                 }
             }
         }
@@ -90,7 +90,7 @@ List QM_Kfold(List X_list, List Y_list, List Xnew_list, List Ynew_list, int kfol
                 mat Ynew = Ynew_list[idx];
                 for (int i = 0; i < r2; i++) {
                     double Xdim_max = Xdim_max_list(i);
-                    loss2_mat(idx, i) = get_loss_QM(X, Y, Xnew, Ynew, opt_lambda, Xdim_max, tau, h, kernel, penalty, gamma);
+                    loss2_mat(idx, i) = get_loss_QM(X, Y, Xnew, Ynew, opt_lambda, Xdim_max, tau, h, c_h, kernel, penalty, gamma);
                 }
             }
         }

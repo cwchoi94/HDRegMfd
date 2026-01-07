@@ -18,6 +18,7 @@ QM.kfold(
   Xdim.max.list = NULL,
   max.cv.iter = 20,
   cv.threshold = 1e-10,
+  c.h = 1,
   phi0 = 1e-04,
   c.phi = 1.1,
   max.iter = 500,
@@ -55,6 +56,8 @@ QM.kfold(
 \item{max.cv.iter}{a maximum number of CV iterations (default 20).}
 
 \item{cv.threshold}{a convergence threshold for the CV (default 1e-10).}
+
+\item{c.h}{the constant multiplied by \eqn{h}. It is used only when \code{h==NULL}.}
 
 \item{phi0}{the initial \eqn{phi} for updating \eqn{\hat{\beta}}.}
 

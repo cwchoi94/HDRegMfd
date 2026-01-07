@@ -17,7 +17,7 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List QM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, String cv_type = "AIC", double tau = 0.5, double h = -1.0,
+List QM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, String cv_type = "AIC", double tau = 0.5, double h = -1.0, double c_h = 1.0,
            String kernel = "Gaussian", String penalty = "LASSO", double gamma = 0, double cv_const = 2.0, int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
@@ -45,7 +45,7 @@ List QM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, 
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_QM(X, Y, lambda, opt_Xdim_max, cv_type, tau, h, kernel, penalty, gamma, cv_const);
+                loss1(i) = get_loss_CV_QM(X, Y, lambda, opt_Xdim_max, cv_type, tau, h, c_h, kernel, penalty, gamma, cv_const);
             }
         }
         else {
@@ -74,7 +74,7 @@ List QM_CV(List X, arma::mat Y, arma::vec lambda_list, arma::vec Xdim_max_list, 
         if (r2 > 1) {
             for (int i = 0; i < r2; i++) {
                 double Xdim_max = Xdim_max_list(i);
-                loss2(i) = get_loss_CV_QM(X, Y, opt_lambda, Xdim_max, cv_type, tau, h, kernel, penalty, gamma, cv_const);
+                loss2(i) = get_loss_CV_QM(X, Y, opt_lambda, Xdim_max, cv_type, tau, h, c_h, kernel, penalty, gamma, cv_const);
             }
         }
         else {
