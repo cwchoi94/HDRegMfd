@@ -80,7 +80,7 @@ QM.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',cv.type='AIC',penalt
   opt.lambda = result$opt.lambda
   opt.Xdim.max = result$opt.Xdim.max
   
-  object = QM_each(X,Yorg,opt.lambda,opt.Xdim.max,tau,h,c.h,kernel,penalty,gamma,phi0,c.phi,max.iter,threshold)
+  object = QM(Xorg,Yorg,tau,h,kernel,penalty,gamma,opt.lambda,opt.Xdim.max,c.h,phi0,c.phi,max.iter,threshold)
   
   # compute other parameters
   Xdims = object$Xdims
