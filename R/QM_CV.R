@@ -82,30 +82,10 @@ QM.CV = function(Xorg,Yorg,tau=0.5,h=NULL,kernel='Gaussian',cv.type='AIC',penalt
   
   object = QM(Xorg,Yorg,tau,h,kernel,penalty,gamma,opt.lambda,opt.Xdim.max,c.h,phi0,c.phi,max.iter,threshold)
   
-  # compute other parameters
-  Xdims = object$Xdims
-  Xdims_cumul = c(0,cumsum(Xdims))
-  
-  beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
-  beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})
-  beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
-  beta.vectors = reduce.dimension(beta.vectors,opt.Xdim.max,margin=2)
-  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
-  proper.indices = which(beta.norm!=0)
-  
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
-  object[['pca']] = pca
-  object[['tau']] = tau
-  object[['kernel']] = kernel
-  object[['beta.each']] = beta.each
-  object[['beta.norm']] = beta.norm
-  object[['beta.vectors']] = beta.vectors
-  object[['beta.tensor']] = beta.tensor
-  object[['proper.indices']] = proper.indices
-  object[['iter.inner']] = object$iter.inner[1:object$iter]
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
