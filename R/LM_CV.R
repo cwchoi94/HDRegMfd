@@ -87,14 +87,6 @@ LM.CV = function(Xorg,Yorg,Yspace,cv.type='AIC',penalty='LASSO',gamma=0,lambda.l
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
   runtime = hms::hms(round(runtime.second))
   
-  object[['pca']] = pca
-  object[['Ymu']] = Ymu
-  object[['Yspace']] = Yspace
-  object[['beta.each']] = beta.each
-  object[['beta.norm']] = beta.norm
-  object[['beta.vectors']] = beta.vectors
-  object[['beta.tensor']] = beta.tensor
-  object[['proper.indices']] = proper.indices
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime
