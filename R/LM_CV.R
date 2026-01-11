@@ -81,18 +81,7 @@ LM.CV = function(Xorg,Yorg,Yspace,cv.type='AIC',penalty='LASSO',gamma=0,lambda.l
   opt.Xdim.max = result$opt.Xdim.max
   opt.R = result$opt.R
   
-  object = LM_each(X,LogY,Ymu,Yspace,opt.lambda,opt.Xdim.max,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
-  
-  # compute other parameters
-  Xdims = object$Xdims
-  Xdims_cumul = c(0,cumsum(Xdims))
-  
-  beta.each = lapply(1:p,function(j){object$beta[(Xdims_cumul[j]+1):Xdims_cumul[j+1],]})
-  beta.norm = sapply(1:p,function(j){vector.norm(beta.each[[j]],Ymu,Yspace,'L2')})
-  beta.vectors = lapply(1:p,function(j){pca[[j]]$vectors})
-  beta.vectors = reduce.dimension(beta.vectors,opt.Xdim.max,margin=2)
-  beta.tensor = lapply(1:p,function(j){make.tensor(beta.vectors[[j]],beta.each[[j]],pca$spaces[j],Yspace,pca[[j]]$mu,Ymu)})
-  proper.indices = which(beta.norm!=0)
+  object = LM(Xorg,Yorg,Yspace,penalty,gamma,opt.lambda,opt.Xdim.max,opt.R,phi,eta,max.iter,threshold)
   
   runtime.second = as.numeric(difftime(Sys.time(),start.time,units='secs'))
   runtime.opt.second = as.numeric(difftime(Sys.time(),opt.start.time,units='secs'))
