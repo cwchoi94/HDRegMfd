@@ -120,6 +120,7 @@ arma::cube sqrt_mat_cube(arma::cube x, double tol = 1e-8) {
      // compute a tildem list
      // p list - (g,r,m) -> (p,g*r,m) cube
      cube tildem(p, g * r, m);
+     mat tmp_weight(r, n);
      for (int j = 0; j < p; j++) {
          cube kvalues_all_j = kvalues_all[j]; // (g,n,r) cube
          cube kde_1d_inv_j = kde_1d_inv_list[j];   // (g,r,r) cube
@@ -128,13 +129,16 @@ arma::cube sqrt_mat_cube(arma::cube x, double tol = 1e-8) {
          for (int k = 0; k < g; k++) {
              mat kde_1d_inv_jk = kde_1d_inv_j.row(k);
              mat kvalues_all_jk = kvalues_all_j.row(k);
-
+             
              if (degree == 0) {
-                 tildem_j.rows(r * k, r * (k + 1) - 1) = kde_1d_inv_jk * kvalues_all_jk * LogY / n;
+               tmp_weight = kde_1d_inv_jk * kvalues_all_jk;
              }
              else if (degree > 0) {
-                 tildem_j.rows(r * k, r * (k + 1) - 1) = kde_1d_inv_jk * kvalues_all_jk.t() * LogY / n;
+               tmp_weight = kde_1d_inv_jk * kvalues_all_jk.t();
              }
+             
+             tmp_weight.row(0) -= 1.0;
+             tildem_j.rows(r * k, r * (k + 1) - 1) = tmp_weight * LogY / n;
 
          }
 

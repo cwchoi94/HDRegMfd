@@ -12,13 +12,13 @@ Imports:
     base (>= 4.5.2),
     expm (>= 1.0.0),
     hms (>= 1.1.4),
-    manifold (>= 0.1.1),
+    manifold (>= 0.1.2),
     MASS (>= 7.3.65),
     plyr (>= 1.8.9),
     pracma (>= 2.4.6),
-    Rcpp (>= 1.1.0),
-    RcppArmadillo (>= 15.0.2.2),
-    roxygen2 (>= 7.3.3)
+    Rcpp (>= 1.1.2),
+    RcppArmadillo (>= 15.4.0.1),
+    roxygen2 (>= 8.0.0)
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.3.3
 License: MIT + file LICENSE
+Config/roxygen2/version: 8.0.0
