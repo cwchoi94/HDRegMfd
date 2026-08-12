@@ -257,7 +257,7 @@ AM.covariates.generate = function(n,Xspaces,Xmu.list,Xdims,Xrho=0.5,Xsigma=1,a=1
 #' @param proper.ind.mat a \eqn{s\times 2} index matrix such that \eqn{\mathcal{S}=\{(j,k) : m_{jk}^*\neq0\}}.
 #' @param add.mean.norm a \eqn{s} vector (or a single integer) of \eqn{\|m_{jk}^*\|_f}, used only for \eqn{(j,k)\in\mathcal{S}}. If an integer is provided, the same value is applied to all \eqn{(j,k)\in\mathcal{S}}.
 #' @param seed a random seed, which must be greater than 1.
-#' @param c.add.mean a list of pre-computed parameters to ensujre that \eqn{\E\|m_{jk}^*(\xi_{jk})\|^2 = (\text{add.mean.norm[j]})^2}, only computed if not provided.
+#' @param c.add.mean a list of pre-computed parameters to ensure that \eqn{\E\|m_{jk}^*(\xi_{jk})\|^2 = (\text{add.mean.norm[j]})^2}, only computed if not provided.
 #' 
 #' @return a list of data containing:
 #'    \describe{
@@ -364,7 +364,7 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
   proper.ind.mat.all = cbind(all.indices,proper.ind.mat,add.mean.norm)
   colnames(proper.ind.mat.all) = c('index','j','k','add.mean.norm')
   
-  data = list(X=X,Y=Y,Xi=Xi,error=error,Ymu=Ymu,Xmu.list=Xmu.list,c.add.mean=c.add.mean,
+  data = list(X=X,Y=Y,Xi=Xi,Xi.transform=Xi.transform,error=error,Ymu=Ymu,Xmu.list=Xmu.list,c.add.mean=c.add.mean,
               LogY=LogY,error=error,add.mean=add.mean,add.mean.each=add.mean.each,Exp.add.mean=Exp.add.mean,
               n=n,p=length(Xdims),Xspaces=Xspaces,Yspace=Yspace,Xdims=Xdims,Ydim=Ydim,
               proper.ind.mat=proper.ind.mat,proper.ind.mat.all=proper.ind.mat.all,

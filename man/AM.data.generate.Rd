@@ -54,7 +54,7 @@ AM.data.generate(
 
 \item{seed}{a random seed, which must be greater than 1.}
 
-\item{c.add.mean}{a list of pre-computed parameters to ensujre that \eqn{\E\|m_{jk}^*(\xi_{jk})\|^2 = (\text{add.mean.norm[j]})^2}, only computed if not provided.}
+\item{c.add.mean}{a list of pre-computed parameters to ensure that \eqn{\E\|m_{jk}^*(\xi_{jk})\|^2 = (\text{add.mean.norm[j]})^2}, only computed if not provided.}
 }
 \value{
 a list of data containing:
