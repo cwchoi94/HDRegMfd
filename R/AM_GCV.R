@@ -11,7 +11,7 @@
 #' @inheritParams AM.CV
 #' @inheritParams LM.CV
 #' 
-#' @return a \code{AM} object with the following compnents:
+#' @return a \code{\link{AM}} object with the following compnents:
 #'    \describe{
 #'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
 #'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
@@ -32,7 +32,7 @@
 #' }
 #' @export
 AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,bandwidths.list=NULL,
-                  max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',cv.const=2.0,
+                  max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,initialization='v1',transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',cv.const=2.0,
                   phi=1,eta=1e-3,max.iter=200,threshold=1e-6,SBF.comp=NULL){
   
   start.time = Sys.time()
@@ -40,6 +40,10 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   # check validity of inputs
   Check.penalty(penalty)
   Check.manifold(Yspace)
+  
+  if (!(initialization %in% c('v1','v2'))){
+    stop("The parameter 'initialization' should be one of 'v1' or 'v2'.")
+  }
   
   if ((penalty=='SCAD') & (gamma<2)){
     gamma = 3.7
@@ -119,7 +123,7 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   # not compute AIC or BIC loss
   cv.type = 'NONE' 
   result = AM_CV_average(SBF.comp,Xnew,LogYnew,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
-                         cv.type,penalty,gamma,cv.const,max.cv.iter,cv.threshold)
+                         cv.type,penalty,gamma,cv.const,initialization,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c('lambda','Xdim.max','R')
@@ -137,7 +141,7 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   opt.SBF.comp = SBF_preprocessing_reduce_dim(SBF.comp,opt.Xdim.max,index.mat)
   
   ## apply AM_each
-  object = AM_each(opt.SBF.comp,Ymu,Yspace,opt.lambda,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
+  object = AM_each(opt.SBF.comp,Ymu,Yspace,opt.lambda,opt.R,penalty,gamma,initialization,phi,eta,max.iter,threshold)
   
   
   # compute other parameters
@@ -172,6 +176,7 @@ AM.GCV = function(Xorg,Yorg,Xorgnew,Yorgnew,Yspace,degree=0,penalty='LASSO',gamm
   object[['all.indices']] = index.mat[,1]
   object[['proper.ind.mat.all']] = proper.ind.mat.all
   object[['proper.ind.mat']] = proper.ind.mat
+  object[['initialization']] = initialization
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime

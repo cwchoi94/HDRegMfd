@@ -17,9 +17,12 @@ using namespace arma;
 
 
 // [[Rcpp::export]]
-List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, String Yspace, int kfold, arma::mat bandwidths_mat, arma::vec grids, arma::vec weights,
-                  arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
-                  String penalty = "LASSO", double gamma = 0, int degree = 0, String Kdenom_method = "numeric", double cv_const = 2.0, int max_cv_iter = 20, double threshold = 1e-10) {
+List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list, List Ymu_list, String Yspace, 
+    int kfold, arma::mat bandwidths_mat, arma::vec grids, arma::vec weights,
+    arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, 
+    String cv_type = "AIC", String penalty = "LASSO", double gamma = 0, int degree = 0, 
+    String Kdenom_method = "numeric", double cv_const = 2.0, String initialization = "v1", 
+    int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -78,7 +81,8 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                         List SBF_comp = SBF_preprocessing(X, LogY, tmp_bandwidths, grids, weights, degree, Kdenom_method);
                         List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, opt_Xdim_max, index_mat);
 
-                        loss0_j_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                        loss0_j_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, 
+                            cv_type, penalty, gamma, cv_const, initialization);
                     }
                 }
 
@@ -137,7 +141,8 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r1; i++) {
                     double lambda = lambda_list(i);
-                    loss1_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                    loss1_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, 
+                        cv_type, penalty, gamma, cv_const, initialization);
                 }
             }            
         }
@@ -182,7 +187,8 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                     mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                     List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                    loss2_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                    loss2_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, 
+                        cv_type, penalty, gamma, cv_const, initialization);
                 }
             }
         }
@@ -231,7 +237,8 @@ List AM_CBS_kfold(List X_list, List LogY_list, List Xnew_list, List LogYnew_list
                 vec Ymu = Ymu_list[idx];
                 for (int i = 0; i < r3; i++) {
                     double R = R_list(i);
-                    loss3_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma, cv_const);
+                    loss3_mat(idx, i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, 
+                        cv_type, penalty, gamma, cv_const, initialization);
                 }
             }
         }

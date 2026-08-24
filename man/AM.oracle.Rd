@@ -11,6 +11,7 @@ AM.oracle(
   proper.ind.mat = NULL,
   degree = 0,
   bandwidths.list = NULL,
+  initialization = "v1",
   transform = "Gaussian",
   normalize = TRUE,
   ngrid = 51,
@@ -36,6 +37,8 @@ AM.oracle(
 \item{proper.ind.mat}{a \eqn{s\times 2} index matrix such that \eqn{\mathcal{S}=\{(j,k) : m_{jk}^*\neq0\}}.}
 
 \item{degree}{the degree of the local polynomial fitting. Options are: 0 for Nadaraya-Watson (default), 1 for local-linear, etc.}
+
+\item{initialization}{the initialization method for the ADMM algorithm. Options are \code{'v1'} and \code{'v2'} (default: \code{'v1'}).}
 
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 

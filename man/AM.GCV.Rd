@@ -20,6 +20,7 @@ AM.GCV(
   max.cv.iter = 20,
   cv.threshold = 1e-06,
   alpha.Xdim.max = 0.025,
+  initialization = "v1",
   transform = "Gaussian",
   normalize = TRUE,
   ngrid = 51,
@@ -62,6 +63,8 @@ AM.GCV(
 
 \item{alpha.Xdim.max}{a constant for rule-of-thumbs \code{Xdim.max} selection, only used when \code{Xdim.max.list=NULL}.}
 
+\item{initialization}{the initialization method for the ADMM algorithm. Options are \code{'v1'} and \code{'v2'} (default: \code{'v1'}).}
+
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 
 \item{normalize}{a parameter indicating whether to standardize each column of score matrices (default: \code{TRUE}).}
@@ -81,7 +84,7 @@ AM.GCV(
 \item{threshold}{a convergence threshold for the algorithm (default: 1e-6).}
 }
 \value{
-a \code{AM} object with the following compnents:
+a \code{\link{AM}} object with the following compnents:
    \describe{
       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}

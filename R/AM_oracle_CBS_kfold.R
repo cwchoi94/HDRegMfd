@@ -36,7 +36,8 @@
 #' @export
 AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.01,h.count=10,kfold=5,seed=NULL,
                         penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,
-                        max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',
+                        max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,initialization='v1',
+                        transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',
                         phi=1,eta=1e-3,max.iter=200,threshold=1e-6){
   
   start.time = Sys.time()
@@ -44,6 +45,10 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   # check validity of inputs
   Check.penalty(penalty)
   Check.manifold(Yspace)
+  
+  if (!(initialization %in% c('v1','v2'))){
+    stop("The parameter 'initialization' should be one of 'v1' or 'v2'.")
+  }
   
   if ((penalty=='SCAD') & (gamma<2)){
     gamma = 3.7
@@ -167,8 +172,9 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   # not compute AIC or BIC loss
   cv.type = 'NONE' 
   cv.const = 2
-  result = AM_CBS_kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,bandwidths.mat,grids,weights,lambda.list,Xdim.max.list,R.list,index.mat,cv.type,
-                        penalty,gamma,degree,Kdenom_method,cv.const,max.cv.iter,cv.threshold)
+  result = AM_CBS_kfold(Xorg.list,LogY.list,Xnew.list,LogYnew.list,Ymu.list,Yspace,kfold,bandwidths.mat,grids,weights,
+                        lambda.list,Xdim.max.list,R.list,index.mat,cv.type,
+                        penalty,gamma,degree,Kdenom_method,cv.const,initialization,max.cv.iter,cv.threshold)
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
   colnames(parameter.list) = c(sapply(1:P,function(i){paste0('h',i)}),'lambda','Xdim.max','R')
@@ -208,7 +214,7 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   opt.SBF.comp = SBF.preprocessing(X,LogYall,opt.bandwidths,degree,ngrid,Kdenom_method)
   
   ## apply AM_each
-  object = AM_each(opt.SBF.comp,Ymu,Yspace,opt.lambda,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
+  object = AM_each(opt.SBF.comp,Ymu,Yspace,opt.lambda,opt.R,penalty,gamma,initialization,phi,eta,max.iter,threshold)
   
   
   # compute other parameters
@@ -238,6 +244,7 @@ AM.CBS.kfold = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,h.grid=0.0
   object[['all.indices']] = all.indices
   object[['proper.ind.mat.all']] = proper.ind.mat.all
   object[['proper.ind.mat']] = proper.ind.mat
+  object[['initialization']] = initialization
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime

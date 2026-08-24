@@ -61,7 +61,7 @@ arma::mat hatmj_update(arma::mat tmp_hatmj, double sigma, double norm_hatmj, Str
 
 
 // [[Rcpp::export]]
-List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double R, String penalty, double gamma, double phi, double eta, int max_iter, double threshold) {
+List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double R, String penalty, double gamma, String initialization,double phi, double eta, int max_iter, double threshold) {
 
     // p = the number of (j,k) with k <= Xdim_max
     // tildem: (p, g*r, m) cube
@@ -85,6 +85,20 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     cube mhat_old(p, g * r, m, fill::zeros); // (p, g*r, m)
     double A = R;
     double B = 0;
+
+    if (initialization!="v1"){
+        for (int j = 0; j < p; j++) {
+            if (m == 1) {
+                mat tmp_tildem_j = tildem.row(j);
+                mhat.row(j) = tmp_tildem_j.t();
+                mhat_old.row(j) = tmp_tildem_j.t();
+            }
+            else {
+                mhat.row(j) = tildem.row(j);
+                mhat_old.row(j) = tildem.row(j);
+            }
+        }
+    }
 
     vec mhat_norm(p, fill::zeros);
     double sigma = phi + eta;
@@ -271,10 +285,11 @@ arma::mat predict_AM(List object, arma::mat Xnew) {
 
 
 // [[Rcpp::export]]
-double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma, double cv_const) {
+double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, 
+    double lambda, double R, String cv_type, String penalty, double gamma, double cv_const, String initialization) {
 
     // model training
-    List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma);
+    List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma, initialization);
 
     // compute Yhat
     mat LogYhat = predict_AM(model, Xnew);
@@ -312,7 +327,8 @@ double get_loss_CV_AM_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, 
 
 
 // [[Rcpp::export]]
-double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, double lambda, double R, String cv_type, String penalty, double gamma, double cv_const) {
+double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace, 
+    double lambda, double R, String cv_type, String penalty, double gamma, double cv_const, String initialization) {
 
     // tildem: (p, g*r, m) cube
     // kde_1d: p list - (g,r,r) cube
@@ -329,7 +345,7 @@ double get_loss_CV_AM_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew,
     int m = LogYnew.n_cols;
 
     // model training
-    List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma);
+    List model = AM_each(SBF_comp, Ymu, Yspace, lambda, R, penalty, gamma, initialization);
     
     cube mhat = model["mhat.org"];
     

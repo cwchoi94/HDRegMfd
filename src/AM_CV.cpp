@@ -18,8 +18,9 @@ using namespace arma;
 
 // [[Rcpp::export]]
 List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace,
-                   arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
-                   String penalty = "LASSO", double gamma = 0, double cv_const = 2.0, int max_cv_iter = 20, double threshold = 1e-10) {
+                   arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, 
+                   String cv_type = "AIC", String penalty = "LASSO", double gamma = 0, double cv_const = 2.0, 
+                   String initialization = "v1", int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -54,7 +55,8 @@ List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Y
         if (r1 > 1 || iter==0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                loss1(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, 
+                    cv_type, penalty, gamma, cv_const, initialization);
             }
         }
         else {
@@ -89,7 +91,8 @@ List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Y
                 mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                 List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                loss2(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                loss2(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, 
+                    cv_type, penalty, gamma, cv_const, initialization);
             }
         }
         else {
@@ -123,7 +126,8 @@ List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Y
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma, cv_const);
+                loss3(i) = get_loss_CV_AM_average(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, 
+                    cv_type, penalty, gamma, cv_const, initialization);
             }
         }
         else {
@@ -171,7 +175,8 @@ List AM_CV_average(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Y
 // [[Rcpp::export]]
 List AM_CV_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec Ymu, String Yspace,
                     arma::vec lambda_list, arma::vec Xdim_max_list, arma::vec R_list, arma::mat index_mat, String cv_type = "AIC",
-                    String penalty = "LASSO", double gamma = 0, double cv_const = 2.0, int max_cv_iter = 20, double threshold = 1e-10) {
+                    String penalty = "LASSO", double gamma = 0, double cv_const = 2.0, String initialization = "v1",
+                    int max_cv_iter = 20, double threshold = 1e-10) {
 
     int r1 = lambda_list.size();
     int r2 = Xdim_max_list.size();
@@ -207,7 +212,7 @@ List AM_CV_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec 
         if (r1 > 1 || iter == 0) {
             for (int i = 0; i < r1; i++) {
                 double lambda = lambda_list(i);
-                loss1(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                loss1(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, lambda, opt_R, cv_type, penalty, gamma, cv_const, initialization);
             }
         }
         else {
@@ -241,7 +246,7 @@ List AM_CV_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec 
                 mat Xnew_r = Reduced_X_mat(Xnew, index_mat, Xdim_max);
                 List SBF_comp_r = SBF_preprocessing_reduce_dim(SBF_comp, Xdim_max, index_mat);
 
-                loss2(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const);
+                loss2(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, opt_R, cv_type, penalty, gamma, cv_const, initialization);
             }
         }
         else {
@@ -275,7 +280,7 @@ List AM_CV_integral(List SBF_comp, arma::mat Xnew, arma::mat LogYnew, arma::vec 
         if (r3 > 1) {
             for (int i = 0; i < r3; i++) {
                 double R = R_list(i);
-                loss3(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma, cv_const);
+                loss3(i) = get_loss_CV_AM_integral(SBF_comp_r, Xnew_r, LogYnew, Ymu, Yspace, opt_lambda, R, cv_type, penalty, gamma, cv_const, initialization);
             }
         }
         else {

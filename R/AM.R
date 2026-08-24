@@ -18,8 +18,9 @@
 #' @param max.iter a maximum number of iterations (default: 200).
 #' @param threshold a convergence threshold for the algorithm (default: 1e-6).
 #' @param SBF.compe a \code{\link{SBF.comp}} object (default: \code{NULL}). If \code{SBF.comp==NULL}, this function computes the SBF.comp using \code{\link{SBF.comp}}.
+#' @param initialization the initialization method for the ADMM algorithm. Options are \code{'v1'} and \code{'v2'} (default: \code{'v1'}).
 #'
-#' @return a \code{AM} object with the following compnents:
+#' @return a \code{AM} object with the following components:
 #'    \describe{
 #'       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
 #'       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
@@ -37,13 +38,18 @@
 #' }
 #' @export
 AM = function(Xorg,Yorg,Yspace,degree=0,penalty='LASSO',gamma=0,lambda=0.1,Xdim.max=100,R=100,bandwidths.list=NULL,
-              transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',phi=1,eta=1e-3,max.iter=200,threshold=1e-6,SBF.comp=NULL){
+              initialization='v1',transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',
+              phi=1,eta=1e-3,max.iter=200,threshold=1e-6,SBF.comp=NULL){
   
   start.time = Sys.time()
   
   # check validility of inputs
   Check.penalty(penalty)
   Check.manifold(Yspace)
+  
+  if (!(initialization %in% c('v1','v2'))){
+    stop("The parameter 'initialization' should be one of 'v1' or 'v2'.")
+  }
   
   if ((penalty=='SCAD') & (gamma<2)){
     gamma = 3.7
@@ -99,7 +105,7 @@ AM = function(Xorg,Yorg,Yspace,degree=0,penalty='LASSO',gamma=0,lambda=0.1,Xdim.
   
   
   # apply AM_each function in cpp
-  object = AM_each(SBF.comp,Ymu,Yspace,lambda,R,penalty,gamma,phi,eta,max.iter,threshold)
+  object = AM_each(SBF.comp,Ymu,Yspace,lambda,R,penalty,gamma,initialization,phi,eta,max.iter,threshold)
   
   
   # compute other parameters
@@ -127,6 +133,7 @@ AM = function(Xorg,Yorg,Yspace,degree=0,penalty='LASSO',gamma=0,lambda=0.1,Xdim.
   object[['all.indices']] = index.mat[,1]
   object[['proper.ind.mat.all']] = proper.ind.mat.all
   object[['proper.ind.mat']] = proper.ind.mat
+  object[['initialization']] = initialization
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
   class(object) = 'AM'

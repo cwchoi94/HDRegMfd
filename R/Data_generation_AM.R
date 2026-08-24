@@ -289,7 +289,7 @@ AM.data.generate = function(n,Xspaces,Yspace,Xdims,Ydim,proper.ind.mat,add.mean.
   # generate c.add.mean for ensuring \|m_{jk}^*\| = add.mean.norm[j']
   if (is.null(c.add.mean)){
     set.seed(0)
-    n0 = 100000
+    n0 = 10000
     
     ## compute var(xi_{jk})
     Xdata.base0 = AM.covariates.generate(n0,Xspaces,Xmu.list,Xdims,Xrho,Xsigma)

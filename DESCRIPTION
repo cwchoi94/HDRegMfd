@@ -14,11 +14,15 @@ Imports:
     hms (>= 1.1.4),
     manifold (>= 0.1.2),
     MASS (>= 7.3.65),
+    osqp (>= 1.0.0),
     plyr (>= 1.8.9),
     pracma (>= 2.4.6),
     Rcpp (>= 1.1.2),
     RcppArmadillo (>= 15.4.0.1),
-    roxygen2 (>= 8.0.0)
+    reticulate (>= 1.46.0),
+    roxygen2 (>= 8.0.0),
+    truncnorm (>= 1.0.9),
+    vegan (>= 2.7.5)
 LinkingTo: Rcpp, RcppArmadillo
 License: MIT + file LICENSE
 Config/roxygen2/version: 8.0.0

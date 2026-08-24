@@ -22,6 +22,7 @@ AM.CBS.GCV(
   max.cv.iter = 20,
   cv.threshold = 1e-06,
   alpha.Xdim.max = 0.025,
+  initialization = "v1",
   transform = "Gaussian",
   normalize = TRUE,
   ngrid = 51,
@@ -69,6 +70,8 @@ AM.CBS.GCV(
 \item{cv.threshold}{a convergence threshold for the CV (default: 1e-6).}
 
 \item{alpha.Xdim.max}{a constant for rule-of-thumbs \code{Xdim.max} selection, only used when \code{Xdim.max.list=NULL}.}
+
+\item{initialization}{the initialization method for the ADMM algorithm. Options are \code{'v1'} and \code{'v2'} (default: \code{'v1'}).}
 
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 

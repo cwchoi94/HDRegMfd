@@ -38,7 +38,7 @@
 #' }
 #' @export
 AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0,lambda.list=NULL,Xdim.max.list=NULL,R.list=NULL,bandwidths.list=NULL,
-                 max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',cv.const=2,
+                 max.cv.iter=20,cv.threshold=1e-6,alpha.Xdim.max=0.025,initialization='v1',transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',cv.const=2,
                  phi=1,eta=1e-3,max.iter=200,threshold=1e-6,loss.type='integral',SBF.comp=NULL){
   
   start.time = Sys.time()
@@ -47,6 +47,10 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   Check.penalty(penalty)
   Check.manifold(Yspace)
   Check.loss.type(loss.type)
+  
+  if (!(initialization %in% c('v1','v2'))){
+    stop("The parameter 'initialization' should be one of 'v1' or 'v2'.")
+  }
   
   if ((penalty=='SCAD') & (gamma<2)){
     gamma = 3.7
@@ -122,10 +126,10 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   # Use AM_CV function to obtain the optimal parameters
   if (loss.type=='average'){
     result = AM_CV_average(SBF.comp,X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
-                           cv.type,penalty,gamma,cv.const,max.cv.iter,cv.threshold)
+                           cv.type,penalty,gamma,cv.const,initialization,max.cv.iter,cv.threshold)
   }else{
     result = AM_CV_integral(SBF.comp,X,LogY,Ymu,Yspace,lambda.list,Xdim.max.list,R.list,index.mat,
-                            cv.type,penalty,gamma,cv.const,max.cv.iter,cv.threshold)
+                            cv.type,penalty,gamma,cv.const,initialization,max.cv.iter,cv.threshold)
   }
   
   parameter.list = result$parameter.list[which(rowMeans(result$parameter.list)!=0),,drop=FALSE]
@@ -144,7 +148,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   opt.SBF.comp = SBF_preprocessing_reduce_dim(SBF.comp,opt.Xdim.max,index.mat)
   
   ## apply AM_each
-  object = AM_each(opt.SBF.comp,Ymu,Yspace,opt.lambda,opt.R,penalty,gamma,phi,eta,max.iter,threshold)
+  object = AM_each(opt.SBF.comp,Ymu,Yspace,opt.lambda,opt.R,penalty,gamma,initialization,phi,eta,max.iter,threshold)
   
   
   # compute other parameters
@@ -178,6 +182,7 @@ AM.CV = function(Xorg,Yorg,Yspace,degree=0,cv.type='AIC',penalty='LASSO',gamma=0
   object[['all.indices']] = index.mat[,1]
   object[['proper.ind.mat.all']] = proper.ind.mat.all
   object[['proper.ind.mat']] = proper.ind.mat
+  object[['initialization']] = initialization
   object[['parameter.list']] = parameter.list
   object[['loss.list']] = loss.list
   object[['runtime']] = runtime

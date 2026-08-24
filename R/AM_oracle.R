@@ -30,12 +30,17 @@
 #' }
 #' @export
 AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.list=NULL,
-                     transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',phi=1,max.iter=200,threshold=1e-6,SBF.comp=NULL){
+                     initialization='v1',transform='Gaussian',normalize=TRUE,ngrid=51,Kdenom_method='numeric',
+                     phi=1,max.iter=200,threshold=1e-6,SBF.comp=NULL){
   
   start.time = Sys.time()
   
   # check validility of inputs
   Check.manifold(Yspace)
+  
+  if (!(initialization %in% c('v1','v2'))){
+    stop("The parameter 'initialization' should be one of 'v1' or 'v2'.")
+  }
   
   if (ngrid<=1){
     ngrid = 2
@@ -90,7 +95,7 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
   
   
   # apply AM_each function in cpp
-  object = AM_each(SBF.comp,Ymu,Yspace,0,1e10,'LASSO',0,phi,0,max.iter,threshold)
+  object = AM_each(SBF.comp,Ymu,Yspace,0,1e10,'LASSO',0,initialization,phi,0,max.iter,threshold)
   
   
   # compute other parameters
@@ -118,6 +123,7 @@ AM.oracle = function(Xorg,Yorg,Yspace,proper.ind.mat=NULL,degree=0,bandwidths.li
   object[['all.indices']] = all.indices
   object[['proper.ind.mat.all']] = proper.ind.mat.all
   object[['proper.ind.mat']] = proper.ind.mat
+  object[['initialization']] = initialization
   object[['runtime']] = runtime
   object[['runtime.second']] = runtime.second
   class(object) = 'AM'

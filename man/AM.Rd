@@ -15,6 +15,7 @@ AM(
   Xdim.max = 100,
   R = 100,
   bandwidths.list = NULL,
+  initialization = "v1",
   transform = "Gaussian",
   normalize = TRUE,
   ngrid = 51,
@@ -50,6 +51,8 @@ AM(
 
 \item{R}{an \eqn{\ell^1}-type constrained bound, multiplied by \eqn{\hat\sigma_Y} (default: 100).}
 
+\item{initialization}{the initialization method for the ADMM algorithm. Options are \code{'v1'} and \code{'v2'} (default: \code{'v1'}).}
+
 \item{transform}{a method of transformation. Must be one of 'linear', 'Gaussian' or 'trigonometric' (default: 'linear').}
 
 \item{normalize}{a parameter indicating whether to standardize each column of score matrices (default: \code{TRUE}).}
@@ -71,7 +74,7 @@ AM(
 \item{SBF.compe}{a \code{\link{SBF.comp}} object (default: \code{NULL}). If \code{SBF.comp==NULL}, this function computes the SBF.comp using \code{\link{SBF.comp}}.}
 }
 \value{
-a \code{AM} object with the following compnents:
+a \code{AM} object with the following components:
    \describe{
       \item{pca}{a \code{\link{PCA.manifold.list}} object.}
       \item{Ymu}{the Frechet mean \eqn{\mu_Y} of \eqn{Y}.}
