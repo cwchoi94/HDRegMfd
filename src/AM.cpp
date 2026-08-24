@@ -83,24 +83,27 @@ List AM_each(List SBF_comp, arma::vec Ymu, String Yspace, double lambda, double 
     // initial values
     cube mhat(p, g * r, m, fill::zeros); // (p, g*r, m)
     cube mhat_old(p, g * r, m, fill::zeros); // (p, g*r, m)
+    vec mhat_norm(p, fill::zeros);
     double A = R;
     double B = 0;
 
     if (initialization!="v1"){
         for (int j = 0; j < p; j++) {
+            mat tmp_tildem_j = tildem.row(j);
             if (m == 1) {
-                mat tmp_tildem_j = tildem.row(j);
                 mhat.row(j) = tmp_tildem_j.t();
                 mhat_old.row(j) = tmp_tildem_j.t();
             }
             else {
-                mhat.row(j) = tildem.row(j);
-                mhat_old.row(j) = tildem.row(j);
+                mhat.row(j) = tmp_tildem_j;
+                mhat_old.row(j) = tmp_tildem_j;
             }
+
+            cube kde_1d_sq_j = kde_1d_sq[j];
+            mhat_norm(j) = L2_mat_norm_SBF(tmp_tildem_j, kde_1d_sq_j, weights, Ymu, Yspace);
         }
     }
 
-    vec mhat_norm(p, fill::zeros);
     double sigma = phi + eta;
 
     // ADMM algorithm
